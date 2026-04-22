@@ -1,0 +1,506 @@
+/* ============================================= */
+/* DBD PREMIUM CSS - STABILIZED AAA HORROR       */
+/* Fonts: Nosifer (Blood) + Metal Mania (Scratch)*/
+/* ============================================= */
+
+/* Import Free Monstrous Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Nosifer&family=Metal+Mania&family=Special+Elite&display=swap');
+
+/* CRITICAL FIX: Prevent horizontal overflow */
+* {
+    box-sizing: border-box;
+}
+
+/* The Core Aesthetic - Enhanced Fog Layer */
+body,
+html {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%; /* Changed from 200vh to 100% */
+    overflow-x: hidden; /* CRITICAL: Kill horizontal scrollbar */
+    background-image: url('camp-fire-dead-by-daylight-moewalls-com.gif');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-color: black;
+}
+
+/* Create a wrapper for scrollable content */
+.content-wrapper {
+    min-height: 200vh; /* Move scroll height here instead of body */
+    width: 100%;
+    position: relative;
+    overflow-x: hidden;
+}
+
+/* The Entity's Fog Effect - Always Present */
+body::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: radial-gradient(circle at 50% 50%, transparent 0%, rgba(0,0,0,0.6) 100%);
+    pointer-events: none;
+    z-index: 1;
+    animation: fogBreathing 8s infinite alternate ease-in-out;
+}
+
+/* Navbar - Obsidian Glass */
+.navbar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Metal Mania', cursive;
+    height: 80px;
+    width: 100%;
+    background: rgba(10, 5, 5, 0.75);
+    backdrop-filter: blur(12px);
+    border-bottom: 2px solid #3a0d0d;
+    box-shadow: 0 10px 30px -10px rgba(0,0,0,0.8);
+    position: fixed; /* Changed to fixed for stability */
+    top: 0;
+    left: 0;
+    z-index: 100;
+}
+
+.navbar li {
+    list-style: none;
+}
+
+.navbar li a {
+    font-size: 1.8rem;
+    font-weight: bold;
+    margin-right: 60px;
+    color: #d4c9b8;
+    text-decoration: none;
+    text-transform: uppercase;
+    letter-spacing: 4px;
+    transition: all 0.25s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    text-shadow: 2px 2px 0 #1a0000;
+    position: relative;
+    display: inline-block;
+    /* FIX: Prevent layout shift on hover */
+    transform: translateZ(0);
+    -webkit-font-smoothing: antialiased;
+}
+
+/* Navbar Hover - Entity Claw Slash Effect (Stabilized) */
+.navbar li a:hover {
+    color: #ff2a2a;
+    text-shadow: 0 0 15px #ff0000, 3px 3px 0 #1a0000;
+    transform: skew(-8deg) scale(1.05) translateZ(0);
+    letter-spacing: 6px;
+}
+
+.nav-links {
+    display: flex;
+    gap: 30px;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+/* ============================================= */
+/* PREMIUM H1 - THE KILLER TITLE (Stabilized)    */
+/* ============================================= */
+h1 {
+    font-family: 'Nosifer', cursive;
+    font-size: clamp(3rem, 8vw, 5.5rem); /* Responsive without breaking */
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 250px;
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 90vw;
+    color: transparent;
+    background: linear-gradient(180deg, #a01010 0%, #4a0000 80%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    text-shadow: 
+        0 0 30px rgba(180, 0, 0, 0.7),
+        4px 4px 0 #0a0000,
+        8px 8px 0 rgba(0,0,0,0.3);
+    margin-bottom: 20px;
+    letter-spacing: 8px;
+    position: relative;
+    z-index: 5;
+    word-wrap: break-word;
+    
+    /* FIX: Hardware acceleration prevents shaking */
+    transform: translateZ(0);
+    -webkit-font-smoothing: antialiased;
+    backface-visibility: hidden;
+    
+    /* DBD Scratch Mark Animation */
+    animation: titleGlitch 6s infinite, scratchSwipe 3s infinite;
+}
+
+/* The Scratched "H1" Underline (Predatory Claw Marks) */
+h1::after {
+    content: "";
+    position: absolute;
+    bottom: -15px;
+    left: 15%;
+    width: 70%;
+    height: 8px;
+    background: repeating-linear-gradient(
+        45deg,
+        #8b0000 0px,
+        #8b0000 15px,
+        transparent 15px,
+        transparent 30px
+    );
+    opacity: 0.8;
+    filter: blur(1px);
+    animation: scratchMove 2s infinite linear;
+}
+
+/* ============================================= */
+/* PREMIUM P - THE LORE / HORROR TEXT            */
+/* ============================================= */
+p {
+    font-family: 'Special Elite', monospace;
+    font-size: clamp(1.2rem, 4vw, 1.6rem);
+    text-align: center;
+    display: block; /* Changed from flex for stability */
+    margin: 40px auto;
+    padding: 25px 30px;
+    max-width: min(800px, 90vw);
+    color: #e0d6c8;
+    text-shadow: 
+        2px 2px 0 #1a0000,
+        0 0 20px rgba(255, 40, 40, 0.4);
+    background: rgba(5, 0, 0, 0.5);
+    backdrop-filter: blur(5px);
+    border-left: 8px solid #8b0000;
+    border-right: 8px solid #1a0000;
+    position: relative;
+    z-index: 5;
+    letter-spacing: 1.5px;
+    line-height: 1.8;
+    word-wrap: break-word;
+    
+    /* FIX: Hardware acceleration */
+    transform: translateZ(0) rotate(-0.5deg);
+    -webkit-font-smoothing: antialiased;
+    backface-visibility: hidden;
+    transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    
+    /* Premium Blood Drip Animation */
+    animation: textPulse 4s infinite alternate, bloodDrip 8s infinite;
+}
+
+/* Stabilized hover */
+p:hover {
+    transform: translateZ(0) rotate(0deg) scale(1.01);
+    border-left-color: #ff2020;
+    box-shadow: 0 0 40px rgba(255, 0, 0, 0.2);
+    text-shadow: 0 0 15px #ff0000, 2px 2px 0 #1a0000;
+}
+
+/* ============================================= */
+/* ANIMATIONS - THE ENTITY'S CURSE               */
+/* ============================================= */
+
+/* 1. Fog Breathing (Background) - Stabilized */
+@keyframes fogBreathing {
+    0% { opacity: 0.3; }
+    50% { opacity: 0.6; }
+    100% { opacity: 0.3; }
+}
+
+/* 2. Title Glitch (H1) - Fixed to prevent overflow */
+@keyframes titleGlitch {
+    0%, 100% { transform: translateZ(0) skew(0deg); }
+    95% { transform: translateZ(0) skew(1deg); }
+    96% { transform: translateZ(0) skew(-2deg); text-shadow: 6px 0 #ff0000, -6px 0 #0000ff; }
+    97% { transform: translateZ(0) skew(0deg); }
+}
+
+/* 3. Scratch Mark Swipe (H1) */
+@keyframes scratchSwipe {
+    0%, 100% { background-position: 0% 0%; }
+    50% { background-position: 100% 0%; }
+}
+
+/* 4. Scratch Mark Movement (H1 Underline) */
+@keyframes scratchMove {
+    0% { background-position: 0 0; opacity: 0.3; }
+    50% { background-position: 30px 0; opacity: 0.8; }
+    100% { background-position: 60px 0; opacity: 0.3; }
+}
+
+/* 5. Text Pulse (Paragraph) */
+@keyframes textPulse {
+    0% { text-shadow: 2px 2px 0 #1a0000, 0 0 10px #4a0000; }
+    100% { text-shadow: 2px 2px 0 #1a0000, 0 0 20px #a01010; }
+}
+
+/* 6. Blood Drip Effect (Paragraph) */
+@keyframes bloodDrip {
+    0%, 90%, 100% { border-bottom-color: transparent; }
+    92% { border-bottom: 4px solid #8b0000; }
+    95% { border-bottom: 4px solid #ff2020; }
+}
+
+/* FIX: Ensure body content stays within viewport */
+img, video, iframe {
+    max-width: 100%;
+    height: auto;
+}
+
+/* ============================================= */
+/* INFO CARDS - PREMIUM DBD GRID LAYOUT          */
+/* ============================================= */
+
+.tagline {
+    font-family: 'Metal Mania', cursive;
+    font-size: 2rem;
+    text-align: center;
+    color: #c41e1e;
+    text-shadow: 0 0 20px #ff0000, 2px 2px 0 #0a0000;
+    margin-top: -10px;
+    margin-bottom: 50px;
+    letter-spacing: 6px;
+    animation: textPulse 3s infinite alternate;
+}
+
+/* Grid Container */
+.info-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 20px 40px;
+    position: relative;
+    z-index: 5;
+}
+
+/* Individual Info Cards */
+.info-card {
+    background: rgba(5, 2, 2, 0.75);
+    backdrop-filter: blur(8px);
+    border: 1px solid #3a0d0d;
+    border-radius: 4px;
+    padding: 30px 25px;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.7);
+    
+    /* Stabilization */
+    transform: translateZ(0);
+    backface-visibility: hidden;
+}
+
+/* Entity's Gaze (Corner Accent) */
+.info-card::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background: linear-gradient(90deg, transparent, #8b0000, #ff2a2a, #8b0000, transparent);
+    opacity: 0;
+    transition: opacity 0.4s ease;
+}
+
+.info-card:hover::before {
+    opacity: 1;
+}
+
+/* Scratch Mark Corner Effect */
+.info-card::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 40px;
+    height: 40px;
+    background: repeating-linear-gradient(
+        45deg,
+        transparent,
+        transparent 5px,
+        rgba(139, 0, 0, 0.3) 5px,
+        rgba(139, 0, 0, 0.3) 10px
+    );
+    opacity: 0;
+    transition: opacity 0.4s ease;
+}
+
+.info-card:hover::after {
+    opacity: 0.6;
+}
+
+/* Card Hover Effect */
+.info-card:hover {
+    transform: translateZ(0) translateY(-5px);
+    border-color: #8b0000;
+    box-shadow: 0 20px 40px -10px rgba(139, 0, 0, 0.3), 0 0 0 1px rgba(139, 0, 0, 0.2) inset;
+    background: rgba(8, 3, 3, 0.85);
+}
+
+/* Card Icon */
+.card-icon {
+    font-size: 3.5rem;
+    text-align: center;
+    margin-bottom: 20px;
+    filter: drop-shadow(0 0 10px rgba(139, 0, 0, 0.5));
+}
+
+/* Card Headers */
+.info-card h2 {
+    font-family: 'Metal Mania', cursive;
+    color: #c41e1e;
+    font-size: 1.8rem;
+    text-align: center;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    text-shadow: 2px 2px 0 #1a0000;
+    border-bottom: 2px solid #3a0d0d;
+    padding-bottom: 15px;
+    transition: border-color 0.3s ease;
+}
+
+.info-card:hover h2 {
+    border-bottom-color: #8b0000;
+}
+
+/* Card Paragraph Text */
+.info-card p {
+    font-family: 'Special Elite', monospace;
+    font-size: 1rem;
+    line-height: 1.7;
+    color: #d4c9b8;
+    text-shadow: 1px 1px 0 #0a0000;
+    margin: 0;
+    padding: 0;
+    background: transparent;
+    border: none;
+    backdrop-filter: none;
+    text-align: left;
+    transform: none;
+    animation: none;
+    max-width: 100%;
+}
+
+.info-card p strong {
+    color: #ff4444;
+    font-family: 'Metal Mania', cursive;
+    letter-spacing: 1px;
+}
+
+/* Entity Quote Section */
+.entity-quote {
+    max-width: 800px;
+    margin: 80px auto 40px;
+    padding: 40px;
+    text-align: center;
+    background: rgba(0, 0, 0, 0.4);
+    border-left: 6px solid #8b0000;
+    border-right: 6px solid #1a0000;
+    position: relative;
+    z-index: 5;
+}
+
+.entity-quote p {
+    font-family: 'Special Elite', monospace;
+    font-size: 1.5rem;
+    color: #e0d6c8;
+    font-style: italic;
+    margin-bottom: 15px;
+    text-shadow: 2px 2px 0 #0a0000;
+    background: transparent;
+    border: none;
+    padding: 0;
+    transform: none;
+    animation: none;
+}
+
+.entity-quote span {
+    font-family: 'Metal Mania', cursive;
+    color: #8b0000;
+    font-size: 1rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+}
+
+/* Copyright Disclaimer */
+.disclaimer {
+    max-width: 800px;
+    margin: 60px auto 30px;
+    padding: 20px;
+    text-align: center;
+    border-top: 1px solid #3a0d0d;
+    position: relative;
+    z-index: 5;
+}
+
+.disclaimer p {
+    font-family: 'Special Elite', monospace;
+    font-size: 0.8rem;
+    color: #8a7e6e;
+    text-shadow: 1px 1px 0 #0a0000;
+    background: transparent;
+    border: none;
+    padding: 0;
+    transform: none;
+    animation: none;
+    max-width: 100%;
+    line-height: 1.6;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .info-grid {
+        grid-template-columns: 1fr;
+        padding: 20px;
+    }
+    
+    .info-card h2 {
+        font-size: 1.5rem;
+    }
+    
+    .entity-quote {
+        margin: 40px 20px;
+        padding: 25px;
+    }
+    
+    .entity-quote p {
+        font-size: 1.2rem;
+    }
+    
+    .tagline {
+        font-size: 1.5rem;
+        padding: 0 20px;
+    }
+}
+
+/* Blood Splatter Animation for Cards (Subtle) */
+@keyframes cardBloodPulse {
+    0%, 100% { border-color: #3a0d0d; }
+    50% { border-color: #5a1515; }
+}
+
+.info-card {
+    animation: cardBloodPulse 4s infinite ease-in-out;
+}
+
+/* Stagger card animations */
+.info-card:nth-child(1) { animation-delay: 0s; }
+.info-card:nth-child(2) { animation-delay: 0.5s; }
+.info-card:nth-child(3) { animation-delay: 1s; }
+.info-card:nth-child(4) { animation-delay: 1.5s; }
+.info-card:nth-child(5) { animation-delay: 0.2s; }
+.info-card:nth-child(6) { animation-delay: 0.7s; }
+.info-card:nth-child(7) { animation-delay: 1.2s; }
+.info-card:nth-child(8) { animation-delay: 1.7s; }

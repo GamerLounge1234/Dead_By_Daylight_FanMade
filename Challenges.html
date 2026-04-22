@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DBD Premium Challenges - Beta</title>
+    <style>
+        /* CSS Reset & Core Variables */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        :root {
+            --bg-dark: #0a0a0f;
+            --entity-red: #d32f2f;
+            --neon-glow: 0 0 15px rgba(211, 47, 47, 0.7);
+            --glass-bg: rgba(20, 20, 25, 0.85);
+            --text-light: #e0e0e0;
+            --text-muted: #888;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-light);
+            background-image: radial-gradient(circle at 50% 0%, #2a0808 0%, transparent 50%);
+            min-height: 100vh;
+        }
+
+        /* Beta Banner */
+        .beta-banner {
+            background: rgba(211, 47, 47, 0.1);
+            color: var(--entity-red);
+            text-align: center;
+            padding: 0.6rem;
+            font-size: 0.85rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            border-bottom: 1px solid rgba(211, 47, 47, 0.3);
+            font-weight: bold;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.5);
+        }
+
+        /* Navigation Bar */
+        .navbar {
+            background: rgba(10, 10, 15, 0.8);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid #333;
+            padding: 1.2rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-links {
+            list-style: none;
+            display: flex;
+            justify-content: center;
+            gap: 4rem;
+        }
+
+        .nav-links li a {
+            text-decoration: none;
+            color: var(--text-light);
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .nav-links li a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: var(--entity-red);
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+            transform-origin: right;
+        }
+
+        .nav-links li a:hover,
+        .nav-links li a.active {
+            color: var(--entity-red);
+            text-shadow: var(--neon-glow);
+        }
+
+        .nav-links li a:hover::after,
+        .nav-links li a.active::after {
+            transform: scaleX(1);
+            transform-origin: left;
+        }
+
+        /* Main Content Wrapper */
+        .content-wrapper {
+            padding: 3rem 2rem;
+        }
+
+        /* Header Section */
+        header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        header h1 {
+            font-size: 3rem;
+            color: #fff;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            text-shadow: var(--neon-glow);
+        }
+
+        header p {
+            color: var(--text-muted);
+            margin-top: 1rem;
+            font-size: 1.1rem;
+        }
+
+        /* Challenge Grid */
+        .challenge-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .challenge-card {
+            background: linear-gradient(145deg, #1a1a24 0%, #0d0d12 100%);
+            border: 1px solid #333;
+            border-radius: 12px;
+            padding: 2rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .challenge-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 4px;
+            background: var(--entity-red);
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+            transform-origin: left;
+        }
+
+        .challenge-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--entity-red);
+            box-shadow: var(--neon-glow);
+        }
+
+        .challenge-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .card-type {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            color: var(--entity-red);
+            letter-spacing: 2px;
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+
+        .card-title {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        /* Modal / Popup Windows */
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(8px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.4s ease;
+            z-index: 1000;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .modal-content {
+            background: var(--glass-bg);
+            border: 1px solid rgba(211, 47, 47, 0.3);
+            border-radius: 16px;
+            width: 90%;
+            max-width: 800px;
+            padding: 3rem;
+            position: relative;
+            transform: scale(0.9);
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5), var(--neon-glow);
+        }
+
+        .modal-overlay.active .modal-content {
+            transform: scale(1);
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 1.5rem;
+            right: 2rem;
+            font-size: 2rem;
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+
+        .close-btn:hover {
+            color: var(--entity-red);
+        }
+
+        .modal-body h2 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            color: #fff;
+        }
+
+        .modal-meta {
+            color: var(--entity-red);
+            font-weight: bold;
+            margin-bottom: 2rem;
+            display: inline-block;
+            border-bottom: 1px solid #333;
+            padding-bottom: 0.5rem;
+            width: 100%;
+        }
+
+        .perk-build {
+            display: flex;
+            gap: 1rem;
+            margin: 2rem 0;
+            background: rgba(0,0,0,0.4);
+            padding: 1.5rem;
+            border-radius: 8px;
+        }
+
+        .perk-slot {
+            flex: 1;
+            text-align: center;
+            font-size: 0.9rem;
+            color: #aaa;
+            border: 1px dashed #444;
+            padding: 1rem;
+            border-radius: 4px;
+        }
+
+        /* Database Interaction Area */
+        .db-action-area {
+            margin-top: 3rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #000;
+            padding: 1.5rem;
+            border-radius: 8px;
+            border-left: 4px solid var(--entity-red);
+        }
+
+        .progress-input {
+            background: #111;
+            border: 1px solid #333;
+            color: #fff;
+            padding: 0.8rem;
+            border-radius: 4px;
+            width: 100px;
+            outline: none;
+        }
+
+        .progress-input:focus {
+            border-color: var(--entity-red);
+        }
+
+        .btn-update {
+            background: transparent;
+            color: var(--entity-red);
+            border: 1px solid var(--entity-red);
+            padding: 0.8rem 2rem;
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: all 0.3s;
+        }
+
+        .btn-update:hover {
+            background: var(--entity-red);
+            color: #fff;
+            box-shadow: var(--neon-glow);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="beta-banner">
+        ⚠️ Beta Phase: Content and features are currently under development.
+    </div>
+
+    <nav class="navbar">
+        <ul class="nav-links">
+            <li><a href="index.html">Lobby</a></li>
+            <li><a href="perks.html">Perks</a></li>
+            <li><a href="Randomizer.html">Randomizer</a></li>
+            <li><a href="Challenges.html" class="active">Challenges</a></li>
+        </ul>
+    </nav>
+
+    <div class="content-wrapper">
+        <header>
+            <h1>Apex Trials</h1>
+            <p>Pro-Level Campaigns. Redefine your survival.</p>
+        </header>
+
+        <div class="challenge-grid">
+            <div class="challenge-card" onclick="openModal('phantom')">
+                <span class="card-type">Survivor Campaign</span>
+                <h3 class="card-title">The Phantom of the Fog</h3>
+                <p style="color: var(--text-muted); font-size: 0.9rem;">Complete pacifism. Never trigger a chase sequence.</p>
+            </div>
+
+            <div class="challenge-card" onclick="openModal('warden')">
+                <span class="card-type">Killer Campaign</span>
+                <h3 class="card-title">The Entity's Warden</h3>
+                <p style="color: var(--text-muted); font-size: 0.9rem;">Total territorial dominance. Confine your prey.</p>
+            </div>
+
+            <div class="challenge-card" onclick="openModal('purifier')">
+                <span class="card-type">Saboteur Campaign</span>
+                <h3 class="card-title">The Hex Purifier</h3>
+                <p style="color: var(--text-muted); font-size: 0.9rem;">Cleanse the realm. Touch no generators until the end.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeModal()">&times;</span>
+            
+            <div class="modal-body" id="modalBody">
+                </div>
+
+            <div class="db-action-area">
+                <div>
+                    <span style="display: block; margin-bottom: 0.5rem; color: #888;">Update Trial Progress:</span>
+                    <input type="number" class="progress-input" placeholder="0" min="0" id="progressVal">
+                    <span style="color: #aaa; margin-left: 10px;">/ 10 Successful Trials</span>
+                </div>
+                <button class="btn-update" onclick="saveToDatabase()">Sync to Database</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const challengeData = {
+            'phantom': {
+                title: "The Phantom of the Fog",
+                meta: "Survivor // Difficulty: Extreme // Est. Time: 15 Hours",
+                desc: "You must survive the trial without ever triggering a chase sequence with the Killer. If the chase music starts, the trial is void. You are required to complete the equivalent of 2 full generators entirely unseen, and escape.",
+                perks: ["Distortion", "Urban Evasion", "Calm Spirit", "Iron Will"]
+            },
+            'warden': {
+                title: "The Entity's Warden",
+                meta: "Killer // Difficulty: Hard // Est. Time: 10 Hours",
+                desc: "Claim a specific quadrant of the map (e.g., the main building). You are not allowed to hook any survivor outside of your designated territory. If they go down across the map, you must carry them back.",
+                perks: ["Agitation", "Iron Grasp", "Territorial Imperative", "Monstrous Shrine"]
+            },
+            'purifier': {
+                title: "The Hex Purifier",
+                meta: "Mixed // Difficulty: Insane // Est. Time: 20 Hours",
+                desc: "You are not allowed to touch a generator until the endgame collapse. You must cleanse all 5 totems, open at least 3 chests, and achieve 4 safe unhooks before the exit gates are powered.",
+                perks: ["Counterforce", "Small Game", "Plunderer's Instinct", "We'll Make It"]
+            }
+        };
+
+        const modal = document.getElementById('modalOverlay');
+        const modalBody = document.getElementById('modalBody');
+
+        function openModal(challengeId) {
+            const data = challengeData[challengeId];
+            
+            modalBody.innerHTML = `
+                <h2>${data.title}</h2>
+                <div class="modal-meta">${data.meta}</div>
+                <p style="line-height: 1.6; color: #ccc;">${data.desc}</p>
+                
+                <h4 style="margin-top: 2rem; color: var(--entity-red);">Mandatory Build</h4>
+                <div class="perk-build">
+                    ${data.perks.map(perk => `<div class="perk-slot">${perk}</div>`).join('')}
+                </div>
+            `;
+            
+            modal.classList.add('active');
+        }
+
+        function closeModal() {
+            modal.classList.remove('active');
+        }
+
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                closeModal();
+            }
+        }
+
+        function saveToDatabase() {
+            const val = document.getElementById('progressVal').value;
+            alert("Ready to send progress (" + val + ") to MongoDB! Backend integration coming next.");
+        }
+    </script>
+</body>
+</html>
