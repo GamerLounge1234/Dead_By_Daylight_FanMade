@@ -7880,112 +7880,115 @@
             "IconPerks_innerFocus.webp", "IconPerks_zanshinTactics.webp", "IconPerks_innerStrength.webp", "IconPerks_insidious.webp"
         ];
 
-        // This function strips out spaces and punctuation to find the exact match in the array above
-        function getMatchedImageFile(datasetPerkName) {
-            // Simplify the string: lowercase, remove spaces, colons, dashes, apostrophes
-            const simplifiedInput = datasetPerkName.toLowerCase().replace(/[^a-z0-9]/g, '');
+       // Track the current build index for sequential cycling
+    let currentBuildIndex = 0;
+
+    // This function strips out spaces and punctuation to find the exact match in the array above
+    function getMatchedImageFile(datasetPerkName) {
+        const simplifiedInput = datasetPerkName.toLowerCase().replace(/[^a-z0-9]/g, '');
+        
+        for (let i = 0; i < exactIconFiles.length; i++) {
+            const fileName = exactIconFiles[i];
+            const simplifiedFileName = fileName.toLowerCase().replace('iconperks_', '').replace('.webp', '').replace(/[^a-z0-9]/g, '');
             
-            // Loop through all exact files to find the match
-            for (let i = 0; i < exactIconFiles.length; i++) {
-                const fileName = exactIconFiles[i];
-                const simplifiedFileName = fileName.toLowerCase().replace('iconperks_', '').replace('.webp', '').replace(/[^a-z0-9]/g, '');
-                
-                if (simplifiedInput === simplifiedFileName) {
-                    return fileName; // Found the exact match!
-                }
+            if (simplifiedInput === simplifiedFileName) {
+                return fileName;
             }
-            // Fallback just in case
-            return "IconPerks_default.webp"; 
         }
+        return "IconPerks_default.webp"; 
+    }
 
-      
-        function renderDashboard(build) {
-            const dashboard = document.getElementById('main-dashboard');
+    function renderDashboard(build) {
+        const dashboard = document.getElementById('main-dashboard');
+        
+        const positions = ["pos-top", "pos-left", "pos-right", "pos-bottom"];
+        
+        let perksHTML = '';
+        for (let i = 0; i < 4; i++) {
+            const perkName = build.perks[i];
+            const fileName = getMatchedImageFile(perkName);
+            const posClass = positions[i];
             
-            // Position classes to recreate the DBD Diamond
-            const positions = ["pos-top", "pos-left", "pos-right", "pos-bottom"];
-            
-            // Generate the Perk Diamond HTML
-            let perksHTML = '';
-            for (let i = 0; i < 4; i++) {
-                const perkName = build.perks[i];
-                const fileName = getMatchedImageFile(perkName);
-                const posClass = positions[i];
-                
-                perksHTML += `
-                    <div class="perk-wrapper ${posClass}">
-                        <div class="perk-slot">
-                            <img src="DBDperks/${fileName}" alt="${perkName}" onerror="this.style.display='none'">
-                        </div>
-                        <div class="perk-name-label">${perkName}</div>
+            perksHTML += `
+                <div class="perk-wrapper ${posClass}">
+                    <div class="perk-slot">
+                        <img src="DBDperks/${fileName}" alt="${perkName}" onerror="this.style.display='none'">
                     </div>
-                `;
-            }
-
-            // Determine recommended killers display
-            const killersText = Array.isArray(build.recommendedKillers) 
-                ? build.recommendedKillers.join(', ') 
-                : build.recommendedKillers;
-
-            // Inject the HTML
-            dashboard.innerHTML = `
-                <div class="info-panel">
-                    <div class="build-header">
-                        <h1 class="build-title">${build.name}</h1>
-                        <h2 class="build-subtitle">// ${build.subtitle}</h2>
-                    </div>
-
-                    <div class="meta-tags">
-                        <div class="tag"><span>Playstyle:</span> ${build.playstyle}</div>
-                        <div class="tag"><span>Difficulty:</span> ${build.difficulty}</div>
-                        <div class="tag"><span>Optimum:</span> ${killersText}</div>
-                    </div>
-
-                    <div class="strategy-container">
-                        <div class="phase">
-                            <h4>Early Game</h4>
-                            <p>${build.strategy.earlyGame}</p>
-                        </div>
-                        <div class="phase">
-                            <h4>Mid Game</h4>
-                            <p>${build.strategy.midGame}</p>
-                        </div>
-                        <div class="phase">
-                            <h4>End Game</h4>
-                            <p>${build.strategy.endGame}</p>
-                        </div>
-                        <div class="pro-tip">
-                            <strong>ENTITY WHISPERS:</strong> ${build.proTip}
-                        </div>
-                    </div>
-                </div>
-
-                <div class="visual-panel">
-                    <div class="perk-diamond">
-                        ${perksHTML}
-                    </div>
-                    <button class="randomize-btn" onclick="executeRandomizer()">Next Build</button>
+                    <div class="perk-name-label">${perkName}</div>
                 </div>
             `;
         }
 
-       
-        function executeRandomizer() {
-            // Apply glitch effect
-            const dashboard = document.getElementById('main-dashboard');
-            dashboard.classList.remove('glitch-flash');
-            void dashboard.offsetWidth; // Trigger reflow
-            dashboard.classList.add('glitch-flash');
+        const killersText = Array.isArray(build.recommendedKillers) 
+            ? build.recommendedKillers.join(', ') 
+            : build.recommendedKillers;
 
-            // Wait tiny fraction of second for effect, then change data
-            setTimeout(() => {
-                const randomIndex = Math.floor(Math.random() * buildDatabase.length);
-                renderDashboard(buildDatabase[randomIndex]);
-            }, 150);
-        }
+        dashboard.innerHTML = `
+            <div class="info-panel">
+                <div class="build-header">
+                    <h1 class="build-title">${build.name}</h1>
+                    <h2 class="build-subtitle">// ${build.subtitle}</h2>
+                </div>
 
-        // Load initial build on start
-        window.onload = executeRandomizer;
-    </script>
+                <div class="meta-tags">
+                    <div class="tag"><span>Playstyle:</span> ${build.playstyle}</div>
+                    <div class="tag"><span>Difficulty:</span> ${build.difficulty}</div>
+                    <div class="tag"><span>Optimum:</span> ${killersText}</div>
+                </div>
+
+                <div class="strategy-container">
+                    <div class="phase">
+                        <h4>Early Game</h4>
+                        <p>${build.strategy.earlyGame}</p>
+                    </div>
+                    <div class="phase">
+                        <h4>Mid Game</h4>
+                        <p>${build.strategy.midGame}</p>
+                    </div>
+                    <div class="phase">
+                        <h4>End Game</h4>
+                        <p>${build.strategy.endGame}</p>
+                    </div>
+                    <div class="pro-tip">
+                        <strong>ENTITY WHISPERS:</strong> ${build.proTip}
+                    </div>
+                </div>
+            </div>
+
+            <div class="visual-panel">
+                <div class="perk-diamond">
+                    ${perksHTML}
+                </div>
+                <button class="randomize-btn" onclick="executeSequential()">Next Build</button>
+            </div>
+        `;
+    }
+
+    // NEW: Sequential function instead of random
+    function executeSequential() {
+        const dashboard = document.getElementById('main-dashboard');
+        dashboard.classList.remove('glitch-flash');
+        void dashboard.offsetWidth;
+        dashboard.classList.add('glitch-flash');
+
+        setTimeout(() => {
+            // Move to next build index
+            currentBuildIndex++;
+            
+            // If we've reached the end, loop back to the beginning
+            if (currentBuildIndex >= buildDatabase.length) {
+                currentBuildIndex = 0;
+            }
+            
+            renderDashboard(buildDatabase[currentBuildIndex]);
+        }, 150);
+    }
+
+    // Load initial build on start (now sequential starting at index 0)
+    window.onload = function() {
+        currentBuildIndex = 0;
+        renderDashboard(buildDatabase[0]);
+    };
+</script>
 </body>
 </html>
