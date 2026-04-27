@@ -1,24 +1,17 @@
-/* ============================================= */
-/* DBD PREMIUM CSS - STABILIZED AAA HORROR       */
-/* Fonts: Nosifer (Blood) + Metal Mania (Scratch)*/
-/* ============================================= */
 
-/* Import Free Monstrous Google Fonts */
 @import url('https://fonts.googleapis.com/css2?family=Nosifer&family=Metal+Mania&family=Special+Elite&display=swap');
 
-/* CRITICAL FIX: Prevent horizontal overflow */
 * {
     box-sizing: border-box;
 }
 
-/* The Core Aesthetic - Enhanced Fog Layer */
 body,
 html {
     margin: 0;
     padding: 0;
     width: 100%;
-    height: 100%; /* Changed from 200vh to 100% */
-    overflow-x: hidden; /* CRITICAL: Kill horizontal scrollbar */
+    height: 100%; 
+    overflow-x: hidden; 
     background-image: url('camp-fire-dead-by-daylight-moewalls-com.gif');
     background-size: cover;
     background-position: center;
@@ -27,15 +20,13 @@ html {
     background-color: black;
 }
 
-/* Create a wrapper for scrollable content */
 .content-wrapper {
-    min-height: 200vh; /* Move scroll height here instead of body */
+    min-height: 200vh;
     width: 100%;
     position: relative;
     overflow-x: hidden;
 }
 
-/* The Entity's Fog Effect - Always Present */
 body::before {
     content: "";
     position: fixed;
@@ -49,7 +40,6 @@ body::before {
     animation: fogBreathing 8s infinite alternate ease-in-out;
 }
 
-/* Navbar - Obsidian Glass */
 .navbar {
     display: flex;
     justify-content: center;
@@ -61,7 +51,7 @@ body::before {
     backdrop-filter: blur(12px);
     border-bottom: 2px solid #3a0d0d;
     box-shadow: 0 10px 30px -10px rgba(0,0,0,0.8);
-    position: fixed; /* Changed to fixed for stability */
+    position: fixed; 
     top: 0;
     left: 0;
     z-index: 100;
@@ -104,12 +94,10 @@ body::before {
     margin: 0;
 }
 
-/* ============================================= */
-/* PREMIUM H1 - THE KILLER TITLE (Stabilized)    */
-/* ============================================= */
+
 h1 {
     font-family: 'Nosifer', cursive;
-    font-size: clamp(3rem, 8vw, 5.5rem); /* Responsive without breaking */
+    font-size: clamp(3rem, 8vw, 5.5rem); 
     text-align: center;
     display: flex;
     justify-content: center;
@@ -132,16 +120,13 @@ h1 {
     z-index: 5;
     word-wrap: break-word;
     
-    /* FIX: Hardware acceleration prevents shaking */
     transform: translateZ(0);
     -webkit-font-smoothing: antialiased;
     backface-visibility: hidden;
     
-    /* DBD Scratch Mark Animation */
     animation: titleGlitch 6s infinite, scratchSwipe 3s infinite;
 }
 
-/* The Scratched "H1" Underline (Predatory Claw Marks) */
 h1::after {
     content: "";
     position: absolute;
@@ -161,14 +146,12 @@ h1::after {
     animation: scratchMove 2s infinite linear;
 }
 
-/* ============================================= */
-/* PREMIUM P - THE LORE / HORROR TEXT            */
-/* ============================================= */
+
 p {
     font-family: 'Special Elite', monospace;
     font-size: clamp(1.2rem, 4vw, 1.6rem);
     text-align: center;
-    display: block; /* Changed from flex for stability */
+    display: block;
     margin: 40px auto;
     padding: 25px 30px;
     max-width: min(800px, 90vw);
@@ -186,17 +169,14 @@ p {
     line-height: 1.8;
     word-wrap: break-word;
     
-    /* FIX: Hardware acceleration */
     transform: translateZ(0) rotate(-0.5deg);
     -webkit-font-smoothing: antialiased;
     backface-visibility: hidden;
     transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     
-    /* Premium Blood Drip Animation */
     animation: textPulse 4s infinite alternate, bloodDrip 8s infinite;
 }
 
-/* Stabilized hover */
 p:hover {
     transform: translateZ(0) rotate(0deg) scale(1.01);
     border-left-color: #ff2020;
@@ -204,18 +184,13 @@ p:hover {
     text-shadow: 0 0 15px #ff0000, 2px 2px 0 #1a0000;
 }
 
-/* ============================================= */
-/* ANIMATIONS - THE ENTITY'S CURSE               */
-/* ============================================= */
 
-/* 1. Fog Breathing (Background) - Stabilized */
 @keyframes fogBreathing {
     0% { opacity: 0.3; }
     50% { opacity: 0.6; }
     100% { opacity: 0.3; }
 }
 
-/* 2. Title Glitch (H1) - Fixed to prevent overflow */
 @keyframes titleGlitch {
     0%, 100% { transform: translateZ(0) skew(0deg); }
     95% { transform: translateZ(0) skew(1deg); }
@@ -223,41 +198,34 @@ p:hover {
     97% { transform: translateZ(0) skew(0deg); }
 }
 
-/* 3. Scratch Mark Swipe (H1) */
 @keyframes scratchSwipe {
     0%, 100% { background-position: 0% 0%; }
     50% { background-position: 100% 0%; }
 }
 
-/* 4. Scratch Mark Movement (H1 Underline) */
 @keyframes scratchMove {
     0% { background-position: 0 0; opacity: 0.3; }
     50% { background-position: 30px 0; opacity: 0.8; }
     100% { background-position: 60px 0; opacity: 0.3; }
 }
 
-/* 5. Text Pulse (Paragraph) */
 @keyframes textPulse {
     0% { text-shadow: 2px 2px 0 #1a0000, 0 0 10px #4a0000; }
     100% { text-shadow: 2px 2px 0 #1a0000, 0 0 20px #a01010; }
 }
 
-/* 6. Blood Drip Effect (Paragraph) */
 @keyframes bloodDrip {
     0%, 90%, 100% { border-bottom-color: transparent; }
     92% { border-bottom: 4px solid #8b0000; }
     95% { border-bottom: 4px solid #ff2020; }
 }
 
-/* FIX: Ensure body content stays within viewport */
 img, video, iframe {
     max-width: 100%;
     height: auto;
 }
 
-/* ============================================= */
-/* INFO CARDS - PREMIUM DBD GRID LAYOUT          */
-/* ============================================= */
+
 
 .tagline {
     font-family: 'Metal Mania', cursive;
@@ -271,7 +239,6 @@ img, video, iframe {
     animation: textPulse 3s infinite alternate;
 }
 
-/* Grid Container */
 .info-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -283,7 +250,6 @@ img, video, iframe {
     z-index: 5;
 }
 
-/* Individual Info Cards */
 .info-card {
     background: rgba(5, 2, 2, 0.75);
     backdrop-filter: blur(8px);
@@ -295,12 +261,10 @@ img, video, iframe {
     transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.7);
     
-    /* Stabilization */
     transform: translateZ(0);
     backface-visibility: hidden;
 }
 
-/* Entity's Gaze (Corner Accent) */
 .info-card::before {
     content: "";
     position: absolute;
@@ -317,7 +281,6 @@ img, video, iframe {
     opacity: 1;
 }
 
-/* Scratch Mark Corner Effect */
 .info-card::after {
     content: "";
     position: absolute;
@@ -340,7 +303,6 @@ img, video, iframe {
     opacity: 0.6;
 }
 
-/* Card Hover Effect */
 .info-card:hover {
     transform: translateZ(0) translateY(-5px);
     border-color: #8b0000;
@@ -348,7 +310,6 @@ img, video, iframe {
     background: rgba(8, 3, 3, 0.85);
 }
 
-/* Card Icon */
 .card-icon {
     font-size: 3.5rem;
     text-align: center;
@@ -356,7 +317,6 @@ img, video, iframe {
     filter: drop-shadow(0 0 10px rgba(139, 0, 0, 0.5));
 }
 
-/* Card Headers */
 .info-card h2 {
     font-family: 'Metal Mania', cursive;
     color: #c41e1e;
@@ -375,7 +335,6 @@ img, video, iframe {
     border-bottom-color: #8b0000;
 }
 
-/* Card Paragraph Text */
 .info-card p {
     font-family: 'Special Elite', monospace;
     font-size: 1rem;
@@ -399,7 +358,6 @@ img, video, iframe {
     letter-spacing: 1px;
 }
 
-/* Entity Quote Section */
 .entity-quote {
     max-width: 800px;
     margin: 80px auto 40px;
@@ -434,7 +392,6 @@ img, video, iframe {
     text-transform: uppercase;
 }
 
-/* Copyright Disclaimer */
 .disclaimer {
     max-width: 800px;
     margin: 60px auto 30px;
@@ -459,7 +416,6 @@ img, video, iframe {
     line-height: 1.6;
 }
 
-/* Responsive Adjustments */
 @media (max-width: 768px) {
     .info-grid {
         grid-template-columns: 1fr;
@@ -485,7 +441,6 @@ img, video, iframe {
     }
 }
 
-/* Blood Splatter Animation for Cards (Subtle) */
 @keyframes cardBloodPulse {
     0%, 100% { border-color: #3a0d0d; }
     50% { border-color: #5a1515; }
@@ -495,7 +450,6 @@ img, video, iframe {
     animation: cardBloodPulse 4s infinite ease-in-out;
 }
 
-/* Stagger card animations */
 .info-card:nth-child(1) { animation-delay: 0s; }
 .info-card:nth-child(2) { animation-delay: 0.5s; }
 .info-card:nth-child(3) { animation-delay: 1s; }
