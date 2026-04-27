@@ -461,7 +461,9 @@
         </main>
     </div>
 
-    <script>
+
+
+<script>
         // Exact Datasets provided
         const survivorPerks = [
             { name:"Sprint Burst", category:"SPEED", desc:"Grants +50% Haste for 3 sec when starting to run. Causes Exhaustion.", character:"Meg Thomas", tier:"30" },
@@ -757,63 +759,14 @@
         
         // --- Core Functions ---
 
-       function normalizeString(str) {
-    return str.toLowerCase()
-        .replace(/[éèêë]/g, 'e')
-        .replace(/[üùû]/g, 'u')
-        .replace(/[àâä]/g, 'a')
-        .replace(/[ôö]/g, 'o')
-        .replace(/[^a-z0-9]/g, '');
-}
-
-function fuzzyMatchFilename(perkName) {
-    let normalized = normalizeString(perkName);
-    
-    // Direct match using normalized comparison
-    let match = fileArray.find(f => {
-        let fNorm = f.replace('IconPerks_', '').replace('.webp', '').toLowerCase();
-        return normalizeString(fNorm) === normalized;
-    });
-    
-    // If no direct match, try partial match
-    if (!match) {
-        match = fileArray.find(f => {
-            let fNorm = normalizeString(f.replace('IconPerks_', '').replace('.webp', ''));
-            return fNorm.includes(normalized) || normalized.includes(fNorm);
-        });
-    }
-    
-    // Special case mappings for known problematic names
-    if (!match) {
-        const specialCases = {
-            'dejavu': 'IconPerks_dejaVu.webp',
-            'coupdegrace': 'IconPerks_coupDeGrace.webp',
-            'hexovertureofdoom': 'IconPerks_hexOvertureOfDoom.webp',
-            'ravenous': 'IconPerks_ravenous.webp',
-            'wanderingeye': 'IconPerks_wanderingEye.webp',
-            'barbecuechilli': 'IconPerks_barbecueAndChilli.webp',
-            'monitorabuse': 'IconPerks_monitorAndAbuse.webp'
-        };
-        
-        match = specialCases[normalized] || null;
-    }
-    
-    return match ? match : `IconPerks_default.webp`;
-} 
-    // Check special mappings first
-    const normalizedName = perkName.toLowerCase().trim();
-    if (specialMappings[normalizedName]) {
-        return specialMappings[normalizedName];
-    }
-    
-    // Original matching logic
-    let normalized = normalizedName.replace(/[^a-z0-9]/g, '');
-    let match = fileArray.find(f => {
-        let fNorm = f.replace('IconPerks_', '').replace('.webp', '').toLowerCase();
-        return fNorm === normalized || fNorm.includes(normalized);
-    });
-    return match ? match : `IconPerks_default.webp`;
-}
+        function fuzzyMatchFilename(perkName) {
+            let normalized = perkName.toLowerCase().replace(/[^a-z0-9]/g, '');
+            let match = fileArray.find(f => {
+                let fNorm = f.replace('IconPerks_', '').replace('.webp', '').toLowerCase();
+                return fNorm === normalized || fNorm.includes(normalized);
+            });
+            return match ? match : `IconPerks_default.webp`;
+        }
 
         function generateScenario(perk, mode) {
             const isSurv = mode === 'survivor';
@@ -965,7 +918,6 @@ function fuzzyMatchFilename(perkName) {
 
         // --- Initialization ---
         setFaction('survivor');
-
-    </script>
+</script>
 </body>
 </html>
