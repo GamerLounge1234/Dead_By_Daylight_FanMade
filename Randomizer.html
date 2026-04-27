@@ -7997,19 +7997,34 @@
 
         let currentBuildIndex = 0;
 
-        function getMatchedImageFile(datasetPerkName) {
-            const simplifiedInput = datasetPerkName.toLowerCase().replace(/[^a-z0-9]/g, '');
-            for (let i = 0; i < exactIconFiles.length; i++) {
-                const fileName = exactIconFiles[i];
-                const simplifiedFileName = fileName.toLowerCase().replace('iconperks_', '').replace('.webp', '').replace(/[^a-z0-9]/g, '');
-                
-                if (simplifiedInput === simplifiedFileName) {
-                    return fileName;
-                }
-            }
-            return "IconPerks_default.webp"; 
+       function getMatchedImageFile(datasetPerkName) {
+    const simplifiedInput = datasetPerkName.toLowerCase().replace(/[^a-z0-9]/g, '');
+    
+    for (let i = 0; i < exactIconFiles.length; i++) {
+        const fileName = exactIconFiles[i];
+        const simplifiedFileName = fileName.toLowerCase().replace('iconperks_', '').replace('.webp', '').replace(/[^a-z0-9]/g, '');
+        
+        if (simplifiedInput === simplifiedFileName) {
+            return fileName;
         }
-
+    }
+    
+    // If no match found, try alternative spellings for common variants
+    const alternativeMappings = {
+        'coupdegrace': 'IconPerks_coupDeGrace.webp',
+        'hexovertureofdoom': 'IconPerks_hexOvertureOfDoom.webp',
+        'ravenous': 'IconPerks_ravenous.webp',
+        'wanderingeye': 'IconPerks_wanderingEye.webp',
+        'barbecuechilli': 'IconPerks_barbecueAndChilli.webp',
+        'monitorabuse': 'IconPerks_monitorAndAbuse.webp',
+    };
+    
+    if (alternativeMappings[simplifiedInput]) {
+        return alternativeMappings[simplifiedInput];
+    }
+    
+    return "IconPerks_default.webp"; 
+}
         function renderDashboard(build) {
             const dashboard = document.getElementById('main-dashboard');
             const positions = ["pos-top", "pos-left", "pos-right", "pos-bottom"];
