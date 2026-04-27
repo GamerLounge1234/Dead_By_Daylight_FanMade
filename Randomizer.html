@@ -3,20 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Entity's Terminal - Loadouts</title>
+    <title>The Entity's Terminal - Premium Loadouts</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Oswald:wght@400;500;700&display=swap');
 
         :root {
-            --bg-void: #050507;
-            --entity-blood: #d90429;
-            --entity-glow: rgba(217, 4, 41, 0.6);
-            --perk-bg: rgba(15, 15, 20, 0.4);
-            --glass-bg: rgba(12, 14, 18, 0.65);
-            --glass-border: rgba(255, 255, 255, 0.08);
+            --bg-deep: #05070a;
+            --entity-red: #e60026;
+            --entity-red-glow: rgba(230, 0, 38, 0.6);
+            --perk-blue: #00d4ff;
+            --perk-blue-glow: rgba(0, 212, 255, 0.4);
+            --perk-blur-bg: rgba(0, 30, 50, 0.4);
             --text-main: #f8f9fa;
-            --text-muted: #8b949e;
-            --neon-accent: #ff2a4d;
+            --text-muted: #8b9bb4;
+            --glass-bg: rgba(12, 16, 24, 0.55);
+            --glass-border: rgba(255, 255, 255, 0.08);
+            --fog-overlay: url('data:image/svg+xml;utf8,<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><filter id="noise"><feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="4" stitchTiles="stitch"/></filter><rect width="100%" height="100%" filter="url(%23noise)" opacity="0.04"/></svg>');
         }
 
         * {
@@ -25,9 +27,13 @@
             box-sizing: border-box;
         }
 
-        /* 100VH LOCKED LAYOUT WITH ANIMATED FOG */
+        /* 100VH LOCKED AAA LAYOUT */
         body {
-            background-color: var(--bg-void);
+            background-color: var(--bg-deep);
+            background-image: 
+                radial-gradient(circle at 70% 30%, rgba(230, 0, 38, 0.08) 0%, transparent 40%),
+                radial-gradient(circle at 30% 70%, rgba(0, 212, 255, 0.05) 0%, transparent 40%),
+                var(--fog-overlay);
             color: var(--text-main);
             font-family: 'Inter', sans-serif;
             height: 100vh;
@@ -35,54 +41,57 @@
             overflow: hidden;
             display: flex;
             flex-direction: column;
-            position: relative;
+            user-select: none;
         }
 
-        /* Background Effects */
-        .ambient-fog {
-            position: absolute;
-            top: 0; left: 0; width: 200%; height: 100%;
-            background: url('data:image/svg+xml;utf8,<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><filter id="noise"><feTurbulence type="fractalNoise" baseFrequency="0.015" numOctaves="3" stitchTiles="stitch"/></filter><rect width="100%" height="100%" filter="url(%23noise)" opacity="0.04"/></svg>');
-            animation: fogDrift 60s linear infinite;
-            pointer-events: none;
-            z-index: 1;
-        }
-
-        .blood-vignette {
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: radial-gradient(circle at 50% 50%, transparent 40%, rgba(30, 0, 0, 0.4) 100%);
-            pointer-events: none;
-            z-index: 2;
-        }
-
-        /* PREMIUM GLASSMORPHIC NAVBAR */
+        /* FUTURISTIC GLASS NAVBAR */
         .navbar {
-            background: rgba(5, 5, 7, 0.8);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
+            background: rgba(5, 7, 10, 0.8);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
             border-bottom: 1px solid var(--glass-border);
-            padding: 1.2rem 4rem;
+            padding: 15px 50px;
             display: flex;
-            justify-content: center;
-            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.9);
-            z-index: 50;
-            position: relative;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 30px rgba(0,0,0,0.9);
+            z-index: 100;
+        }
+        
+        .brand {
+            font-family: 'Oswald', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: white;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .brand::before {
+            content: '';
+            width: 12px;
+            height: 12px;
+            background: var(--entity-red);
+            border-radius: 50%;
+            box-shadow: 0 0 10px var(--entity-red);
         }
 
         .nav-links {
             list-style: none;
             display: flex;
-            gap: 3rem;
+            gap: 40px;
         }
-
+        
         .nav-links li a {
             text-decoration: none;
             color: var(--text-muted);
             font-family: 'Oswald', sans-serif;
             font-weight: 500;
             text-transform: uppercase;
-            letter-spacing: 3px;
+            letter-spacing: 2px;
             font-size: 1rem;
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             position: relative;
@@ -92,352 +101,370 @@
         .nav-links li a::after {
             content: '';
             position: absolute;
-            bottom: 0; left: 50%;
-            width: 0; height: 2px;
-            background: var(--entity-blood);
-            transition: all 0.3s ease;
-            transform: translateX(-50%);
-            box-shadow: 0 0 10px var(--entity-blood);
+            bottom: 0;
+            left: 0;
+            width: 0%;
+            height: 2px;
+            background: var(--entity-red);
+            transition: 0.3s ease;
+            box-shadow: 0 0 8px var(--entity-red-glow);
         }
-
+        
         .nav-links li a:hover, .nav-links li a.active {
-            color: var(--text-main);
-            text-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
+            color: white;
         }
-
+        
         .nav-links li a:hover::after, .nav-links li a.active::after {
             width: 100%;
         }
 
-        /* MAIN TWO-COLUMN DASHBOARD */
+        /* MAIN DASHBOARD - PERFECT GRID */
         .dashboard {
             flex-grow: 1;
             display: grid;
             grid-template-columns: 1fr 1fr;
-            padding: 2rem 5vw;
-            gap: 4rem;
-            height: calc(100vh - 75px);
-            z-index: 10;
-            position: relative;
+            padding: 40px 80px;
+            gap: 60px;
+            height: calc(100vh - 65px); /* Subtract Navbar Height */
+            align-items: center;
         }
 
-        /* LEFT PANEL: INFO & STRATEGY */
+        /* LEFT COLUMN: INFORMATION */
         .info-panel {
             display: flex;
             flex-direction: column;
-            justify-content: center;
-            gap: 1.5rem;
+            gap: 25px;
+            animation: fadeSlideUp 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
             height: 100%;
-            max-height: 100%;
-            animation: fadeSlideRight 0.6s ease-out;
+            justify-content: center;
         }
 
         .build-header {
-            border-left: 4px solid var(--neon-accent);
-            padding-left: 1.5rem;
+            border-left: 5px solid var(--entity-red);
+            padding-left: 25px;
+            background: linear-gradient(90deg, rgba(230, 0, 38, 0.08) 0%, transparent 80%);
+            padding-top: 15px;
+            padding-bottom: 15px;
             position: relative;
-        }
-        
-        .build-header::before {
-            content: ''; position: absolute; top: 0; left: -4px; width: 4px; height: 100%;
-            background: var(--neon-accent);
-            box-shadow: 0 0 15px var(--neon-accent);
         }
 
         .build-title {
             font-family: 'Oswald', sans-serif;
-            font-size: clamp(2.5rem, 4vw, 4rem);
+            font-size: 3.5rem;
             font-weight: 700;
             text-transform: uppercase;
             letter-spacing: 2px;
             line-height: 1.1;
-            color: #fff;
-            text-shadow: 2px 2px 0px rgba(0,0,0,0.8), 0 0 20px var(--entity-glow);
+            color: white;
+            text-shadow: 0 0 25px rgba(255, 255, 255, 0.2);
+            margin-bottom: 8px;
         }
 
         .build-subtitle {
-            font-size: 1rem;
-            color: var(--neon-accent);
+            font-size: 1.2rem;
+            color: var(--entity-red);
             font-weight: 600;
             text-transform: uppercase;
             letter-spacing: 4px;
-            margin-top: 0.5rem;
+            text-shadow: 0 0 10px var(--entity-red-glow);
         }
 
         .meta-tags {
             display: flex;
-            gap: 1rem;
+            gap: 15px;
             flex-wrap: wrap;
         }
 
         .tag {
-            background: rgba(20, 20, 25, 0.8);
-            backdrop-filter: blur(10px);
-            border: 1px solid var(--glass-border);
-            padding: 0.5rem 1rem;
+            background: rgba(0, 212, 255, 0.05);
+            border: 1px solid rgba(0, 212, 255, 0.2);
+            padding: 8px 18px;
             border-radius: 2px;
-            font-size: 0.85rem;
+            font-size: 0.9rem;
             font-weight: 600;
-            letter-spacing: 1px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+            letter-spacing: 1.5px;
+            color: white;
             display: flex;
             align-items: center;
-            gap: 0.5rem;
+            gap: 8px;
+            box-shadow: inset 0 0 10px rgba(0, 212, 255, 0.05);
         }
 
         .tag span { 
-            color: var(--text-muted); 
+            color: var(--perk-blue); 
             text-transform: uppercase; 
             font-size: 0.75rem; 
         }
 
-        /* GLASSMORPHIC SCROLLABLE CONTAINER */
+        /* GLASSMORPHIC SCROLL CONTAINER */
         .strategy-container {
             background: var(--glass-bg);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
             border: 1px solid var(--glass-border);
-            border-top: 1px solid rgba(255,255,255,0.15);
             border-radius: 8px;
-            padding: 1.5rem;
+            padding: 30px;
             display: flex;
             flex-direction: column;
-            gap: 1.2rem;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.8), inset 0 0 20px rgba(0,0,0,0.5);
+            gap: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.1);
             overflow-y: auto; 
-            flex-grow: 1; /* Takes remaining space dynamically */
-            max-height: 50vh; /* Prevents blowing out the 100vh lock */
+            max-height: 45vh; /* Prevents container from breaking 100vh */
         }
 
-        /* Custom Blood-Web Scrollbar */
         .strategy-container::-webkit-scrollbar { width: 6px; }
-        .strategy-container::-webkit-scrollbar-track { background: rgba(0,0,0,0.3); border-radius: 8px; }
-        .strategy-container::-webkit-scrollbar-thumb { background: var(--entity-blood); border-radius: 8px; box-shadow: 0 0 10px var(--neon-accent); }
+        .strategy-container::-webkit-scrollbar-track { background: rgba(0,0,0,0.3); border-radius: 8px;}
+        .strategy-container::-webkit-scrollbar-thumb { background: var(--entity-red); border-radius: 8px; }
 
         .phase h4 {
             font-family: 'Oswald', sans-serif;
-            color: #fff;
-            font-size: 1.1rem;
+            color: white;
+            font-size: 1.25rem;
             text-transform: uppercase;
             letter-spacing: 2px;
-            border-bottom: 1px solid rgba(255,255,255,0.05);
-            padding-bottom: 0.3rem;
-            margin-bottom: 0.5rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+            padding-bottom: 8px;
+            margin-bottom: 10px;
+            display: inline-block;
+            width: 100%;
         }
 
         .phase h4::before {
-            content: '';
-            display: inline-block;
-            width: 6px; height: 6px;
-            background: var(--text-muted);
-            transform: rotate(45deg);
+            content: '►';
+            color: var(--perk-blue);
+            font-size: 0.8rem;
+            margin-right: 8px;
+            vertical-align: middle;
+            text-shadow: 0 0 8px var(--perk-blue-glow);
         }
 
         .phase p {
-            font-size: 0.95rem;
-            line-height: 1.6;
-            color: #adb5bd;
+            font-size: 1.05rem;
+            line-height: 1.7;
+            color: #b0c0d0;
             font-weight: 300;
         }
 
         .pro-tip {
-            background: linear-gradient(90deg, rgba(217, 4, 41, 0.15) 0%, rgba(0,0,0,0) 100%);
-            border-left: 3px solid var(--entity-blood);
-            padding: 1rem;
+            background: linear-gradient(135deg, rgba(230, 0, 38, 0.15), rgba(230, 0, 38, 0.05));
+            border-left: 3px solid var(--entity-red);
+            padding: 15px 20px;
             font-weight: 400;
-            font-size: 0.95rem;
-            color: #e9ecef;
-            margin-top: auto;
-        }
-        
-        .pro-tip strong {
-            color: var(--neon-accent);
-            font-family: 'Oswald', sans-serif;
-            letter-spacing: 1px;
-            margin-right: 5px;
+            font-size: 1.05rem;
+            color: #f8f9fa;
+            position: relative;
+            overflow: hidden;
         }
 
-        /* RIGHT PANEL: VISUALS */
+        .pro-tip strong {
+            font-family: 'Oswald', sans-serif;
+            letter-spacing: 2px;
+            color: var(--entity-red);
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        /* RIGHT COLUMN: VISUAL PANEL */
         .visual-panel {
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             position: relative;
-            animation: fadeSlideLeft 0.6s ease-out;
+            height: 100%;
         }
 
-        /* HUD Rhombus Layout */
+        /* PERFECT BLUE DIAMOND LAYOUT */
         .perk-diamond {
             position: relative;
-            width: min(450px, 40vh);
-            height: min(450px, 40vh);
-            margin-bottom: 3rem;
+            width: 450px;
+            height: 450px;
+            margin-bottom: 50px;
+            animation: float 6s ease-in-out infinite;
         }
 
         .perk-wrapper {
             position: absolute;
             display: flex;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
-            width: 250px; 
-            height: 120px;
-            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            width: 160px;
+            height: 160px;
         }
 
-        .perk-wrapper:hover {
-            transform: scale(1.1) !important;
-            z-index: 10;
-        }
+        /* Precise Mathematical Positioning */
+        .pos-top { top: -20px; left: 50%; transform: translateX(-50%); }
+        .pos-left { top: 50%; left: -20px; transform: translateY(-50%); }
+        .pos-right { top: 50%; right: -20px; transform: translateY(-50%); }
+        .pos-bottom { bottom: -20px; left: 50%; transform: translateX(-50%); }
 
-        /* Perfected Diamond Positioning */
-        .pos-top { top: -15%; left: 50%; transform: translateX(-50%); flex-direction: column-reverse; }
-        .pos-left { top: 50%; left: -30%; transform: translateY(-50%); flex-direction: row-reverse; }
-        .pos-right { top: 50%; right: -30%; transform: translateY(-50%); flex-direction: row; }
-        .pos-bottom { bottom: -15%; left: 50%; transform: translateX(-50%); flex-direction: column; }
-
-        /* The Perk Diamond Itself */
         .perk-slot {
-            width: clamp(80px, 10vh, 110px);
-            height: clamp(80px, 10vh, 110px);
-            background: linear-gradient(135deg, rgba(30,30,35,0.7) 0%, rgba(10,10,12,0.9) 100%);
+            width: 120px;
+            height: 120px;
+            background: var(--perk-blur-bg);
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
-            border: 2px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.8), inset 0 0 15px rgba(0, 0, 0, 0.5);
-            transform: rotate(45deg); 
+            border: 2px solid var(--perk-blue);
+            box-shadow: 
+                0 0 25px rgba(0, 212, 255, 0.3), 
+                inset 0 0 20px rgba(0, 212, 255, 0.2),
+                0 0 0 1px rgba(255,255,255,0.1);
+            transform: rotate(45deg);
             display: flex;
             justify-content: center;
             align-items: center;
+            z-index: 2;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             position: relative;
-            overflow: hidden;
         }
-        
-        /* Inner glowing border on hover */
-        .perk-wrapper:hover .perk-slot {
-            border-color: var(--entity-blood);
-            box-shadow: 0 0 30px var(--entity-glow), inset 0 0 20px rgba(217, 4, 41, 0.3);
+
+        .perk-slot::after {
+            content: '';
+            position: absolute;
+            top: -2px; left: -2px; right: -2px; bottom: -2px;
+            border: 1px solid white;
+            opacity: 0.2;
+            z-index: -1;
         }
 
         .perk-slot img {
-            width: 80%;
-            height: 80%;
-            transform: rotate(-45deg); 
-            filter: drop-shadow(0px 4px 6px rgba(0,0,0,0.8));
-            transition: filter 0.3s;
-            object-fit: contain;
+            width: 95px;
+            height: 95px;
+            transform: rotate(-45deg);
+            filter: drop-shadow(0px 0px 12px rgba(255,255,255,0.6));
+            transition: all 0.3s ease;
         }
 
-        .perk-wrapper:hover .perk-slot img {
-            filter: drop-shadow(0px 0px 10px rgba(255,255,255,0.6));
+        .perk-slot:hover {
+            transform: rotate(45deg) scale(1.08);
+            box-shadow: 0 0 40px rgba(0, 212, 255, 0.6), inset 0 0 25px rgba(0, 212, 255, 0.4);
+            border-color: #fff;
+        }
+        
+        .perk-slot:hover img {
+            filter: drop-shadow(0px 0px 20px rgba(255,255,255,1));
         }
 
+        /* Label Absolute Positioning to prevent squishing */
         .perk-name-label {
             font-family: 'Oswald', sans-serif;
             font-size: 1rem;
-            font-weight: 500;
-            color: #d1d5db;
+            font-weight: 700;
+            color: #fff;
             text-transform: uppercase;
-            text-shadow: 0 2px 5px rgba(0,0,0,1);
-            letter-spacing: 2px;
+            letter-spacing: 1.5px;
             text-align: center;
-            padding: 10px;
-            opacity: 0.8;
-            transition: all 0.3s;
+            position: absolute;
+            width: 200px; /* Force wide width for long names */
+            text-shadow: 0 2px 5px rgba(0,0,0,1), 0 0 10px var(--perk-blue);
+            z-index: 3;
+            pointer-events: none;
         }
 
-        .perk-wrapper:hover .perk-name-label {
-            color: #fff;
-            opacity: 1;
-            text-shadow: 0 0 10px var(--neon-accent);
+        .pos-top .perk-name-label { top: -35px; }
+        .pos-bottom .perk-name-label { bottom: -35px; }
+        .pos-left .perk-name-label { right: 130px; text-align: right; }
+        .pos-right .perk-name-label { left: 130px; text-align: left; }
+
+        /* CENTER HUB CONNECTOR */
+        .hub-connector {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 140px;
+            height: 140px;
+            border: 1px dashed rgba(0, 212, 255, 0.3);
+            border-radius: 50%;
+            z-index: 1;
+            animation: spin 20s linear infinite;
+        }
+        
+        .hub-core {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 10px;
+            height: 10px;
+            background: var(--perk-blue);
+            border-radius: 50%;
+            box-shadow: 0 0 20px 10px rgba(0, 212, 255, 0.4);
         }
 
-        .pos-top .perk-name-label { margin-bottom: 5px; }
-        .pos-bottom .perk-name-label { margin-top: 5px; }
-        .pos-left .perk-name-label { margin-right: 10px; text-align: right; }
-        .pos-right .perk-name-label { margin-left: 10px; text-align: left; }
-
-        /* AAA RANDOMIZE BUTTON */
+        /* PREMIUM BUTTON */
         .randomize-btn {
-            background: rgba(10, 10, 12, 0.8);
+            background: rgba(230, 0, 38, 0.1);
             backdrop-filter: blur(10px);
-            color: #fff;
-            border: 1px solid var(--glass-border);
-            border-bottom: 3px solid var(--entity-blood);
-            padding: 1rem 4rem;
+            color: white;
+            border: 1px solid var(--entity-red);
+            padding: 20px 70px;
             font-family: 'Oswald', sans-serif;
-            font-size: 1.2rem;
-            font-weight: 600;
+            font-size: 1.5rem;
+            font-weight: 700;
             text-transform: uppercase;
             letter-spacing: 5px;
             cursor: pointer;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            box-shadow: 0 10px 30px rgba(230, 0, 38, 0.2), inset 0 0 20px rgba(230, 0, 38, 0.2);
+            border-radius: 2px;
+            transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
             position: relative;
             overflow: hidden;
-            display: flex;
-            align-items: center;
-            gap: 15px;
+            margin-top: 20px;
         }
 
         .randomize-btn::before {
             content: '';
             position: absolute;
-            top: 0; left: -100%;
-            width: 100%; height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(217, 4, 41, 0.2), transparent);
-            transition: left 0.6s ease;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transform: translateX(-100%) skewX(-15deg);
+            transition: 0.6s ease;
         }
 
-        .randomize-btn:hover::before { left: 100%; }
-        
-        .randomize-btn:hover { 
-            transform: translateY(-2px); 
-            box-shadow: 0 15px 40px var(--entity-glow); 
-            border-color: var(--entity-blood);
-            background: rgba(20, 10, 12, 0.9);
+        .randomize-btn:hover::before { transform: translateX(100%) skewX(-15deg); }
+        .randomize-btn:hover {
+            background: var(--entity-red);
+            box-shadow: 0 15px 40px rgba(230, 0, 38, 0.5), inset 0 0 0 rgba(255,255,255,0);
+            transform: translateY(-3px);
+            text-shadow: 0 0 10px rgba(255,255,255,0.8);
         }
-        
         .randomize-btn:active { transform: translateY(1px); }
 
-        /* Next Build Icon Line */
-        .btn-line {
-            width: 30px; height: 2px;
-            background: var(--entity-blood);
-            box-shadow: 0 0 8px var(--neon-accent);
+        /* UI TRANSITIONS */
+        .glitch-flash { animation: screenTear 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94) both; }
+
+        @keyframes screenTear {
+            0% { opacity: 1; filter: contrast(1); transform: translateX(0); }
+            20% { opacity: 0.8; filter: contrast(1.5) hue-rotate(-10deg); transform: translateX(-5px); }
+            40% { opacity: 0.4; filter: contrast(2) brightness(1.5); transform: translateX(5px); }
+            60% { opacity: 0.9; filter: contrast(1.2) hue-rotate(10deg); transform: translateX(-2px); }
+            80% { opacity: 0.6; filter: contrast(1.8) brightness(0.8); transform: translateX(2px); }
+            100% { opacity: 1; filter: contrast(1); transform: translateX(0); }
         }
 
-        /* GLITCH TRANSITION ANIMATION */
-        .glitch-flash { animation: entityGlitch 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94) both; }
-
-        @keyframes entityGlitch {
-            0% { opacity: 1; filter: contrast(1) sepia(0); transform: translate(0); }
-            20% { opacity: 0.8; filter: contrast(2) sepia(1) hue-rotate(-50deg); transform: translate(-5px, 2px); }
-            40% { opacity: 0.4; filter: contrast(3) invert(0.2); transform: translate(5px, -2px); }
-            60% { opacity: 0.9; filter: contrast(1.5) sepia(0.5) hue-rotate(50deg); transform: translate(-2px, 5px); }
-            80% { opacity: 0.5; filter: contrast(2) sepia(1) hue-rotate(-50deg); transform: translate(2px, -5px); }
-            100% { opacity: 1; filter: contrast(1) sepia(0); transform: translate(0); }
+        @keyframes fadeSlideUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
-        @keyframes fadeSlideRight { from { opacity: 0; transform: translateX(-40px); } to { opacity: 1; transform: translateX(0); } }
-        @keyframes fadeSlideLeft { from { opacity: 0; transform: translateX(40px); } to { opacity: 1; transform: translateX(0); } }
-        @keyframes fogDrift { from { background-position: 0% 0%; } to { background-position: -200% 0%; } }
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+        }
 
+        @keyframes spin { 100% { transform: translate(-50%, -50%) rotate(360deg); } }
     </style>
 </head>
 <body>
 
-    <div class="ambient-fog"></div>
-    <div class="blood-vignette"></div>
-
     <nav class="navbar">
+        <div class="brand">CuraLink Nexus</div>
         <ul class="nav-links">
-            <li><a href="index.html">Terminal</a></li>
-            <li><a href="perks.html">Archives</a></li>
-            <li><a href="#" class="active">Nexus Randomizer</a></li>
+            <li><a href="index.html">Lobby</a></li>
+            <li><a href="perks.html">Perk Archive</a></li>
+            <li><a href="#" class="active">Randomizer</a></li>
             <li><a href="Challenges.html">Challenges</a></li>
         </ul>
     </nav>
@@ -446,44 +473,121 @@
         </main>
 
     <script>
+        // Data Base: Add all 500 builds here. 
+        // The algorithm below will strictly run from Index 0 to 499 in a serialized loop.
         const buildDatabase = [
             {
                 id: 1,
                 name: "The System Cracker",
-                subtitle: "Absolute Gen-Kick Meta",
+                subtitle: "Gen-Kick Meta",
                 perks: ["Call of Brine", "Eruption", "Overcharge", "Nowhere to Hide"],
                 strategy: {
-                    earlyGame: "Locate the most contested generator cluster immediately. Lock it down. Kick active generators to apply Overcharge and Call of Brine, establishing your Eruption network.",
-                    midGame: "Leverage Nowhere to Hide post-kick to transition seamlessly into a chase. Securing a down pops the trapped generators, inflicting massive regression and revealing auras.",
-                    endGame: "Fortify a tight 3-gen setup. The compounding regression speeds coupled with brutal skill checks make dismantling your territory mathematically impossible for standard teams."
+                    earlyGame: "Find the most contested generator and lock it down. Kick it to apply Overcharge and Call of Brine, setting up your Eruption trap.",
+                    midGame: "Use Nowhere to Hide after every kick to immediately transition into a chase. When you secure a down, your Eruption will pop the trapped gens, causing massive regression and information.",
+                    endGame: "Protect a tight 3-gen. The combined regression speeds and difficult skill checks make breaking your hold nearly impossible."
                 },
-                proTip: "Upon activating Nowhere to Hide, feign abandoning the generator. Double back as their aura appears to guarantee a free hit.",
-                playstyle: "Map Control",
-                difficulty: "Hard",
-                recommendedKillers: ["Knight", "Nemesis", "Skull Merchant"]
+                proTip: "If you see a survivor aura via Nowhere to Hide, fake leaving the generator and double back to catch them off guard.",
+                playstyle: "Gen Control",
+                difficulty: "Intermediate",
+                recommendedKillers: ["All Killers"]
             },
             {
                 id: 2,
                 name: "The Vault Demon",
-                subtitle: "Unstoppable Chase Velocity",
+                subtitle: "Unstoppable Chase",
                 perks: ["Superior Anatomy", "Bamboozle", "Dark Arrogance", "Fire Up"],
                 strategy: {
-                    earlyGame: "Force chases relentlessly. Bamboozle allows you to instantly shut down main building infinites and strong god-windows.",
-                    midGame: "As the trial progresses and generators pop, Fire Up begins stacking. Synergy with Superior Anatomy and Dark Arrogance elevates your vault speed to terrifying levels, nullifying standard survivor routing.",
-                    endGame: "You have reached maximum velocity. Survivors relying on high-wall window loops near the exit gates will be caught completely off guard by your vault animation speed."
+                    earlyGame: "Initiate chases immediately. Bamboozle allows you to shut down main building loops instantly.",
+                    midGame: "As generators pop, Fire Up begins stacking. Combined with Superior Anatomy and Dark Arrogance, your vault speed becomes terrifyingly fast, completely neutralizing windows.",
+                    endGame: "You are at maximum power. Survivors relying on strong window loops at the exit gates will be caught completely off guard by your vault speed."
                 },
-                proTip: "Intentionally herd survivors toward jungle gyms with windows rather than pallets. You want to bait the vault to seal it off.",
-                playstyle: "Aggressive Pursuit",
+                proTip: "Force survivors toward jungle gyms with windows rather than pallets. You want them to attempt vaults so you can block them out.",
+                playstyle: "Chase",
                 difficulty: "Intermediate",
-                recommendedKillers: ["Wesker", "Legion", "Myers"]
+                recommendedKillers: ["Wesker", "Legion", "Ghost Face"]
             }
+            // ... Add remaining 498 builds here. 
+            // The logic guarantees it will run sequentially 1 -> 500 without repeating until finished.
         ];
 
-        // Full array included
         const exactIconFiles = [
-            "IconPerks_aceInTheHole.webp", "IconPerks_adrenaline.webp", "IconPerks_aftercare.webp", "IconPerks_agitation.webp", "IconPerks_alert.webp", "IconPerks_alienInstinct.webp", "IconPerks_allShakingThunder.webp", "IconPerks_aNursesCalling.webp", "IconPerks_anyMeansNecessary.webp", "IconPerks_appraisal.webp", "IconPerks_autodidact.webp", "IconPerks_awakenedAwareness.webp", "IconPerks_babysitter.webp", "IconPerks_backgroundPlayer.webp", "IconPerks_balancedLanding.webp", "IconPerks_bamboozle.webp", "IconPerks_barbecueAndChilli.webp", "IconPerks_barbecueChili.webp", "IconPerks_bardicInspiration.webp", "IconPerks_batteriesIncluded.webp", "IconPerks_beastOfPrey.webp", "IconPerks_betterThanNew.webp", "IconPerks_betterTogether.webp", "IconPerks_biteTheBullet.webp", "IconPerks_bitterMurmur.webp", "IconPerks_blastMine.webp", "IconPerks_bloodEcho.webp", "IconPerks_bloodhound.webp", "IconPerks_bloodPact.webp", "IconPerks_bloodRush.webp", "IconPerks_bloodWarden.webp", "IconPerks_boilOver.webp", "IconPerks_bond.webp", "IconPerks_boonCircleOfHealing.webp", "IconPerks_boonDarkTheory.webp", "IconPerks_boonExponential.webp", "IconPerks_boonIllumination.webp", "IconPerks_boonShadowStep.webp", "IconPerks_borrowedTime.webp", "IconPerks_botanyKnowledge.webp", "IconPerks_breakdown.webp", "IconPerks_breakout.webp", "IconPerks_brutalStrength.webp", "IconPerks_buckleUp.webp", "IconPerks_builtToLast.webp", "IconPerks_callOfBrine.webp", "IconPerks_calmSpirit.webp", "IconPerks_camaraderie.webp", "IconPerks_championOfLight.webp", "IconPerks_chemicalTrap.webp", "IconPerks_clairvoyance.webp", "IconPerks_cleanBreak.webp", "IconPerks_correctiveAction.webp", "IconPerks_corruptIntervention.webp", "IconPerks_coulrophobia.webp", "IconPerks_counterforce.webp", "IconPerks_coupDeGrace.webp", "IconPerks_cruelLimits.webp", "IconPerks_cutLoose.webp", "IconPerks_danceWithMe.webp", "IconPerks_darkArrogance.webp", "IconPerks_darkDevotion.webp", "IconPerks_darknessRevealed.webp", "IconPerks_darkSense.webp", "IconPerks_deadHard.webp", "IconPerks_deadline.webp", "IconPerks_deadMansSwitch.webp", "IconPerks_deathbound.webp", "IconPerks_deception.webp", "IconPerks_decisiveStrike.webp", "IconPerks_deerstalker.webp", "IconPerks_dejaVu.webp", "IconPerks_deliverance.webp", "IconPerks_desperateMeasures.webp", "IconPerks_detectivesHunch.webp", "IconPerks_discordance.webp", "IconPerks_dissolution.webp", "IconPerks_distortion.webp", "IconPerks_distressing.webp", "IconPerks_diversion.webp", "IconPerks_Dominance.webp", "IconPerks_dragonsGrip.webp", "IconPerks_dramaturgy.webp", "IconPerks_dyingLight.webp", "IconPerks_empathicConnection.webp", "IconPerks_empathy.webp", "IconPerks_enduring.webp", "IconPerks_eruption.webp", "IconPerks_Exultation.webp", "IconPerks_EyesOfBelmont.webp", "IconPerks_fastTrack.webp", "IconPerks_finesse.webp", "IconPerks_fireUp.webp", "IconPerks_fixated.webp", "IconPerks_flashbang.webp", "IconPerks_flipFlop.webp", "IconPerks_flip-Flop.webp", "IconPerks_fogwise.webp", "IconPerks_forcedHesitation.webp", "IconPerks_forcedPenance.webp", "IconPerks_foreverEntwined.webp", "IconPerks_forThePeople.webp", "IconPerks_franklinsDemise.webp", "IconPerks_friendlyCompetition.webp", "IconPerks_friendsTilTheEnd.webp", "IconPerks_furtiveChase.webp", "IconPerks_gameAfoot.webp", "IconPerks_gearhead.webp", "IconPerks_geneticLimits.webp", "IconPerks_grimEmbrace.webp", "IconPerks_hardened.webp", "IconPerks_haywire.webp", "IconPerks_headOn.webp", "IconPerks_helpWanted.webp", "IconPerks_hexBloodFavour.webp", "IconPerks_hexCrowdControl.webp", "IconPerks_hexDevourHope.webp", "IconPerks_hexFaceTheDarkness.webp", "IconPerks_hexHauntedGround.webp", "IconPerks_hexHiveMind.webp", "IconPerks_hexHuntressLullaby.webp", "IconPerks_hexNoOneEscapesDeath.webp", "IconPerks_hexNothingButMisery.webp", "IconPerks_hexOvertureOfDoom.webp", "IconPerks_hexPentimento.webp", "IconPerks_hexRetribution.webp", "IconPerks_hexRuin.webp", "IconPerks_hexTheThirdSeal.webp", "IconPerks_hexThrillOfTheHunt.webp", "IconPerks_hexTwoCanPlay.webp", "IconPerks_hexUndying.webp", "IconPerks_HexWretchedFate.webp", "IconPerks_hoarder.webp", "IconPerks_hope.webp", "IconPerks_hubris.webp", "IconPerks_HumanGreed.webp", "IconPerks_hyperfocus.webp", "IconPerks_hysteria.webp", "IconPerks_imAllEars.webp", "IconPerks_infectiousFright.webp", "IconPerks_innerFocus.webp", "IconPerks_innerStrength.webp", "IconPerks_insidious.webp", "IconPerks_invocationTreacherousCrows.webp", "IconPerks_invocationWeavingSpiders.webp", "IconPerks_ironGrasp.webp", "IconPerks_ironMaiden.webp", "IconPerks_ironWill.webp", "IconPerks_kindred.webp", "IconPerks_knockOut.webp", "IconPerks_languidTouch.webp", "IconPerks_leader.webp", "IconPerks_leftBehind.webp", "IconPerks_lethalPursuer.webp", "IconPerks_leverage.webp", "IconPerks_lightborn.webp", "IconPerks_lightFooted.webp", "IconPerks_light-Footed.webp", "IconPerks_lightweight.webp", "IconPerks_lithe.webp", "IconPerks_lowProfile.webp", "IconPerks_luckyBreak.webp", "IconPerks_luckyStar.webp", "IconPerks_machineLearning.webp", "IconPerks_madeForThis.webp", "IconPerks_madGrit.webp", "IconPerks_makeYourChoice.webp", "IconPerks_mercilessStorm.webp", "IconPerks_mettleOfMan.webp", "IconPerks_mindbreaker.webp", "IconPerks_mirroredIllusion.webp", "IconPerks_MomentOfGlory.webp", "IconPerks_monitorAndAbuse.webp", "IconPerks_nemesis.webp", "IconPerks_noMither.webp", "IconPerks_noneAreFree.webp", "IconPerks_noOneLeftBehind.webp", "IconPerks_noQuarter.webp", "IconPerks_noWayOut.webp", "IconPerks_nowhereToHide.webp", "IconPerks_objectOfObsession.webp", "IconPerks_offTheRecord.webp", "IconPerks_openHanded.webp", "IconPerks_open-Handed.webp", "IconPerks_oppression.webp", "IconPerks_overcharge.webp", "IconPerks_overcome.webp", "IconPerks_overwhelmingPresence.webp", "IconPerks_overzealous.webp", "IconPerks_parentalGuidance.webp", "IconPerks_phantomFear.webp", "IconPerks_pharmacy.webp", "IconPerks_playWithYourFood.webp", "IconPerks_plotTwist.webp", "IconPerks_plunderersInstinct.webp", "IconPerks_poised.webp", "IconPerks_popGoesTheWeasel.webp", "IconPerks_potentialEnergy.webp", "IconPerks_powerStruggle.webp", "IconPerks_predator.webp", "IconPerks_premonition.webp", "IconPerks_proveThyself.webp", "IconPerks_quickGambit.webp", "IconPerks_quickAndQuiet.webp", "IconPerks_rancor.webp", "IconPerks_rapidBrutality.webp", "IconPerks_ravenous.webp", "IconPerks_reactiveHealing.webp", "IconPerks_reassurance.webp", "IconPerks_redHerring.webp", "IconPerks_rememberMe.webp", "IconPerks_repressedAlliance.webp", "IconPerks_residualManifest.webp", "IconPerks_resilience.webp", "IconPerks_resurgence.webp", "IconPerks_rookieSpirit.webp", "IconPerks_saboteur.webp", "IconPerks_saveTheBestForLast.webp", "IconPerks_scavenger.webp", "IconPerks_scenePartner.webp", "IconPerks_scourgeHookFloodsOfRage.webp", "IconPerks_scourgeHookHangmansTrick.webp", "IconPerks_scourgeHookJaggedCompass.webp", "IconPerks_scourgeHookMonstrousShrine.webp", "IconPerks_scourgeHookPainResonance.webp", "IconPerks_secondWind.webp", "IconPerks_secretProject.webp", "IconPerks_selfCare.webp", "IconPerks_self-Care.webp", "IconPerks_selfPreservation.webp", "IconPerks_self-Preservation.webp", "IconPerks_septicTouch.webp", "IconPerks_shadowborn.webp", "IconPerks_shatteredHope.webp", "IconPerks_shoulderTheBurden.webp", "IconPerks_slipperyMeat.webp", "IconPerks_sloppyButcher.webp", "IconPerks_smallGame.webp", "IconPerks_smashHit.webp", "IconPerks_soleSurvivor.webp", "IconPerks_solidarity.webp", "IconPerks_soulGuard.webp", "IconPerks_specialist.webp", "IconPerks_spiesFromTheShadows.webp", "IconPerks_spineChill.webp", "IconPerks_spiritFury.webp", "IconPerks_sprintBurst.webp", "IconPerks_stakeOut.webp", "IconPerks_starstruck.webp", "IconPerks_stillSight.webp", "IconPerks_streetwise.webp", "IconPerks_strengthInShadows.webp", "IconPerks_stridor.webp", "IconPerks_superiorAnatomy.webp", "IconPerks_surge.webp", "IconPerks_surveillance.webp", "IconPerks_teamworkCollectiveStealth.webp", "IconPerks_teamworkPowerOfTwo.webp", "IconPerks_technician.webp", "IconPerks_tenacity.webp", "IconPerks_terminus.webp", "IconPerks_territorialImperative.webp", "IconPerks_thanatophobia.webp", "IconPerks_thisIsNotHappening.webp", "IconPerks_thrillingTremors.webp", "IconPerks_thwack.webp", "IconPerks_tinkerer.webp", "IconPerks_trailOfTorment.webp", "IconPerks_troubleshooter.webp", "IconPerks_turnBackTheClock.webp", "IconPerks_ultimateWeapon.webp", "IconPerks_unbound.webp", "IconPerks_unbreakable.webp", "IconPerks_undone.webp", "IconPerks_unforeseen.webp", "IconPerks_unnervingPresence.webp", "IconPerks_unrelenting.webp", "IconPerks_upTheAnte.webp", "IconPerks_urbanEvasion.webp", "IconPerks_vigil.webp", "IconPerks_visionary.webp", "IconPerks_wakeUp.webp", "IconPerks_wanderingEye.webp", "IconPerks_weaveAttunement.webp", "IconPerks_wellMakeIt.webp", "IconPerks_wereGonnaLiveForever.webp", "IconPerks_whispers.webp", "IconPerks_wicked.webp", "IconPerks_windowsOfOpportunity.webp", "IconPerks_wiretap.webp", "IconPerks_zanshinTactics.webp"
+            "IconPerks_aceInTheHole.webp", "IconPerks_adrenaline.webp", "IconPerks_aftercare.webp", "IconPerks_agitation.webp",
+            "IconPerks_alert.webp", "IconPerks_alienInstinct.webp", "IconPerks_allShakingThunder.webp", "IconPerks_aNursesCalling.webp",
+            "IconPerks_anyMeansNecessary.webp", "IconPerks_appraisal.webp", "IconPerks_autodidact.webp", "IconPerks_awakenedAwareness.webp",
+            "IconPerks_babysitter.webp", "IconPerks_backgroundPlayer.webp", "IconPerks_balancedLanding.webp", "IconPerks_bamboozle.webp",
+            "IconPerks_barbecueAndChilli.webp", "IconPerks_barbecueChili.webp", "IconPerks_bardicInspiration.webp", "IconPerks_batteriesIncluded.webp",
+            "IconPerks_beastOfPrey.webp", "IconPerks_betterThanNew.webp", "IconPerks_betterTogether.webp", "IconPerks_biteTheBullet.webp",
+            "IconPerks_bitterMurmur.webp", "IconPerks_blastMine.webp", "IconPerks_bloodEcho.webp", "IconPerks_bloodhound.webp",
+            "IconPerks_bloodPact.webp", "IconPerks_bloodRush.webp", "IconPerks_bloodWarden.webp", "IconPerks_boilOver.webp",
+            "IconPerks_bond.webp", "IconPerks_boonCircleOfHealing.webp", "IconPerks_boonDarkTheory.webp", "IconPerks_boonExponential.webp",
+            "IconPerks_boonIllumination.webp", "IconPerks_boonShadowStep.webp", "IconPerks_borrowedTime.webp", "IconPerks_botanyKnowledge.webp",
+            "IconPerks_breakdown.webp", "IconPerks_breakout.webp", "IconPerks_brutalStrength.webp", "IconPerks_buckleUp.webp",
+            "IconPerks_builtToLast.webp", "IconPerks_callOfBrine.webp", "IconPerks_calmSpirit.webp", "IconPerks_camaraderie.webp",
+            "IconPerks_championOfLight.webp", "IconPerks_chemicalTrap.webp", "IconPerks_clairvoyance.webp", "IconPerks_cleanBreak.webp",
+            "IconPerks_correctiveAction.webp", "IconPerks_corruptIntervention.webp", "IconPerks_coulrophobia.webp", "IconPerks_counterforce.webp",
+            "IconPerks_coupDeGrace.webp", "IconPerks_cruelLimits.webp", "IconPerks_cutLoose.webp", "IconPerks_danceWithMe.webp",
+            "IconPerks_darkArrogance.webp", "IconPerks_darkDevotion.webp", "IconPerks_darknessRevealed.webp", "IconPerks_darkSense.webp",
+            "IconPerks_deadHard.webp", "IconPerks_deadline.webp", "IconPerks_deadMansSwitch.webp", "IconPerks_deathbound.webp",
+            "IconPerks_deception.webp", "IconPerks_decisiveStrike.webp", "IconPerks_deerstalker.webp", "IconPerks_dejaVu.webp",
+            "IconPerks_deliverance.webp", "IconPerks_desperateMeasures.webp", "IconPerks_detectivesHunch.webp", "IconPerks_discordance.webp",
+            "IconPerks_dissolution.webp", "IconPerks_distortion.webp", "IconPerks_distressing.webp", "IconPerks_diversion.webp",
+            "IconPerks_Dominance.webp", "IconPerks_dragonsGrip.webp", "IconPerks_dramaturgy.webp", "IconPerks_dyingLight.webp",
+            "IconPerks_empathicConnection.webp", "IconPerks_empathy.webp", "IconPerks_enduring.webp", "IconPerks_eruption.webp",
+            "IconPerks_Exultation.webp", "IconPerks_EyesOfBelmont.webp", "IconPerks_fastTrack.webp", "IconPerks_finesse.webp",
+            "IconPerks_fireUp.webp", "IconPerks_fixated.webp", "IconPerks_flashbang.webp", "IconPerks_flipFlop.webp",
+            "IconPerks_flip-Flop.webp", "IconPerks_fogwise.webp", "IconPerks_forcedHesitation.webp", "IconPerks_forcedPenance.webp",
+            "IconPerks_foreverEntwined.webp", "IconPerks_forThePeople.webp", "IconPerks_franklinsDemise.webp", "IconPerks_friendlyCompetition.webp",
+            "IconPerks_friendsTilTheEnd.webp", "IconPerks_furtiveChase.webp", "IconPerks_gameAfoot.webp", "IconPerks_gearhead.webp",
+            "IconPerks_geneticLimits.webp", "IconPerks_grimEmbrace.webp", "IconPerks_hardened.webp", "IconPerks_haywire.webp",
+            "IconPerks_headOn.webp", "IconPerks_helpWanted.webp", "IconPerks_hexBloodFavour.webp", "IconPerks_hexCrowdControl.webp",
+            "IconPerks_hexDevourHope.webp", "IconPerks_hexFaceTheDarkness.webp", "IconPerks_hexHauntedGround.webp", "IconPerks_hexHiveMind.webp",
+            "IconPerks_hexHuntressLullaby.webp", "IconPerks_hexNoOneEscapesDeath.webp", "IconPerks_hexNothingButMisery.webp", "IconPerks_hexOvertureOfDoom.webp",
+            "IconPerks_hexPentimento.webp", "IconPerks_hexRetribution.webp", "IconPerks_hexRuin.webp", "IconPerks_hexTheThirdSeal.webp",
+            "IconPerks_hexThrillOfTheHunt.webp", "IconPerks_hexTwoCanPlay.webp", "IconPerks_hexUndying.webp", "IconPerks_HexWretchedFate.webp",
+            "IconPerks_hoarder.webp", "IconPerks_hope.webp", "IconPerks_hubris.webp", "IconPerks_HumanGreed.webp",
+            "IconPerks_hyperfocus.webp", "IconPerks_hysteria.webp", "IconPerks_imAllEars.webp", "IconPerks_infectiousFright.webp",
+            "IconPerks_innerFocus.webp", "IconPerks_innerStrength.webp", "IconPerks_insidious.webp", "IconPerks_invocationTreacherousCrows.webp",
+            "IconPerks_invocationWeavingSpiders.webp", "IconPerks_ironGrasp.webp", "IconPerks_ironMaiden.webp", "IconPerks_ironWill.webp",
+            "IconPerks_kindred.webp", "IconPerks_knockOut.webp", "IconPerks_languidTouch.webp", "IconPerks_leader.webp",
+            "IconPerks_leftBehind.webp", "IconPerks_lethalPursuer.webp", "IconPerks_leverage.webp", "IconPerks_lightborn.webp",
+            "IconPerks_lightFooted.webp", "IconPerks_light-Footed.webp", "IconPerks_lightweight.webp", "IconPerks_lithe.webp",
+            "IconPerks_lowProfile.webp", "IconPerks_luckyBreak.webp", "IconPerks_luckyStar.webp", "IconPerks_machineLearning.webp",
+            "IconPerks_madeForThis.webp", "IconPerks_madGrit.webp", "IconPerks_makeYourChoice.webp", "IconPerks_mercilessStorm.webp",
+            "IconPerks_mettleOfMan.webp", "IconPerks_mindbreaker.webp", "IconPerks_mirroredIllusion.webp", "IconPerks_MomentOfGlory.webp",
+            "IconPerks_monitorAndAbuse.webp", "IconPerks_nemesis.webp", "IconPerks_noMither.webp", "IconPerks_noneAreFree.webp",
+            "IconPerks_noOneLeftBehind.webp", "IconPerks_noQuarter.webp", "IconPerks_noWayOut.webp", "IconPerks_nowhereToHide.webp",
+            "IconPerks_objectOfObsession.webp", "IconPerks_offTheRecord.webp", "IconPerks_openHanded.webp", "IconPerks_open-Handed.webp",
+            "IconPerks_oppression.webp", "IconPerks_overcharge.webp", "IconPerks_overcome.webp", "IconPerks_overwhelmingPresence.webp",
+            "IconPerks_overzealous.webp", "IconPerks_parentalGuidance.webp", "IconPerks_phantomFear.webp", "IconPerks_pharmacy.webp",
+            "IconPerks_playWithYourFood.webp", "IconPerks_plotTwist.webp", "IconPerks_plunderersInstinct.webp", "IconPerks_poised.webp",
+            "IconPerks_popGoesTheWeasel.webp", "IconPerks_potentialEnergy.webp", "IconPerks_powerStruggle.webp", "IconPerks_predator.webp",
+            "IconPerks_premonition.webp", "IconPerks_proveThyself.webp", "IconPerks_quickGambit.webp", "IconPerks_quickAndQuiet.webp",
+            "IconPerks_rancor.webp", "IconPerks_rapidBrutality.webp", "IconPerks_ravenous.webp", "IconPerks_reactiveHealing.webp",
+            "IconPerks_reassurance.webp", "IconPerks_redHerring.webp", "IconPerks_rememberMe.webp", "IconPerks_repressedAlliance.webp",
+            "IconPerks_residualManifest.webp", "IconPerks_resilience.webp", "IconPerks_resurgence.webp", "IconPerks_rookieSpirit.webp",
+            "IconPerks_saboteur.webp", "IconPerks_saveTheBestForLast.webp", "IconPerks_scavenger.webp", "IconPerks_scenePartner.webp",
+            "IconPerks_scourgeHookFloodsOfRage.webp", "IconPerks_scourgeHookHangmansTrick.webp", "IconPerks_scourgeHookJaggedCompass.webp",
+            "IconPerks_scourgeHookMonstrousShrine.webp", "IconPerks_scourgeHookPainResonance.webp", "IconPerks_secondWind.webp",
+            "IconPerks_secretProject.webp", "IconPerks_selfCare.webp", "IconPerks_self-Care.webp", "IconPerks_selfPreservation.webp",
+            "IconPerks_self-Preservation.webp", "IconPerks_septicTouch.webp", "IconPerks_shadowborn.webp", "IconPerks_shatteredHope.webp",
+            "IconPerks_shoulderTheBurden.webp", "IconPerks_slipperyMeat.webp", "IconPerks_sloppyButcher.webp", "IconPerks_smallGame.webp",
+            "IconPerks_smashHit.webp", "IconPerks_soleSurvivor.webp", "IconPerks_solidarity.webp", "IconPerks_soulGuard.webp",
+            "IconPerks_specialist.webp", "IconPerks_spiesFromTheShadows.webp", "IconPerks_spineChill.webp", "IconPerks_spiritFury.webp",
+            "IconPerks_sprintBurst.webp", "IconPerks_stakeOut.webp", "IconPerks_starstruck.webp", "IconPerks_stillSight.webp",
+            "IconPerks_streetwise.webp", "IconPerks_strengthInShadows.webp", "IconPerks_stridor.webp", "IconPerks_superiorAnatomy.webp",
+            "IconPerks_surge.webp", "IconPerks_surveillance.webp", "IconPerks_teamworkCollectiveStealth.webp", "IconPerks_teamworkPowerOfTwo.webp",
+            "IconPerks_technician.webp", "IconPerks_tenacity.webp", "IconPerks_terminus.webp", "IconPerks_territorialImperative.webp",
+            "IconPerks_thanatophobia.webp", "IconPerks_thisIsNotHappening.webp", "IconPerks_thrillingTremors.webp", "IconPerks_thwack.webp",
+            "IconPerks_tinkerer.webp", "IconPerks_trailOfTorment.webp", "IconPerks_troubleshooter.webp", "IconPerks_turnBackTheClock.webp",
+            "IconPerks_ultimateWeapon.webp", "IconPerks_unbound.webp", "IconPerks_unbreakable.webp", "IconPerks_undone.webp",
+            "IconPerks_unforeseen.webp", "IconPerks_unnervingPresence.webp", "IconPerks_unrelenting.webp", "IconPerks_upTheAnte.webp",
+            "IconPerks_urbanEvasion.webp", "IconPerks_vigil.webp", "IconPerks_visionary.webp", "IconPerks_wakeUp.webp",
+            "IconPerks_wanderingEye.webp", "IconPerks_weaveAttunement.webp", "IconPerks_wellMakeIt.webp", "IconPerks_wereGonnaLiveForever.webp",
+            "IconPerks_whispers.webp", "IconPerks_wicked.webp", "IconPerks_windowsOfOpportunity.webp", "IconPerks_wiretap.webp",
+            "IconPerks_zanshinTactics.webp"
         ];
 
+        // Sequence Controller State
         let currentBuildIndex = 0;
 
         function getMatchedImageFile(datasetPerkName) {
@@ -504,21 +608,23 @@
             
             let perksHTML = '';
             for (let i = 0; i < 4; i++) {
-                const perkName = build.perks[i];
+                const perkName = build.perks[i] || "Unknown Perk";
                 const fileName = getMatchedImageFile(perkName);
                 const posClass = positions[i];
                 
                 perksHTML += `
                     <div class="perk-wrapper ${posClass}">
                         <div class="perk-slot">
-                            <img src="DBDperks/${fileName}" alt="${perkName}" onerror="this.style.display='none'">
+                            <img src="DBDperks/${fileName}" alt="${perkName}" onerror="this.src='placeholder.png'; this.style.opacity='0.2';">
                         </div>
                         <div class="perk-name-label">${perkName}</div>
                     </div>
                 `;
             }
 
-            const killersText = Array.isArray(build.recommendedKillers) ? build.recommendedKillers.join(', ') : build.recommendedKillers;
+            const killersText = Array.isArray(build.recommendedKillers) 
+                ? build.recommendedKillers.join(', ') 
+                : build.recommendedKillers;
 
             dashboard.innerHTML = `
                 <div class="info-panel">
@@ -528,62 +634,71 @@
                     </div>
 
                     <div class="meta-tags">
-                        <div class="tag"><span>Archetype:</span> ${build.playstyle}</div>
-                        <div class="tag"><span>Execution:</span> ${build.difficulty}</div>
-                        <div class="tag"><span>Hosts:</span> ${killersText}</div>
+                        <div class="tag"><span>Playstyle:</span> ${build.playstyle}</div>
+                        <div class="tag"><span>Difficulty:</span> ${build.difficulty}</div>
+                        <div class="tag"><span>Optimum:</span> ${killersText}</div>
+                        <div class="tag" style="border-color: var(--entity-red); background: rgba(230,0,38,0.1);">
+                            <span style="color: var(--entity-red);">Sequence:</span> ${currentBuildIndex + 1} / ${buildDatabase.length}
+                        </div>
                     </div>
 
                     <div class="strategy-container">
                         <div class="phase">
-                            <h4>Phase I: Opening</h4>
+                            <h4>Early Game Protocol</h4>
                             <p>${build.strategy.earlyGame}</p>
                         </div>
                         <div class="phase">
-                            <h4>Phase II: Escalation</h4>
+                            <h4>Mid Game Escalation</h4>
                             <p>${build.strategy.midGame}</p>
                         </div>
                         <div class="phase">
-                            <h4>Phase III: Closure</h4>
+                            <h4>End Game Execution</h4>
                             <p>${build.strategy.endGame}</p>
                         </div>
                         <div class="pro-tip">
-                            <strong>ENTITY WHISPERS:</strong> ${build.proTip}
+                            <strong>ENTITY WHISPERS</strong>
+                            ${build.proTip}
                         </div>
                     </div>
                 </div>
 
                 <div class="visual-panel">
                     <div class="perk-diamond">
+                        <div class="hub-connector"></div>
+                        <div class="hub-core"></div>
                         ${perksHTML}
                     </div>
-                    <button class="randomize-btn" onclick="executeSequential()">
-                        <div class="btn-line"></div>
-                        Initialize Next Sequence
-                    </button>
+                    <button class="randomize-btn" onclick="executeSequential()">Initialize Next Build</button>
                 </div>
             `;
         }
 
+        // Serialized Algorithm: Runs from 0 to N smoothly, then wraps around
         function executeSequential() {
             const dashboard = document.getElementById('main-dashboard');
             
-            // Trigger Glitch Re-flow
+            // Re-trigger glitch animation
             dashboard.classList.remove('glitch-flash');
             void dashboard.offsetWidth; 
             dashboard.classList.add('glitch-flash');
 
+            // Wait for tear effect to peak before swapping content
             setTimeout(() => {
                 currentBuildIndex++;
+                
+                // If it hits the end of the array (e.g. 500), it safely loops back to 0
                 if (currentBuildIndex >= buildDatabase.length) {
                     currentBuildIndex = 0;
                 }
+                
                 renderDashboard(buildDatabase[currentBuildIndex]);
             }, 180);
         }
 
+        // System Boot Sequence
         window.onload = function() {
             currentBuildIndex = 0;
-            renderDashboard(buildDatabase[0]);
+            renderDashboard(buildDatabase[currentBuildIndex]);
         };
     </script>
 </body>
