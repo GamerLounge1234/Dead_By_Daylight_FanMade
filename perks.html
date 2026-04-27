@@ -760,23 +760,24 @@
         function normalize(str) {
     return str
         .toLowerCase()
-        .replace(/&/g, 'and')
-        .replace(/['’]/g, '')       // remove apostrophes
-        .replace(/[^a-z0-9]/g, ''); // remove everything else
+        .normalize("NFD") // removes accents (é → e)
+        .replace(/[\u0300-\u036f]/g, "") // remove diacritics
+        .replace(/&/g, "and") // handle &
+        .replace(/[^a-z0-9]/g, ""); // remove remaining junk
 }
 
 function fuzzyMatchFilename(perkName) {
-    // Create a mapping of known special cases
-    const specialMappings = {
-        'déjà vu': 'IconPerks_dejaVu.webp',
-        'déjàvu': 'IconPerks_dejaVu.webp',
-        'deja vu': 'IconPerks_dejaVu.webp',
-        'coup de grâce': 'IconPerks_coupDeGrace.webp',
-        'coup de grace': 'IconPerks_coupDeGrace.webp',
-        'hex: overture of doom': 'IconPerks_hexOvertureOfDoom.webp',
-        'ravenous': 'IconPerks_ravenous.webp',
-        'wandering eye': 'IconPerks_wanderingEye.webp',
-    };
+    const normalized = normalize(perkName);
+
+    let match = fileArray.find(f => {
+        let fNorm = normalize(
+            f.replace('IconPerks_', '').replace('.webp', '')
+        );
+        return fNorm === normalized;
+    });
+
+    return match || "IconPerks_default.webp";
+}
     
     // Check special mappings first
     const normalizedName = perkName.toLowerCase().trim();
