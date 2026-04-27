@@ -770,6 +770,23 @@ function normalizeString(str) {
 function fuzzyMatchFilename(perkName) {
     let normalized = normalizeString(perkName);
     
+    // Special case mappings for known problematic names (check FIRST)
+    const specialCases = {
+        'dejavu': 'IconPerks_dejaVu.webp',
+        'coupdegrace': 'IconPerks_coupDeGrace.webp',
+        'hexovertureofdoom': 'IconPerks_hexOvertureOfDoom.webp',
+        'ravenous': 'IconPerks_ravenous.webp',
+        'wanderingeye': 'IconPerks_wanderingEye.webp',
+        'barbecuechilli': 'IconPerks_barbecueAndChilli.webp',
+        'monitorabuse': 'IconPerks_monitorAndAbuse.webp',
+        'quickquiet': 'IconPerks_quick&Quiet.webp'  // Add this line
+    };
+    
+    // Check special cases first
+    if (specialCases[normalized]) {
+        return specialCases[normalized];
+    }
+    
     // Direct match using normalized comparison
     let match = fileArray.find(f => {
         let fNorm = f.replace('IconPerks_', '').replace('.webp', '').toLowerCase();
@@ -782,21 +799,6 @@ function fuzzyMatchFilename(perkName) {
             let fNorm = normalizeString(f.replace('IconPerks_', '').replace('.webp', ''));
             return fNorm.includes(normalized) || normalized.includes(fNorm);
         });
-    }
-    
-    // Special case mappings for known problematic names
-    if (!match) {
-        const specialCases = {
-            'dejavu': 'IconPerks_dejaVu.webp',
-            'coupdegrace': 'IconPerks_coupDeGrace.webp',
-            'hexovertureofdoom': 'IconPerks_hexOvertureOfDoom.webp',
-            'ravenous': 'IconPerks_ravenous.webp',
-            'wanderingeye': 'IconPerks_wanderingEye.webp',
-            'barbecuechilli': 'IconPerks_barbecueAndChilli.webp',
-            'monitorabuse': 'IconPerks_monitorAndAbuse.webp'
-        };
-        
-        match = specialCases[normalized] || null;
     }
     
     return match ? match : `IconPerks_default.webp`;
