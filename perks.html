@@ -766,26 +766,31 @@
 }
 
 function fuzzyMatchFilename(perkName) {
-    const normalizedPerk = normalize(perkName);
-
-    let match = fileArray.find(file => {
-        let fileNorm = normalize(
-            file.replace('IconPerks_', '').replace('.webp', '')
-        );
-        return fileNorm === normalizedPerk;
-    });
-
-    // fallback: partial match (stronger)
-    if (!match) {
-        match = fileArray.find(file => {
-            let fileNorm = normalize(
-                file.replace('IconPerks_', '').replace('.webp', '')
-            );
-            return fileNorm.includes(normalizedPerk) || normalizedPerk.includes(fileNorm);
-        });
+    // Create a mapping of known special cases
+    const specialMappings = {
+        'déjà vu': 'IconPerks_dejaVu.webp',
+        'déjàvu': 'IconPerks_dejaVu.webp',
+        'deja vu': 'IconPerks_dejaVu.webp',
+        'coup de grâce': 'IconPerks_coupDeGrace.webp',
+        'coup de grace': 'IconPerks_coupDeGrace.webp',
+        'hex: overture of doom': 'IconPerks_hexOvertureOfDoom.webp',
+        'ravenous': 'IconPerks_ravenous.webp',
+        'wandering eye': 'IconPerks_wanderingEye.webp',
+    };
+    
+    // Check special mappings first
+    const normalizedName = perkName.toLowerCase().trim();
+    if (specialMappings[normalizedName]) {
+        return specialMappings[normalizedName];
     }
-
-    return match || 'IconPerks_default.webp';
+    
+    // Original matching logic
+    let normalized = normalizedName.replace(/[^a-z0-9]/g, '');
+    let match = fileArray.find(f => {
+        let fNorm = f.replace('IconPerks_', '').replace('.webp', '').toLowerCase();
+        return fNorm === normalized || fNorm.includes(normalized);
+    });
+    return match ? match : `IconPerks_default.webp`;
 }
 
         function generateScenario(perk, mode) {
