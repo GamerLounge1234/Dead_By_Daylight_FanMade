@@ -1,0 +1,211 @@
+body {
+    background-color: #0a0a0a;
+    color: #e0e0e0;
+    font-family: 'Courier New', Courier, monospace;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+}
+
+.blood-web-container {
+    background: rgba(20, 20, 20, 0.9);
+    border: 2px solid #8b0000;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(139, 0, 0, 0.5);
+    max-width: 600px;
+    width: 100%;
+}
+
+h1 {
+    text-align: center;
+    color: #ff3333;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+label {
+    display: block;
+    margin-bottom: 8px;
+    color: #ff6666;
+    font-weight: bold;
+}
+
+input[type="text"], select {
+    width: 100%;
+    padding: 10px;
+    background-color: #1a1a1a;
+    border: 1px solid #444;
+    color: #fff;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+
+/* Combination Lock Styles */
+.combination-lock {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.lock-slot {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: #111;
+    border: 1px solid #333;
+    padding: 10px;
+    border-radius: 8px;
+    width: 22%;
+}
+
+.lock-slot img {
+    width: 80px;
+    height: 80px;
+    object-fit: contain;
+    margin: 10px 0;
+    filter: drop-shadow(0 0 5px #8b0000);
+}
+
+.arrow-btn {
+    background: #2a2a2a;
+    border: 1px solid #555;
+    color: #fff;
+    cursor: pointer;
+    width: 100%;
+    padding: 5px;
+    font-size: 16px;
+}
+
+.arrow-btn:hover {
+    background: #ff3333;
+    color: #000;
+}
+
+.submit-btn {
+    width: 100%;
+    padding: 15px;
+    background-color: #8b0000;
+    color: white;
+    border: none;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    text-transform: uppercase;
+    transition: background 0.3s;
+}
+
+.submit-btn:hover {
+    background-color: #cc0000;
+}
+
+#statusMessage {
+    margin-top: 15px;
+    text-align: center;
+    font-weight: bold;
+}
+
+/* Add this anywhere in styles.css for the Login Link */
+.login-link {
+    text-align: center;
+    margin-bottom: 25px;
+    font-size: 14px;
+}
+
+.login-link a {
+    color: #ff3333;
+    text-decoration: none;
+    font-weight: bold;
+    border-bottom: 1px solid transparent;
+    transition: 0.3s;
+}
+
+.login-link a:hover {
+    border-bottom: 1px solid #ff3333;
+    text-shadow: 0 0 5px #ff3333;
+}
+
+/* --- REPLACED Combination Lock Styles --- */
+.combination-lock {
+    display: flex;
+    justify-content: space-between;
+    gap: 15px;
+}
+
+.scroll-slot {
+    width: 48%;
+    height: 250px; /* Adjust height to your liking */
+    overflow-y: scroll;
+    background: #111;
+    border: 2px solid #333;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px 0;
+    gap: 15px;
+}
+
+/* Custom Blood-red Scrollbar */
+.scroll-slot::-webkit-scrollbar { width: 8px; }
+.scroll-slot::-webkit-scrollbar-track { background: #0a0a0a; border-radius: 8px; }
+.scroll-slot::-webkit-scrollbar-thumb { background: #8b0000; border-radius: 8px; }
+.scroll-slot::-webkit-scrollbar-thumb:hover { background: #ff3333; }
+
+.perk-option {
+    width: 80px;
+    height: 80px;
+    object-fit: contain;
+    cursor: pointer;
+    opacity: 0.4;
+    transition: all 0.2s;
+    border: 2px solid transparent;
+    border-radius: 10px;
+    padding: 5px;
+}
+
+.perk-option:hover {
+    opacity: 0.8;
+}
+
+/* This triggers when a user clicks a perk */
+.perk-option.selected {
+    opacity: 1;
+    border-color: #ff3333;
+    background: rgba(255, 51, 51, 0.1);
+    box-shadow: 0 0 15px rgba(139, 0, 0, 0.8);
+    filter: drop-shadow(0 0 5px #8b0000);
+}
+
+/* New Login Styles */
+.secondary-btn {
+    background-color: #333;
+    color: white;
+    border: 1px solid #555;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 5px;
+    font-weight: bold;
+    transition: 0.3s;
+}
+
+.secondary-btn:hover {
+    background-color: #555;
+    border-color: #ff3333;
+}
+
+.question-display {
+    background: #0a0a0a;
+    border: 1px solid #ff3333;
+    padding: 15px;
+    color: #ff9999;
+    font-style: italic;
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
