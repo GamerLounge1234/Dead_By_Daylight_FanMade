@@ -5,382 +5,454 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>The Entity's Terminal - Builds</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Oswald:wght@500;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,300;0,700;1,400&family=Teko:wght@500;700&family=Nosifer&display=swap');
 
-        :root {
-            /* Core Theme - Dark Glassmorphic with Blood/Neon Accents */
-            --bg-deep: #050608;
-            --entity-red: #e63946;
-            --entity-blood: #9e0000;
-            --entity-glow: rgba(230, 57, 70, 0.4);
-            
-            /* Ultra-Rare Blue Perks */
-            --perk-blue: #00f0ff;
-            --perk-blue-dim: rgba(0, 240, 255, 0.15);
-            --perk-blue-glow: rgba(0, 240, 255, 0.4);
-            
-            /* Typography & Panels */
-            --text-main: #f8f9fa;
-            --text-muted: #8d99ae;
-            --glass-bg: rgba(12, 16, 24, 0.65);
-            --glass-border: rgba(255, 255, 255, 0.08);
-            
-            /* Fog Overlay */
-            --fog-overlay: url('data:image/svg+xml;utf8,<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><filter id="noiseFilter"><feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="4" stitchTiles="stitch"/></filter><rect width="100%" height="100%" filter="url(%23noiseFilter)" opacity="0.04"/></svg>');
-        }
+:root {
+    /* The Carnage Palette */
+    --pitch-black: #000000;
+    --void-black: #050303;
+    --coagulated-blood: #170000;
+    --dried-blood: #3a0000;
+    --fresh-blood: #8a0000;
+    --pulsing-red: #c70000;
+    --arterial-spray: #ff0505;
+    
+    /* Text Colors - High Contrast */
+    --flesh-pale: #e8d0d0;
+    --bone-white: #ffffff;
+    --muted-bone: #b8a5a5;
+    
+    /* Typography */
+    --font-title: 'Nosifer', display;
+    --font-head: 'Teko', sans-serif;
+    --font-body: 'Crimson Pro', serif;
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+    /* Glass & Overlay Variables */
+    --glass-panel: rgba(10, 2, 2, 0.85);
+    --perk-blur-bg: rgba(20, 0, 0, 0.4);
+    --smooth-curve: cubic-bezier(0.25, 1, 0.3, 1);
+    
+    /* Subtle Horror Noise Overlay */
+    --fog-overlay: url('data:image/svg+xml;utf8,<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><filter id="noiseFilter"><feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch"/></filter><rect width="100%" height="100%" filter="url(%23noiseFilter)" opacity="0.04"/></svg>');
+}
 
-        /* 100VH STRICT LOCKED LAYOUT */
-        body {
-            background-color: var(--bg-deep);
-            background-image: 
-                radial-gradient(circle at 50% -20%, rgba(158, 0, 0, 0.15) 0%, transparent 60%),
-                radial-gradient(circle at 50% 120%, rgba(0, 240, 255, 0.05) 0%, transparent 60%),
-                var(--fog-overlay);
-            color: var(--text-main);
-            font-family: 'Inter', sans-serif;
-            height: 100vh;
-            width: 100vw;
-            overflow: hidden; 
-            display: flex;
-            flex-direction: column;
-        }
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    cursor: crosshair;
+}
 
-        /* PREMIUM NAVBAR */
-        .navbar {
-            background: rgba(5, 6, 8, 0.8);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border-bottom: 1px solid var(--glass-border);
-            height: 8vh;
-            min-height: 60px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            box-shadow: 0 4px 30px rgba(0,0,0,0.8);
-            z-index: 50;
-        }
-        
-        .nav-links {
-            list-style: none;
-            display: flex;
-            gap: 3vw;
-        }
-        
-        .nav-links li a {
-            text-decoration: none;
-            color: var(--text-muted);
-            font-family: 'Oswald', sans-serif;
-            font-weight: 500;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            font-size: clamp(0.9rem, 1vw, 1.1rem);
-            transition: all 0.3s ease;
-            position: relative;
-        }
-        
-        .nav-links li a::after {
-            content: ''; position: absolute; bottom: -5px; left: 0; width: 0%; height: 2px;
-            background: var(--entity-red); transition: width 0.3s ease;
-            box-shadow: 0 0 10px var(--entity-red);
-        }
-        
-        .nav-links li a:hover::after, .nav-links li a.active::after { width: 100%; }
-        .nav-links li a:hover, .nav-links li a.active {
-            color: var(--text-main);
-            text-shadow: 0 0 10px rgba(255,255,255,0.5);
-        }
+::selection {
+    background: var(--arterial-spray);
+    color: var(--pitch-black);
+    text-shadow: none;
+}
 
-        /* DASHBOARD GRID - Perfect Symmetry */
-        .dashboard {
-            height: 92vh; /* Remaining height */
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            padding: 3vh 4vw;
-            gap: 4vw;
-            align-items: stretch;
-        }
+/* ==========================================================================
+   100VH LOCKED LAYOUT & THE VOID
+   ========================================================================== */
+body {
+    background-color: var(--pitch-black);
+    background-image: radial-gradient(circle at 50% 0%, var(--coagulated-blood) 0%, var(--pitch-black) 80%), var(--fog-overlay);
+    color: var(--bone-white);
+    font-family: var(--font-body);
+    height: 100vh;
+    width: 100vw;
+    overflow: hidden; /* STRICTLY NO SCROLLING */
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    z-index: 1;
+}
 
-        /* LEFT COLUMN: INFO PANEL */
-        .info-panel {
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            animation: slideInLeft 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-            height: 100%;
-        }
+/* Ambient Deep Breathing Vignette */
+body::before {
+    content: "";
+    position: absolute;
+    top: 50%; left: 50%; transform: translate(-50%, -50%);
+    width: 150vw; height: 150vh;
+    background: radial-gradient(ellipse at center, transparent 20%, var(--pitch-black) 80%);
+    pointer-events: none;
+    z-index: -1;
+    box-shadow: inset 0 0 150px rgba(138, 0, 0, 0.15);
+    animation: ambientVignettePulse 8s infinite ease-in-out;
+}
 
-        /* HEADER */
-        .build-header {
-            border-left: 4px solid var(--entity-red);
-            padding-left: clamp(15px, 2vw, 25px);
-            background: linear-gradient(90deg, rgba(230, 57, 70, 0.1) 0%, transparent 100%);
-            padding-top: 1.5vh;
-            padding-bottom: 1.5vh;
-            flex-shrink: 0;
-        }
-        
-        .build-title {
-            font-family: 'Oswald', sans-serif;
-            font-size: clamp(2.5rem, 4.5vh, 4rem);
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            line-height: 1.1;
-            color: white;
-            text-shadow: 0 0 20px var(--entity-glow), 2px 2px 0px rgba(0,0,0,0.8);
-        }
-        
-        .build-subtitle {
-            font-size: clamp(1rem, 1.5vh, 1.2rem);
-            color: var(--entity-red);
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 3px;
-            margin-top: 0.5vh;
-        }
+/* ==========================================================================
+   PREMIUM NAVBAR (Symmetrical)
+   ========================================================================== */
+.navbar {
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.95) 0%, rgba(15, 0, 0, 0.85) 100%);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-bottom: 2px solid var(--dried-blood);
+    padding: 15px 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 4px 30px rgba(0,0,0,0.8);
+    z-index: 50;
+    animation: organicHeartbeatBorderBottom 4s infinite var(--smooth-curve);
+}
 
-        /* META TAGS */
-        .meta-tags {
-            display: flex;
-            gap: 1vw;
-            margin-top: 2vh;
-            flex-shrink: 0;
-            flex-wrap: wrap;
-        }
-        
-        .tag {
-            background: var(--glass-bg);
-            border: 1px solid var(--glass-border);
-            padding: 1vh 1vw;
-            border-radius: 2px;
-            font-size: clamp(0.8rem, 1.2vh, 0.95rem);
-            font-weight: 600;
-            letter-spacing: 1px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.5);
-        }
-        
-        .tag span { color: var(--perk-blue); text-transform: uppercase; font-size: 0.8em; margin-right: 5px;}
+.nav-links {
+    list-style: none;
+    display: flex;
+    gap: 50px;
+}
 
-        /* STRATEGY BLOCKS - Dynamic Sizing, NO SCROLLING */
-        .strategy-container {
-            display: flex;
-            flex-direction: column;
-            gap: 1.5vh;
-            flex-grow: 1;
-            margin: 3vh 0;
-            justify-content: center;
-        }
-        
-        .phase {
-            background: var(--glass-bg);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            border: 1px solid var(--glass-border);
-            border-left: 2px solid var(--perk-blue);
-            padding: 2vh 1.5vw;
-            border-radius: 4px;
-            box-shadow: inset 0 0 20px rgba(0,0,0,0.4);
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
-        
-        .phase h4 {
-            font-family: 'Oswald', sans-serif;
-            color: white;
-            font-size: clamp(1.1rem, 1.8vh, 1.3rem);
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            margin-bottom: 1vh;
-            text-shadow: 0 0 10px var(--perk-blue-glow);
-        }
-        
-        .phase p {
-            font-size: clamp(0.9rem, 1.5vh, 1.05rem);
-            line-height: 1.5;
-            color: #d1d5db;
-            font-weight: 300;
-            display: -webkit-box;
-            -webkit-line-clamp: 3; /* Safety net: clamp text to 3 lines max per phase */
-            -webkit-box-orient: vertical;
-            overflow: hidden;
-        }
+.nav-links li a {
+    text-decoration: none;
+    color: var(--muted-bone);
+    font-family: var(--font-head);
+    font-size: 1.6rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    transition: all 0.3s var(--smooth-curve);
+    position: relative;
+    padding: 5px 10px;
+}
 
-        /* PRO TIP - Bottom anchored */
-        .pro-tip {
-            background: linear-gradient(90deg, rgba(230, 57, 70, 0.15) 0%, rgba(0,0,0,0.5) 100%);
-            border-left: 4px solid var(--entity-red);
-            padding: 2vh 1.5vw;
-            font-weight: 400;
-            font-size: clamp(0.9rem, 1.5vh, 1.05rem);
-            color: #fff;
-            border-radius: 0 4px 4px 0;
-            flex-shrink: 0;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.5);
-        }
-        .pro-tip strong {
-            color: var(--entity-red);
-            letter-spacing: 1px;
-            font-family: 'Oswald', sans-serif;
-            font-size: 1.1em;
-        }
+.nav-links li a::after {
+    content: '';
+    position: absolute;
+    bottom: -5px; left: 50%; transform: translateX(-50%);
+    width: 0%; height: 2px;
+    background: var(--arterial-spray);
+    transition: width 0.4s var(--smooth-curve);
+    box-shadow: 0 0 10px var(--arterial-spray);
+}
 
-        /* RIGHT COLUMN: VISUAL PANEL */
-        .visual-panel {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: space-between;
-            height: 100%;
-            padding-bottom: 2vh;
-            animation: slideInRight 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-        }
+.nav-links li a:hover, .nav-links li a.active {
+    color: var(--bone-white);
+    text-shadow: 0 0 15px rgba(255, 5, 5, 0.6);
+}
+.nav-links li a:hover::after, .nav-links li a.active::after { width: 100%; }
 
-        /* PERK DIAMOND LAYOUT - Fully Centered & Responsive */
-        .perk-diamond-container {
-            flex-grow: 1;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 100%;
-        }
+/* ==========================================================================
+   MAIN TWO-COLUMN DASHBOARD
+   ========================================================================== */
+.dashboard {
+    flex-grow: 1;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    padding: 30px 60px;
+    gap: 50px;
+    height: calc(100vh - 75px);
+}
 
-        .perk-grid-anchor {
-            position: relative;
-            width: clamp(300px, 40vh, 450px);
-            height: clamp(300px, 40vh, 450px);
-            animation: floatGlow 6s ease-in-out infinite;
-        }
+/* --- LEFT COLUMN: INFO PANEL --- */
+.info-panel {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 25px;
+    animation: slideInLeft 0.7s var(--smooth-curve) forwards;
+}
 
-        .perk-wrapper {
-            position: absolute;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
+.build-header {
+    border-left: 5px solid var(--arterial-spray);
+    padding-left: 25px;
+    background: linear-gradient(90deg, rgba(138, 0, 0, 0.15) 0%, transparent 100%);
+    padding-top: 15px;
+    padding-bottom: 15px;
+    position: relative;
+}
 
-        /* Absolute positioning logic based on a center point */
-        .pos-top    { top: 0; left: 50%; transform: translate(-50%, -50%); flex-direction: column-reverse; }
-        .pos-bottom { bottom: 0; left: 50%; transform: translate(-50%, 50%); flex-direction: column; }
-        .pos-left   { top: 50%; left: 0; transform: translate(-50%, -50%); flex-direction: row-reverse; }
-        .pos-right  { top: 50%; right: 0; transform: translate(50%, -50%); flex-direction: row; }
+.build-title {
+    font-family: var(--font-head);
+    font-size: 4rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    line-height: 1;
+    color: var(--bone-white);
+    text-shadow: 0 0 20px rgba(255, 5, 5, 0.5);
+}
 
-        /* ULTRA RARE BLUE PERK SLOT */
-        .perk-slot {
-            width: clamp(90px, 12vh, 120px);
-            height: clamp(90px, 12vh, 120px);
-            background: var(--perk-blue-dim);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            border: 2px solid var(--perk-blue-glow);
-            box-shadow: 
-                0 0 20px rgba(0, 240, 255, 0.2), 
-                inset 0 0 20px rgba(0, 240, 255, 0.2),
-                0 0 0 1px rgba(255,255,255,0.1);
-            transform: rotate(45deg);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            z-index: 2;
-        }
-        
-        .perk-slot:hover {
-            transform: rotate(45deg) scale(1.1);
-            border-color: var(--perk-blue);
-            box-shadow: 0 0 35px var(--perk-blue-glow), inset 0 0 30px var(--perk-blue-glow);
-            z-index: 10;
-        }
+.build-subtitle {
+    font-family: var(--font-body);
+    font-size: 1.3rem;
+    color: var(--pulsing-red);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 5px;
+    margin-top: 10px;
+    font-style: italic;
+}
 
-        .perk-slot img {
-            width: 75%;
-            height: 75%;
-            transform: rotate(-45deg);
-            filter: drop-shadow(2px 4px 6px rgba(0,0,0,0.8)) drop-shadow(0 0 10px rgba(255,255,255,0.3));
-        }
+.meta-tags {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+}
 
-        /* LABEL POSITIONING */
-        .perk-name-label {
-            font-family: 'Oswald', sans-serif;
-            font-size: clamp(0.9rem, 1.4vh, 1.15rem);
-            font-weight: 700;
-            color: #fff;
-            text-transform: uppercase;
-            text-shadow: 0 2px 4px #000, 0 0 10px var(--perk-blue), 0 0 20px #000;
-            letter-spacing: 1px;
-            white-space: nowrap;
-            z-index: 3;
-            pointer-events: none;
-        }
-        
-        .pos-top .perk-name-label { margin-bottom: 2vh; }
-        .pos-bottom .perk-name-label { margin-top: 2vh; }
-        .pos-left .perk-name-label { margin-right: 1.5vw; text-align: right; }
-        .pos-right .perk-name-label { margin-left: 1.5vw; text-align: left; }
+.tag {
+    background: rgba(23, 0, 0, 0.8);
+    border: 1px solid var(--dried-blood);
+    padding: 8px 18px;
+    border-radius: 2px;
+    font-family: var(--font-head);
+    font-size: 1.1rem;
+    letter-spacing: 2px;
+    color: var(--flesh-pale);
+    text-transform: uppercase;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+}
 
-        /* PREMIUM BUTTON */
-        .randomize-btn {
-            background: linear-gradient(135deg, var(--entity-red), var(--entity-blood));
-            color: white;
-            border: 1px solid #ff4d4d;
-            padding: 2.5vh 4vw;
-            font-family: 'Oswald', sans-serif;
-            font-size: clamp(1.2rem, 2vh, 1.8rem);
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 5px;
-            cursor: pointer;
-            box-shadow: 0 10px 30px var(--entity-glow), inset 0 2px 5px rgba(255,255,255,0.4);
-            border-radius: 3px;
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-            flex-shrink: 0;
-            width: 80%;
-            max-width: 450px;
-        }
-        
-        .randomize-btn::after {
-            content: ''; position: absolute; top: 0; left: -100%; width: 50%; height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.6), transparent);
-            transform: skewX(-25deg); transition: 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-        
-        .randomize-btn:hover::after { left: 150%; }
-        .randomize-btn:hover { 
-            transform: translateY(-2px); 
-            box-shadow: 0 15px 40px rgba(230, 57, 70, 0.6), inset 0 2px 5px rgba(255,255,255,0.5); 
-        }
-        .randomize-btn:active { transform: translateY(2px); }
+.tag span { 
+    color: var(--pulsing-red); 
+    margin-right: 8px; 
+}
 
-        /* ANIMATIONS */
-        @keyframes slideInLeft {
-            from { opacity: 0; transform: translateX(-40px); }
-            to { opacity: 1; transform: translateX(0); }
-        }
-        @keyframes slideInRight {
-            from { opacity: 0; transform: translateX(40px); }
-            to { opacity: 1; transform: translateX(0); }
-        }
-        @keyframes floatGlow {
-            0%, 100% { transform: translateY(0); filter: drop-shadow(0 0 15px rgba(0, 240, 255, 0.1)); }
-            50% { transform: translateY(-10px); filter: drop-shadow(0 0 35px rgba(0, 240, 255, 0.25)); }
-        }
-        .glitch-flash {
-            animation: digitalGlitch 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
-        }
-        @keyframes digitalGlitch {
-            0% { filter: contrast(1) brightness(1) hue-rotate(0deg); transform: scale(1); opacity: 1; }
-            20% { filter: contrast(2) brightness(1.5) hue-rotate(-20deg); transform: scale(0.98) translate(-2px, 2px); opacity: 0.8; }
-            40% { filter: contrast(2) brightness(2) hue-rotate(20deg); transform: scale(1.02) translate(2px, -2px); opacity: 0.9; }
-            100% { filter: contrast(1) brightness(1) hue-rotate(0deg); transform: scale(1); opacity: 1; }
-        }
+.strategy-container {
+    background: var(--glass-panel);
+    border: 1px solid var(--dried-blood);
+    border-radius: 4px;
+    padding: 25px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    box-shadow: inset 0 0 30px rgba(0,0,0,0.8), 0 10px 30px rgba(0,0,0,0.9);
+    backdrop-filter: blur(8px);
+    overflow-y: auto; 
+    max-height: 450px;
+    animation: organicHeartbeatBorderFull 4s infinite var(--smooth-curve);
+    animation-delay: 0.5s;
+}
+
+.strategy-container::-webkit-scrollbar { width: 6px; }
+.strategy-container::-webkit-scrollbar-thumb { background: var(--dried-blood); border-radius: 3px; }
+.strategy-container::-webkit-scrollbar-thumb:hover { background: var(--pulsing-red); }
+
+.phase h4 {
+    font-family: var(--font-head);
+    color: var(--arterial-spray);
+    font-size: 1.6rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    border-bottom: 1px dashed var(--dried-blood);
+    padding-bottom: 8px;
+    margin-bottom: 12px;
+    text-shadow: 0 2px 8px rgba(255, 5, 5, 0.3);
+}
+
+.phase p {
+    font-size: 1.15rem;
+    line-height: 1.7;
+    color: var(--muted-bone);
+}
+
+.pro-tip {
+    background: rgba(138, 0, 0, 0.1);
+    border-left: 3px solid var(--arterial-spray);
+    padding: 15px 20px;
+    font-weight: 700;
+    font-size: 1.15rem;
+    color: var(--bone-white);
+    box-shadow: inset 20px 0 30px -20px rgba(255, 5, 5, 0.2);
+}
+
+/* --- RIGHT COLUMN: VISUAL PANEL (THE ALTAR) --- */
+.visual-panel {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    animation: slideInRight 0.7s var(--smooth-curve) forwards;
+}
+
+/* The Rhombus Layout */
+.perk-diamond {
+    position: relative;
+    width: 480px;
+    height: 480px;
+    margin-bottom: 30px;
+    /* Removed pulseGlow, relying on the heartbeat animations of the slots */
+}
+
+.perk-wrapper {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 250px;
+    height: 140px;
+    z-index: 5;
+}
+
+.pos-top { 
+    top: 0; left: 50%; transform: translateX(-50%); 
+    flex-direction: column-reverse; 
+}
+.pos-left { 
+    top: 50%; left: -50px; transform: translateY(-50%); 
+    flex-direction: row-reverse; 
+}
+.pos-right { 
+    top: 50%; right: -50px; transform: translateY(-50%); 
+    flex-direction: row; 
+}
+.pos-bottom { 
+    bottom: 0; left: 50%; transform: translateX(-50%); 
+    flex-direction: column; 
+}
+
+.perk-slot {
+    width: 110px;
+    height: 110px;
+    background: var(--perk-blur-bg);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 2px solid var(--dried-blood);
+    box-shadow: 0 0 25px rgba(0, 0, 0, 0.8), inset 0 0 15px rgba(0, 0, 0, 0.8);
+    transform: rotate(45deg); 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-shrink: 0;
+    transition: all 0.3s var(--smooth-curve);
+    z-index: 2;
+    /* Individual heartbeat for each perk node */
+    animation: organicHeartbeatBorderFull 4s infinite var(--smooth-curve);
+}
+
+.perk-slot:hover {
+    transform: rotate(45deg) scale(1.05);
+    z-index: 10;
+    animation: none; /* Pause heartbeat on hover */
+    border-color: var(--arterial-spray);
+    box-shadow: 0 0 30px rgba(255, 5, 5, 0.5), inset 0 0 20px rgba(255, 5, 5, 0.2);
+}
+
+.perk-slot img {
+    width: 85px;
+    height: 85px;
+    transform: rotate(-45deg); /* Straighten image */
+    filter: drop-shadow(0px 5px 10px rgba(0,0,0,0.9)) brightness(0.9);
+    transition: all 0.3s ease;
+}
+
+.perk-slot:hover img {
+    filter: drop-shadow(0px 0px 12px rgba(255,5,5,0.8)) brightness(1.1);
+}
+
+/* Perk Name Text Styling */
+.perk-name-label {
+    font-family: var(--font-head);
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--bone-white);
+    text-transform: uppercase;
+    text-shadow: 0 4px 6px rgba(0,0,0,0.9), 0 0 12px rgba(0,0,0,1);
+    letter-spacing: 2px;
+    text-align: center;
+    padding: 10px;
+    z-index: 3;
+}
+
+.pos-top .perk-name-label { margin-bottom: 10px; }
+.pos-bottom .perk-name-label { margin-top: 10px; }
+.pos-left .perk-name-label { margin-right: 15px; text-align: right; }
+.pos-right .perk-name-label { margin-left: 15px; text-align: left; }
+
+/* Premium Randomize Button (The Blood Sacrifice) */
+.randomize-btn {
+    background: linear-gradient(135deg, var(--coagulated-blood), var(--dried-blood));
+    color: var(--bone-white);
+    border: 1px solid var(--pulsing-red);
+    padding: 15px 70px;
+    font-family: var(--font-head);
+    font-size: 1.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 5px;
+    cursor: pointer;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8), inset 0 2px 5px rgba(255,255,255,0.1);
+    border-radius: 2px;
+    transition: all 0.3s var(--smooth-curve);
+    position: relative;
+    overflow: hidden;
+    margin-top: 10px;
+}
+
+.randomize-btn::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: radial-gradient(circle, rgba(255,5,5,0.3) 0%, transparent 70%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.randomize-btn::after {
+    content: ''; position: absolute; top: 0; left: -100%; width: 50%; height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transform: skewX(-20deg); transition: 0.6s var(--smooth-curve);
+}
+
+.randomize-btn:hover { 
+    transform: translateY(-3px); 
+    border-color: var(--arterial-spray);
+    box-shadow: 0 15px 40px rgba(200, 0, 0, 0.4), inset 0 0 15px rgba(200, 0, 0, 0.2); 
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+}
+.randomize-btn:hover::before { opacity: 1; }
+.randomize-btn:hover::after { left: 150%; }
+.randomize-btn:active { transform: translateY(1px); }
+
+/* ==========================================================================
+   VISCERAL ANIMATIONS & ORGANIC HEARTBEATS
+   ========================================================================== */
+
+/* Subtly Blinking Full Borders (Perk Slots, Strategy Container) */
+@keyframes organicHeartbeatBorderFull {
+    0%, 100% { border-color: var(--dried-blood); box-shadow: 0 10px 25px rgba(0,0,0,0.8); }
+    10% { border-color: var(--arterial-spray); box-shadow: 0 10px 30px rgba(200, 0, 0, 0.3), inset 0 0 15px rgba(200, 0, 0, 0.15); }
+    20% { border-color: var(--dried-blood); box-shadow: 0 10px 25px rgba(0,0,0,0.8); }
+    30% { border-color: var(--pulsing-red); box-shadow: 0 10px 28px rgba(150, 0, 0, 0.2); }
+    40%, 95% { border-color: var(--dried-blood); box-shadow: 0 10px 25px rgba(0,0,0,0.8); }
+}
+
+/* Bottom Border Heartbeat (Navbar) */
+@keyframes organicHeartbeatBorderBottom {
+    0%, 100% { border-bottom-color: var(--dried-blood); box-shadow: 0 8px 25px rgba(0,0,0,0.5); }
+    10% { border-bottom-color: var(--arterial-spray); box-shadow: 0 8px 30px rgba(255, 5, 5, 0.3); }
+    20% { border-bottom-color: var(--dried-blood); box-shadow: 0 8px 25px rgba(0,0,0,0.5); }
+    30% { border-bottom-color: var(--pulsing-red); box-shadow: 0 8px 28px rgba(200, 0, 0, 0.2); }
+    40%, 95% { border-bottom-color: var(--dried-blood); box-shadow: 0 8px 25px rgba(0,0,0,0.5); }
+}
+
+/* Ambient Deep Breathing Vignette */
+@keyframes ambientVignettePulse {
+    0%, 100% { box-shadow: inset 0 0 100px rgba(30, 0, 0, 0.8); }
+    50% { box-shadow: inset 0 0 180px rgba(100, 0, 0, 0.3); }
+}
+
+/* Entrances */
+@keyframes slideInLeft {
+    from { opacity: 0; transform: translateX(-40px); }
+    to { opacity: 1; transform: translateX(0); }
+}
+@keyframes slideInRight {
+    from { opacity: 0; transform: translateX(40px); }
+    to { opacity: 1; transform: translateX(0); }
+}
+
+/* Visceral Glitch Flash */
+.glitch-flash {
+    animation: bloodFlash 0.35s var(--smooth-curve);
+}
+
+@keyframes bloodFlash {
+    0% { opacity: 1; filter: brightness(1) drop-shadow(0 0 0 red); }
+    30% { opacity: 0.5; filter: brightness(1.5) contrast(1.5) drop-shadow(0 0 20px var(--arterial-spray)); transform: scale(0.98); }
+    70% { opacity: 0.8; filter: brightness(0.8) drop-shadow(0 0 10px var(--pulsing-red)); transform: scale(1.02); }
+    100% { opacity: 1; filter: brightness(1) drop-shadow(0 0 0 red); transform: scale(1); }
+}
     </style>
 </head>
 <body>
