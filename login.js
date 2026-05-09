@@ -78,7 +78,7 @@ const perks = [
             "IconPerks_unnervingPresence.webp", "IconPerks_unrelenting.webp", "IconPerks_upTheAnte.webp", "IconPerks_urbanEvasion.webp",
             "IconPerks_vigil.webp", "IconPerks_visionary.webp", "IconPerks_wakeUp.webp", "IconPerks_wanderingEye.webp",
             "IconPerks_weaveAttunement.webp", "IconPerks_wellMakeIt.webp", "IconPerks_wereGonnaLiveForever.webp", "IconPerks_whispers.webp",
-            "IconPerks_wicked.webp", "IconPerks_windowsOfOpportunity.webp", "IconPerks_wiretap.webp", "IconPerks_zanshinTactics.webp"
+            "IconPerks_wicked.webp", "IconPerks_windowsOfOpportunity.webp", "IconPerks_wiretap.webp", "IconPerks_zanshinTactics.webp",
 ];
 
 let lockState = [perks[0], perks[0]];
