@@ -54,13 +54,21 @@
 ::-webkit-scrollbar-thumb:hover { background: var(--pulsing-red); }
 
 body {
-    background-color: var(--pitch-black);
     color: var(--bone-white);
     font-family: var(--font-body);
     height: 100vh;
     overflow: hidden;
     display: flex;
     flex-direction: column;
+}
+body, html {
+    width: 100%;
+    min-height: 100%;
+    background-color: transparent; /* Changed from var(--pitch-black) */
+    color: var(--bone-white);
+    overflow-x: hidden;
+    font-family: var(--font-journal);
+    scroll-behavior: smooth;
 }
 
 /* Ambient Deep Breathing Vignette */
@@ -505,11 +513,20 @@ body::after {
     80% { transform: translate(1px, -2px) }
     100% { transform: translate(0) }
 }
+.bg-gif{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: -1;
+}
 
     </style>
 </head>
 <body>
-
+        <img src="camfire.gif" class="bg-gif" alt="Background Animation">
     <nav class="navbar">
         <ul class="nav-links">
             <li><a href="index.html">Lobby</a></li>
