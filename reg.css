@@ -1,20 +1,13 @@
-body {
+body, html {
     color: #e0e0e0;
     font-family: 'Courier New', Courier, monospace;
     display: flex;
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    margin: 0;
-}
-body, html {
-    width: 100%;
-    min-height: 100%;
-    background-color: transparent; 
-    color: var(--bone-white);
     overflow-x: hidden;
-    font-family: var(--font-journal);
-    scroll-behavior: smooth;
+    background-color: transparent;
+    margin: 0;
 }
 
 .blood-web-container {
