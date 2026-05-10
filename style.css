@@ -62,7 +62,7 @@
 body, html {
     width: 100%;
     min-height: 100%;
-    background-color: var(--pitch-black);
+    background-color: transparent; 
     color: var(--bone-white);
     overflow-x: hidden;
     font-family: var(--font-journal);
@@ -522,4 +522,14 @@ p::before {
         margin: 80px 15px 30px;
         padding: 40px 15px;
     }
+}
+
+.bg-gif{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: -1;
 }
