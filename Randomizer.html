@@ -6,9 +6,7 @@
     <title>The Entity's Terminal - Loadouts</title>
     <style>
        
-       /* ==========================================================================
-   THE BLOODWEB DASHBOARD - VISCERAL RED & BLACK THEME (ULTRA PREMIUM)
-   ========================================================================== */
+
 
 @import url('https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,300;0,700;1,400&family=Teko:wght@500;700&family=Nosifer&display=swap');
 
@@ -58,7 +56,6 @@
    100VH LOCKED LAYOUT & THE VOID
    ========================================================================== */
 body {
-    background-color: var(--pitch-black);
     background-image: radial-gradient(circle at 50% 0%, var(--coagulated-blood) 0%, var(--pitch-black) 80%), var(--fog-overlay);
     color: var(--bone-white);
     font-family: var(--font-body);
@@ -69,6 +66,15 @@ body {
     flex-direction: column;
     position: relative;
     z-index: 1;
+}
+body, html {
+    width: 100%;
+    min-height: 100%;
+    background-color: transparent; /* Changed from var(--pitch-black) */
+    color: var(--bone-white);
+    overflow-x: hidden;
+    font-family: var(--font-journal);
+    scroll-behavior: smooth;
 }
 
 /* Ambient Deep Breathing Vignette */
@@ -458,10 +464,19 @@ body::before {
     70% { opacity: 0.8; filter: brightness(0.8) drop-shadow(0 0 10px var(--pulsing-red)); transform: scale(1.02); }
     100% { opacity: 1; filter: brightness(1) drop-shadow(0 0 0 red); transform: scale(1); }
 }
+        .bg-gif{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: -1;
+}
     </style>
 </head>
 <body>
-
+    <img src="camfire.gif" class="bg-gif" alt="Background Animation">
     <nav class="navbar">
         <ul class="nav-links">
             <li><a href="index.html">Lobby</a></li>
