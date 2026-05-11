@@ -10,6 +10,82 @@ body {
     margin: 0;
 }
 
+/* ==========================================================================
+   NAVIGATION - THE MEATHOOKS
+   ========================================================================== */
+.navbar {
+    width: 100%;
+    max-width: 1200px;
+    height: 80px;
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: linear-gradient(
+        to bottom, 
+        rgba(0, 0, 0, 0.95) 0%, 
+        rgba(15, 0, 0, 0.85) 100%
+    );
+    border-bottom: 2px solid var(--dried-blood);
+    border-radius: 4px;
+    z-index: 100;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    
+    /* The Organic Heartbeat Border Glow */
+    animation: organicHeartbeatBorder 4s infinite var(--smooth-curve);
+}
+
+.nav-links {
+    display: flex;
+    gap: 60px;
+    list-style: none;
+    align-items: center;
+    justify-content: center;
+}
+
+.navbar li a {
+    font-family: var(--font-ui);
+    font-size: 1.8rem;
+    font-weight: 700;
+    letter-spacing: 4px;
+    color: var(--muted-bone);
+    text-decoration: none;
+    text-transform: uppercase;
+    position: relative;
+    padding: 8px 15px;
+    transition: all 0.3s var(--smooth-curve);
+}
+
+/* Elegant Blood Slash on Hover */
+.navbar li a::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 2px;
+    background: var(--arterial-spray);
+    transform: translate(-50%, -50%) rotate(-3deg);
+    transition: width 0.4s var(--smooth-curve);
+    box-shadow: 0 0 10px var(--arterial-spray);
+    z-index: 2;
+    opacity: 0;
+}
+
+.navbar li a:hover {
+    color: var(--bone-white);
+    text-shadow: 0 0 15px rgba(255, 5, 5, 0.6);
+}
+
+.navbar li a:hover::before {
+    width: 100%;
+    opacity: 1;
+}
+
 .blood-web-container {
     background: rgba(20, 20, 20, 0.9);
     border: 2px solid #8b0000;
