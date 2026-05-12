@@ -7,16 +7,26 @@
     --smooth-curve: ease-in-out;
 }
 
-body {
+/* ==========================================================================
+   GLOBAL RESET & ONE-FRAME LOCK
+   ========================================================================== */
+html, body {
+    width: 100%;
+    height: 100vh; /* Lock to exactly one frame */
+    overflow: hidden; /* Prevent full-page scroll */
+    margin: 0;
+    padding: 0;
     background-color: #0a0a0a;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* Centers the login box vertically */
+    align-items: center; /* Centers the login box horizontally */
+    padding-top: 70px; /* Accounts for the fixed navbar height */
     color: var(--muted-bone);
     font-family: var(--font-ui);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-    margin: 0;
-    padding-top: 80px; /* Prevents the fixed navbar from overlapping the form on small screens */
     box-sizing: border-box;
 }
 
@@ -30,39 +40,40 @@ body {
     width: 100vw;
     height: 100vh;
     object-fit: cover; /* Ensures the GIF fills the screen without stretching */
-    z-index: -1; /* Keeps the GIF behind all other content */
+    z-index: -3; /* Keeps the GIF behind all other content */
     pointer-events: none;
 }
 
 /* ==========================================================================
-   NAVIGATION - THE MEATHOOKS
+   NAVIGATION - FLUSH TO TOP & MEDIUM SIZED
    ========================================================================== */
 .navbar {
     width: 100%;
-    height: 80px;
+    height: 70px; /* Medium size */
     position: fixed;
-    top: 0; /* Pinned exactly to the top */
+    top: 0; /* Pinned exactly to the top edge */
     left: 0;
     background: linear-gradient(
         to bottom, 
-        rgba(0, 0, 0, 0.95) 0%, 
-        rgba(15, 0, 0, 0.85) 100%
+        rgba(0, 0, 0, 0.98) 0%, 
+        rgba(15, 0, 0, 0.90) 100%
     );
     border-bottom: 2px solid var(--dried-blood);
-    z-index: 100;
+    z-index: 1000;
     display: flex;
     justify-content: center;
     align-items: center;
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
     
     /* The Organic Heartbeat Border Glow */
     animation: organicHeartbeatBorder 4s infinite var(--smooth-curve);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.6);
 }
 
 .nav-links {
     display: flex;
-    gap: 60px;
+    gap: 40px; /* Tighter gap for medium size */
     list-style: none;
     align-items: center;
     justify-content: center;
@@ -72,14 +83,14 @@ body {
 
 .navbar li a {
     font-family: var(--font-ui);
-    font-size: 1.8rem;
+    font-size: 1.5rem; /* Medium font */
     font-weight: 700;
-    letter-spacing: 4px;
+    letter-spacing: 3px;
     color: var(--muted-bone);
     text-decoration: none;
     text-transform: uppercase;
     position: relative;
-    padding: 8px 15px;
+    padding: 5px 15px;
     transition: all 0.3s var(--smooth-curve);
 }
 
@@ -101,7 +112,7 @@ body {
 
 .navbar li a:hover {
     color: var(--bone-white);
-    text-shadow: 0 0 15px rgba(255, 5, 5, 0.6);
+    text-shadow: 0 0 15px rgba(255, 5, 5, 0.7);
 }
 
 .navbar li a:hover::before {
@@ -114,35 +125,46 @@ body {
    ========================================================================== */
 .blood-web-container {
     background: rgba(20, 20, 20, 0.9);
-    border: 2px solid #8b0000;
-    padding: 30px;
-    border-radius: 10px;
+    border: 2px solid var(--dried-blood);
+    padding: 25px 30px; /* Medium padding */
+    border-radius: 8px;
     box-shadow: 0 0 20px rgba(139, 0, 0, 0.5);
-    max-width: 600px;
+    max-width: 550px; /* Medium width */
     width: 100%;
     position: relative;
     z-index: 1;
-    margin: 40px 20px; /* Provides breathing room on mobile screens */
+    
+    /* Crucial for 1-Frame Layout: Allows internal scrolling if screen is tiny */
+    max-height: calc(100vh - 100px); 
+    overflow-y: auto; 
     box-sizing: border-box;
 }
 
+/* Custom Scrollbar for the container itself */
+.blood-web-container::-webkit-scrollbar { width: 6px; }
+.blood-web-container::-webkit-scrollbar-track { background: #0a0a0a; border-radius: 8px; }
+.blood-web-container::-webkit-scrollbar-thumb { background: var(--dried-blood); border-radius: 8px; }
+
 h1 {
     text-align: center;
-    color: #ff3333;
+    color: var(--arterial-spray);
     text-transform: uppercase;
     letter-spacing: 2px;
     margin-top: 0;
+    font-size: 1.8rem;
+    margin-bottom: 15px;
 }
 
 .form-group {
-    margin-bottom: 20px;
+    margin-bottom: 15px; /* Tighter margin for one-frame fitting */
 }
 
 label {
     display: block;
-    margin-bottom: 8px;
+    margin-bottom: 6px;
     color: #ff6666;
     font-weight: bold;
+    font-size: 0.95rem;
 }
 
 input[type="text"], select {
@@ -151,12 +173,19 @@ input[type="text"], select {
     background-color: #1a1a1a;
     border: 1px solid #444;
     color: #fff;
-    border-radius: 5px;
+    border-radius: 4px;
     box-sizing: border-box;
+    font-family: var(--font-ui);
+}
+
+input[type="text"]:focus, select:focus {
+    border-color: var(--arterial-spray);
+    outline: none;
+    box-shadow: 0 0 8px rgba(255, 51, 51, 0.3);
 }
 
 /* ==========================================================================
-   COMBINATION LOCK STYLES
+   COMBINATION LOCK STYLES (MEDIUM SIZED)
    ========================================================================== */
 .combination-lock {
     display: flex;
@@ -164,85 +193,48 @@ input[type="text"], select {
     gap: 15px;
 }
 
-/* Legacy lock slot kept just in case it's used elsewhere */
-.lock-slot {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    background: #111;
-    border: 1px solid #333;
-    padding: 10px;
-    border-radius: 8px;
-    width: 22%;
-}
-
-.lock-slot img {
-    width: 80px;
-    height: 80px;
-    object-fit: contain;
-    margin: 10px 0;
-    filter: drop-shadow(0 0 5px #8b0000);
-}
-
-.arrow-btn {
-    background: #2a2a2a;
-    border: 1px solid #555;
-    color: #fff;
-    cursor: pointer;
-    width: 100%;
-    padding: 5px;
-    font-size: 16px;
-}
-
-.arrow-btn:hover {
-    background: #ff3333;
-    color: #000;
-}
-
-/* The Replaced Combo Lock Scroll Styles */
 .scroll-slot {
     width: 48%;
-    height: 250px; 
-    overflow-y: scroll;
+    height: 180px; /* Scaled down slightly to fit medium frame better */
+    overflow-y: auto;
     background: #111;
-    border: 2px solid #333;
-    border-radius: 8px;
+    border: 1px solid #333;
+    border-radius: 6px;
     display: flex;
     flex-direction: column;
     align-items: center;
     padding: 10px 0;
-    gap: 15px;
+    gap: 10px;
 }
 
-/* Custom Blood-red Scrollbar */
-.scroll-slot::-webkit-scrollbar { width: 8px; }
+/* Custom Blood-red Scrollbar for slots */
+.scroll-slot::-webkit-scrollbar { width: 6px; }
 .scroll-slot::-webkit-scrollbar-track { background: #0a0a0a; border-radius: 8px; }
-.scroll-slot::-webkit-scrollbar-thumb { background: #8b0000; border-radius: 8px; }
-.scroll-slot::-webkit-scrollbar-thumb:hover { background: #ff3333; }
+.scroll-slot::-webkit-scrollbar-thumb { background: var(--dried-blood); border-radius: 8px; }
+.scroll-slot::-webkit-scrollbar-thumb:hover { background: var(--arterial-spray); }
 
 .perk-option {
-    width: 80px;
-    height: 80px;
+    width: 60px; /* Medium icon size */
+    height: 60px;
     object-fit: contain;
     cursor: pointer;
     opacity: 0.4;
-    transition: all 0.2s;
+    transition: all 0.2s var(--smooth-curve);
     border: 2px solid transparent;
-    border-radius: 10px;
-    padding: 5px;
+    border-radius: 8px;
+    padding: 4px;
 }
 
 .perk-option:hover {
     opacity: 0.8;
 }
 
-/* This triggers when a user clicks a perk */
 .perk-option.selected {
     opacity: 1;
-    border-color: #ff3333;
+    border-color: var(--arterial-spray);
     background: rgba(255, 51, 51, 0.1);
-    box-shadow: 0 0 15px rgba(139, 0, 0, 0.8);
-    filter: drop-shadow(0 0 5px #8b0000);
+    box-shadow: 0 0 10px rgba(139, 0, 0, 0.8);
+    filter: drop-shadow(0 0 5px var(--dried-blood));
 }
 
 /* ==========================================================================
@@ -250,52 +242,55 @@ input[type="text"], select {
    ========================================================================== */
 .submit-btn {
     width: 100%;
-    padding: 15px;
-    background-color: #8b0000;
-    color: white;
+    padding: 12px; /* Medium size padding */
+    background-color: var(--dried-blood);
+    color: var(--bone-white);
     border: none;
-    font-size: 18px;
+    font-size: 1.1rem;
     font-weight: bold;
     cursor: pointer;
     text-transform: uppercase;
-    transition: background 0.3s;
-    border-radius: 5px;
+    transition: background 0.3s var(--smooth-curve);
+    border-radius: 4px;
+    margin-top: 10px;
 }
 
 .submit-btn:hover {
     background-color: #cc0000;
+    box-shadow: 0 0 15px rgba(255, 51, 51, 0.4);
 }
 
 .secondary-btn {
     background-color: #333;
     color: white;
     border: 1px solid #555;
-    padding: 10px 20px;
+    padding: 8px 16px;
     cursor: pointer;
-    border-radius: 5px;
+    border-radius: 4px;
     font-weight: bold;
     transition: 0.3s;
 }
 
 .secondary-btn:hover {
     background-color: #555;
-    border-color: #ff3333;
+    border-color: var(--arterial-spray);
 }
 
 #statusMessage {
     margin-top: 15px;
     text-align: center;
     font-weight: bold;
+    font-size: 0.95rem;
 }
 
 .login-link {
     text-align: center;
-    margin-bottom: 25px;
-    font-size: 14px;
+    margin-bottom: 20px;
+    font-size: 0.9rem;
 }
 
 .login-link a {
-    color: #ff3333;
+    color: var(--arterial-spray);
     text-decoration: none;
     font-weight: bold;
     border-bottom: 1px solid transparent;
@@ -303,25 +298,26 @@ input[type="text"], select {
 }
 
 .login-link a:hover {
-    border-bottom: 1px solid #ff3333;
-    text-shadow: 0 0 5px #ff3333;
+    border-bottom: 1px solid var(--arterial-spray);
+    text-shadow: 0 0 5px var(--arterial-spray);
 }
 
 .question-display {
     background: #0a0a0a;
-    border: 1px solid #ff3333;
-    padding: 15px;
+    border: 1px solid var(--arterial-spray);
+    padding: 12px;
     color: #ff9999;
     font-style: italic;
-    border-radius: 5px;
+    border-radius: 4px;
     margin-bottom: 10px;
+    font-size: 0.95rem;
 }
 
 /* ==========================================================================
    ANIMATIONS
    ========================================================================== */
 @keyframes organicHeartbeatBorder {
-    0% { border-color: rgba(139, 0, 0, 0.5); box-shadow: 0 0 5px rgba(139, 0, 0, 0.2); }
-    50% { border-color: rgba(255, 51, 51, 1); box-shadow: 0 0 15px rgba(255, 51, 51, 0.8); }
-    100% { border-color: rgba(139, 0, 0, 0.5); box-shadow: 0 0 5px rgba(139, 0, 0, 0.2); }
+    0% { border-bottom-color: rgba(139, 0, 0, 0.5); box-shadow: 0 4px 10px rgba(0, 0, 0, 0.6); }
+    50% { border-bottom-color: rgba(255, 51, 51, 1); box-shadow: 0 4px 20px rgba(255, 51, 51, 0.4); }
+    100% { border-bottom-color: rgba(139, 0, 0, 0.5); box-shadow: 0 4px 10px rgba(0, 0, 0, 0.6); }
 }
