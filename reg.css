@@ -1,112 +1,153 @@
 /* ==========================================================================
-   GLOBAL STYLES & BACKGROUND FIX
+   GLOBAL STYLES
    ========================================================================== */
+
+:root {
+    --dried-blood: #8b0000;
+    --arterial-spray: #ff3333;
+    --bone-white: #ffffff;
+    --muted-bone: #d0d0d0;
+    --smooth-curve: cubic-bezier(0.22, 1, 0.36, 1);
+    --font-ui: 'Courier New', Courier, monospace;
+}
+
+/* RESET */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
+/* ==========================================================================
+   BODY + FIXED BACKGROUND GIF
+   ========================================================================== */
+
 body {
-    font-family: 'Courier New', Courier, monospace;
-    color: #e0e0e0;
-    min-height: 100vh;
-    margin: 0;
-    padding: 0;
-    
-    /* Fixed Background Image */
-    background-image: url('your-background-image.jpg'); /* Add your image path */
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    background-attachment: fixed;
-    
-    /* Fallback background color */
+    background: url("your-background.gif") center center / cover no-repeat fixed;
     background-color: #0a0a0a;
-    
-    /* Remove flexbox from body to allow scrolling */
-    display: block;
+
+    color: #e0e0e0;
+    font-family: 'Courier New', Courier, monospace;
+
+    min-height: 100vh;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    overflow-x: hidden;
+
+    padding-top: 120px;
+    position: relative;
+}
+
+/* Dark overlay for readability */
+body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+
+    background: rgba(0, 0, 0, 0.55);
+
+    z-index: -1;
 }
 
 /* ==========================================================================
-   NAVIGATION - FIXED TO TOP
+   FIXED NAVBAR
    ========================================================================== */
+
 .navbar {
-    width: 100%;
+    width: calc(100% - 40px);
     max-width: 1200px;
     height: 80px;
+
     position: fixed;
-    top: 0; /* Changed from 20px to 0 */
+    top: 20px;
     left: 50%;
     transform: translateX(-50%);
+
     background: linear-gradient(
-        to bottom, 
-        rgba(0, 0, 0, 0.95) 0%, 
-        rgba(15, 0, 0, 0.85) 100%
+        to bottom,
+        rgba(0, 0, 0, 0.95) 0%,
+        rgba(15, 0, 0, 0.88) 100%
     );
-    border-bottom: 2px solid #8b0000;
-    border-radius: 0; /* Changed from 4px to 0 for full-width feel */
-    z-index: 1000;
+
+    border: 2px solid var(--dried-blood);
+    border-radius: 10px;
+
+    z-index: 9999;
+
     display: flex;
     justify-content: center;
     align-items: center;
+
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
-    
-    /* The Organic Heartbeat Border Glow */
-    animation: organicHeartbeatBorder 4s infinite ease-in-out;
+
+    box-shadow:
+        0 0 20px rgba(139, 0, 0, 0.5),
+        0 0 40px rgba(139, 0, 0, 0.2);
+
+    animation: organicHeartbeatBorder 4s infinite var(--smooth-curve);
 }
 
-@keyframes organicHeartbeatBorder {
-    0%, 100% {
-        box-shadow: 0 2px 10px rgba(139, 0, 0, 0.3);
-    }
-    50% {
-        box-shadow: 0 2px 25px rgba(139, 0, 0, 0.7);
-    }
-}
+/* ==========================================================================
+   NAV LINKS
+   ========================================================================== */
 
 .nav-links {
     display: flex;
-    gap: 60px;
-    list-style: none;
     align-items: center;
     justify-content: center;
-    padding: 0;
-    margin: 0;
+
+    gap: 60px;
+
+    list-style: none;
 }
 
 .navbar li a {
-    font-family: 'Courier New', Courier, monospace;
-    font-size: 1.8rem;
+    font-family: var(--font-ui);
+    font-size: 1.2rem;
     font-weight: 700;
-    letter-spacing: 4px;
-    color: #8b8682;
+
+    letter-spacing: 3px;
+
+    color: var(--muted-bone);
+
     text-decoration: none;
     text-transform: uppercase;
+
     position: relative;
+
     padding: 8px 15px;
-    transition: all 0.3s ease;
+
+    transition: all 0.3s var(--smooth-curve);
 }
 
-/* Elegant Blood Slash on Hover */
+/* Blood Slash Hover Effect */
 .navbar li a::before {
     content: "";
+
     position: absolute;
     top: 50%;
     left: 50%;
+
     width: 0;
     height: 2px;
-    background: #ff1a1a;
+
+    background: var(--arterial-spray);
+
     transform: translate(-50%, -50%) rotate(-3deg);
-    transition: width 0.4s ease;
-    box-shadow: 0 0 10px #ff1a1a;
-    z-index: 2;
+
+    transition: width 0.4s var(--smooth-curve);
+
+    box-shadow: 0 0 10px var(--arterial-spray);
+
     opacity: 0;
 }
 
 .navbar li a:hover {
-    color: #f5f0e1;
+    color: var(--bone-white);
     text-shadow: 0 0 15px rgba(255, 5, 5, 0.6);
 }
 
@@ -116,39 +157,50 @@ body {
 }
 
 /* ==========================================================================
-   MAIN CONTENT WRAPPER - ALLOWS SCROLLING
+   CENTER LOGIN / BLOOD WEB BOX
    ========================================================================== */
-.main-content-wrapper {
-    padding-top: 100px; /* Space for fixed navbar */
-    padding-bottom: 50px;
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
-    min-height: 100vh;
+
+.blood-web-container {
+    width: 100%;
+    max-width: 600px;
+
+    background: rgba(20, 20, 20, 0.92);
+
+    border: 2px solid #8b0000;
+    border-radius: 12px;
+
+    padding: 30px;
+
+    box-shadow:
+        0 0 20px rgba(139, 0, 0, 0.5),
+        0 0 40px rgba(0, 0, 0, 0.8);
+
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+
+    position: relative;
 }
 
 /* ==========================================================================
-   LOGIN CONTAINER - KEEPS ORIGINAL SIZE
+   HEADINGS
    ========================================================================== */
-.blood-web-container {
-    background: rgba(20, 20, 20, 0.9);
-    border: 2px solid #8b0000;
-    padding: 30px;
-    border-radius: 10px;
-    box-shadow: 0 0 20px rgba(139, 0, 0, 0.5);
-    max-width: 600px;
-    width: 100%;
-    margin: 20px auto;
-    position: relative;
-    z-index: 1;
-}
 
 h1 {
     text-align: center;
+
     color: #ff3333;
+
     text-transform: uppercase;
-    letter-spacing: 2px;
+    letter-spacing: 3px;
+
+    margin-bottom: 25px;
+
+    text-shadow: 0 0 10px rgba(255, 0, 0, 0.4);
 }
+
+/* ==========================================================================
+   FORM STYLES
+   ========================================================================== */
 
 .form-group {
     margin-bottom: 20px;
@@ -156,22 +208,43 @@ h1 {
 
 label {
     display: block;
+
     margin-bottom: 8px;
+
     color: #ff6666;
+
     font-weight: bold;
 }
 
-input[type="text"], select {
+input[type="text"],
+select {
     width: 100%;
-    padding: 10px;
+
+    padding: 12px;
+
     background-color: #1a1a1a;
+
     border: 1px solid #444;
+    border-radius: 6px;
+
     color: #fff;
-    border-radius: 5px;
-    box-sizing: border-box;
+
+    transition: 0.3s;
 }
 
-/* Combination Lock Styles */
+input[type="text"]:focus,
+select:focus {
+    outline: none;
+
+    border-color: #ff3333;
+
+    box-shadow: 0 0 10px rgba(255, 51, 51, 0.4);
+}
+
+/* ==========================================================================
+   COMBINATION LOCK
+   ========================================================================== */
+
 .combination-lock {
     display: flex;
     justify-content: space-between;
@@ -181,32 +254,61 @@ input[type="text"], select {
 .scroll-slot {
     width: 48%;
     height: 250px;
-    overflow-y: scroll;
+
+    overflow-y: auto;
+
     background: #111;
+
     border: 2px solid #333;
     border-radius: 8px;
+
     display: flex;
     flex-direction: column;
     align-items: center;
+
     padding: 10px 0;
+
     gap: 15px;
 }
 
-/* Custom Blood-red Scrollbar */
-.scroll-slot::-webkit-scrollbar { width: 8px; }
-.scroll-slot::-webkit-scrollbar-track { background: #0a0a0a; border-radius: 8px; }
-.scroll-slot::-webkit-scrollbar-thumb { background: #8b0000; border-radius: 8px; }
-.scroll-slot::-webkit-scrollbar-thumb:hover { background: #ff3333; }
+/* BLOOD SCROLLBAR */
+.scroll-slot::-webkit-scrollbar {
+    width: 8px;
+}
+
+.scroll-slot::-webkit-scrollbar-track {
+    background: #0a0a0a;
+    border-radius: 8px;
+}
+
+.scroll-slot::-webkit-scrollbar-thumb {
+    background: #8b0000;
+    border-radius: 8px;
+}
+
+.scroll-slot::-webkit-scrollbar-thumb:hover {
+    background: #ff3333;
+}
+
+/* ==========================================================================
+   PERK OPTIONS
+   ========================================================================== */
 
 .perk-option {
     width: 80px;
     height: 80px;
+
     object-fit: contain;
+
     cursor: pointer;
+
     opacity: 0.4;
+
     transition: all 0.2s;
+
     border: 2px solid transparent;
     border-radius: 10px;
+
     padding: 5px;
 }
 
@@ -216,75 +318,64 @@ input[type="text"], select {
 
 .perk-option.selected {
     opacity: 1;
+
     border-color: #ff3333;
+
     background: rgba(255, 51, 51, 0.1);
+
     box-shadow: 0 0 15px rgba(139, 0, 0, 0.8);
+
     filter: drop-shadow(0 0 5px #8b0000);
 }
 
+/* ==========================================================================
+   BUTTONS
+   ========================================================================== */
+
 .submit-btn {
     width: 100%;
+
     padding: 15px;
+
     background-color: #8b0000;
+
     color: white;
+
     border: none;
+    border-radius: 6px;
+
     font-size: 18px;
     font-weight: bold;
+
     cursor: pointer;
+
     text-transform: uppercase;
-    transition: background 0.3s;
+
+    transition: 0.3s;
+
+    margin-top: 10px;
 }
 
 .submit-btn:hover {
     background-color: #cc0000;
+
+    box-shadow: 0 0 15px rgba(255, 0, 0, 0.4);
 }
 
-#statusMessage {
-    margin-top: 15px;
-    text-align: center;
-    font-weight: bold;
-}
-
-/* Login Link Styles */
-.login-link {
-    text-align: center;
-    margin-bottom: 25px;
-    font-size: 14px;
-}
-
-.login-link a {
-    color: #ff3333;
-    text-decoration: none;
-    font-weight: bold;
-    border-bottom: 1px solid transparent;
-    transition: 0.3s;
-}
-
-.login-link a:hover {
-    border-bottom: 1px solid #ff3333;
-    text-shadow: 0 0 5px #ff3333;
-}
-
-/* Question Display */
-.question-display {
-    background: #0a0a0a;
-    border: 1px solid #ff3333;
-    padding: 15px;
-    color: #ff9999;
-    font-style: italic;
-    border-radius: 5px;
-    margin-bottom: 10px;
-}
-
-/* Secondary Button */
 .secondary-btn {
     background-color: #333;
+
     color: white;
+
     border: 1px solid #555;
-    padding: 10px 20px;
-    cursor: pointer;
     border-radius: 5px;
+
+    padding: 10px 20px;
+
+    cursor: pointer;
+
     font-weight: bold;
+
     transition: 0.3s;
 }
 
@@ -294,27 +385,122 @@ input[type="text"], select {
 }
 
 /* ==========================================================================
-   RESPONSIVE DESIGN
+   LOGIN LINK
    ========================================================================== */
+
+.login-link {
+    text-align: center;
+
+    margin-bottom: 25px;
+
+    font-size: 14px;
+}
+
+.login-link a {
+    color: #ff3333;
+
+    text-decoration: none;
+
+    font-weight: bold;
+
+    border-bottom: 1px solid transparent;
+
+    transition: 0.3s;
+}
+
+.login-link a:hover {
+    border-bottom: 1px solid #ff3333;
+
+    text-shadow: 0 0 5px #ff3333;
+}
+
+/* ==========================================================================
+   STATUS MESSAGE
+   ========================================================================== */
+
+#statusMessage {
+    margin-top: 15px;
+
+    text-align: center;
+
+    font-weight: bold;
+}
+
+/* ==========================================================================
+   QUESTION DISPLAY
+   ========================================================================== */
+
+.question-display {
+    background: #0a0a0a;
+
+    border: 1px solid #ff3333;
+    border-radius: 5px;
+
+    padding: 15px;
+
+    color: #ff9999;
+
+    font-style: italic;
+
+    margin-bottom: 10px;
+}
+
+/* ==========================================================================
+   RESPONSIVE
+   ========================================================================== */
+
 @media (max-width: 768px) {
+
+    body {
+        padding-top: 140px;
+        padding-left: 15px;
+        padding-right: 15px;
+    }
+
+    .navbar {
+        height: auto;
+        padding: 15px;
+    }
+
     .nav-links {
         gap: 20px;
+        flex-wrap: wrap;
     }
-    
+
     .navbar li a {
-        font-size: 1.2rem;
+        font-size: 0.9rem;
         letter-spacing: 2px;
     }
-    
+
     .combination-lock {
         flex-direction: column;
     }
-    
+
     .scroll-slot {
         width: 100%;
     }
-    
-    .main-content-wrapper {
-        padding-top: 80px;
+
+    .blood-web-container {
+        padding: 20px;
+    }
+}
+
+/* ==========================================================================
+   HEARTBEAT ANIMATION
+   ========================================================================== */
+
+@keyframes organicHeartbeatBorder {
+
+    0%,
+    100% {
+        box-shadow:
+            0 0 15px rgba(139, 0, 0, 0.4),
+            0 0 30px rgba(139, 0, 0, 0.15);
+    }
+
+    50% {
+        box-shadow:
+            0 0 25px rgba(255, 0, 0, 0.7),
+            0 0 45px rgba(255, 0, 0, 0.25);
     }
 }
