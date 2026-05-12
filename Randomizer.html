@@ -297,10 +297,11 @@ body::before {
 }
 
 /* The Rhombus Layout (Medium Sized) */
+/* The Rhombus Layout (Medium Sized) */
 .perk-diamond {
     position: relative;
-    width: 360px; /* Scaled down to prevent overlapping */
-    height: 360px;
+    width: 400px; /* Increased to push left/right perks further apart */
+    height: 400px; /* Increased to push top/bottom perks further apart */
     margin-bottom: 20px;
 }
 
@@ -314,21 +315,29 @@ body::before {
     z-index: 5;
 }
 
-/* Recalculated Offsets for Medium Size */
+/* Recalculated Offsets for Medium Size - Pushed Outward */
 .pos-top { 
-    top: 0; left: 50%; transform: translateX(-50%); 
+    top: -15px; /* Pushes the top perk higher */
+    left: 50%; 
+    transform: translateX(-50%); 
     flex-direction: column-reverse; 
 }
 .pos-left { 
-    top: 50%; left: -20px; transform: translateY(-50%); 
+    top: 50%; 
+    left: -40px; /* Pushes the left perk further left */
+    transform: translateY(-50%); 
     flex-direction: row-reverse; 
 }
 .pos-right { 
-    top: 50%; right: -20px; transform: translateY(-50%); 
+    top: 50%; 
+    right: -40px; /* Pushes the right perk further right */
+    transform: translateY(-50%); 
     flex-direction: row; 
 }
 .pos-bottom { 
-    bottom: 0; left: 50%; transform: translateX(-50%); 
+    bottom: -15px; /* Pushes the bottom perk lower */
+    left: 50%; 
+    transform: translateX(-50%); 
     flex-direction: column; 
 }
 
