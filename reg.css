@@ -29,20 +29,11 @@ body {
     font-family: var(--font-ui);
     box-sizing: border-box;
 }
-
-/* ==========================================================================
-   BACKGROUND GIF - FIXED AND FITTED
-   ========================================================================== */
-.bg-gif {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    object-fit: cover; /* Ensures the GIF fills the screen without stretching */
-    z-index: -3; /* Keeps the GIF behind all other content */
-    pointer-events: none;
+body {
+    position: relative;
+    z-index: 1;
 }
+
 
 /* ==========================================================================
    NAVIGATION - FLUSH TO TOP & MEDIUM SIZED
