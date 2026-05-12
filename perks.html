@@ -99,114 +99,87 @@ body::after {
 }
 
 /* ==========================================================================
-   RESPONSIVE NAVBAR
-   ========================================================================== */
+           NAVIGATION – MEATHOOKS, ALWAYS FIXED ON TOP
+           ========================================================================== */
+        .navbar {
+            width: 100%;
+            max-width: 1200px;
+            height: 80px;
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(
+                to bottom, 
+                rgba(0, 0, 0, 0.96) 0%, 
+                rgba(30, 5, 5, 0.92) 100%
+            );
+            border-bottom: 2px solid var(--dried-blood);
+            border-radius: 4px;
+            z-index: 1000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            /* The Organic Heartbeat Border Glow */
+            animation: organicHeartbeatBorder 4s infinite var(--smooth-curve);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.6);
+        }
 
-.navbar {
-    width: calc(100% - 30px);
-    max-width: 1200px;
+        @keyframes organicHeartbeatBorder {
+            0% { border-bottom-color: #5e0f0f; box-shadow: 0 2px 8px rgba(197, 30, 30, 0.2); }
+            50% { border-bottom-color: #c41e1e; box-shadow: 0 0 18px rgba(196, 30, 30, 0.6); }
+            100% { border-bottom-color: #5e0f0f; box-shadow: 0 2px 8px rgba(197, 30, 30, 0.2); }
+        }
 
-    position: fixed;
-    top: 15px;
-    left: 50%;
-    transform: translateX(-50%);
+        .nav-links {
+            display: flex;
+            gap: 60px;
+            list-style: none;
+            align-items: center;
+            justify-content: center;
+        }
 
-    padding: 16px 28px;
+        .navbar li a {
+            font-family: var(--font-ui);
+            font-size: 1.8rem;
+            font-weight: 700;
+            letter-spacing: 4px;
+            color: var(--muted-bone);
+            text-decoration: none;
+            text-transform: uppercase;
+            position: relative;
+            padding: 8px 15px;
+            transition: all 0.3s var(--smooth-curve);
+        }
 
-    background: linear-gradient(
-        to bottom,
-        rgba(0, 0, 0, 0.95) 0%,
-        rgba(15, 0, 0, 0.88) 100%
-    );
+        /* Elegant Blood Slash on Hover */
+        .navbar li a::before {
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 2px;
+            background: var(--arterial-spray);
+            transform: translate(-50%, -50%) rotate(-3deg);
+            transition: width 0.4s var(--smooth-curve);
+            box-shadow: 0 0 10px var(--arterial-spray);
+            z-index: 2;
+            opacity: 0;
+        }
 
-    border: 1px solid rgba(255, 0, 0, 0.25);
-    border-radius: 14px;
+        .navbar li a:hover {
+            color: var(--bone-white);
+            text-shadow: 0 0 15px rgba(255, 5, 5, 0.7);
+        }
 
-    z-index: 1000;
+        .navbar li a:hover::before {
+            width: 100%;
+            opacity: 1;
+        }
 
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-
-    box-shadow:
-        0 0 25px rgba(255, 0, 0, 0.12);
-
-    overflow: hidden;
-}
-
-/* LINKS CONTAINER */
-
-.nav-links {
-    display: flex;
-    flex-wrap: wrap; /* allows wrapping instead of cutting */
-    justify-content: center;
-    align-items: center;
-
-    gap: clamp(12px, 2vw, 40px);
-
-    list-style: none;
-
-    width: 100%;
-}
-
-/* LINKS */
-
-.navbar li a {
-    font-family: 'Inter', sans-serif;
-
-    font-size: clamp(0.85rem, 1.2vw, 1.15rem);
-    font-weight: 700;
-
-    letter-spacing: clamp(1px, 0.25vw, 3px);
-
-    color: #d8d8d8;
-    text-decoration: none;
-    text-transform: uppercase;
-
-    position: relative;
-
-    padding: 8px 12px;
-
-    transition: all 0.3s ease;
-
-    white-space: nowrap;
-}
-
-/* Hover */
-
-.navbar li a::before {
-    content: "";
-    position: absolute;
-
-    top: 50%;
-    left: 50%;
-
-    width: 0;
-    height: 2px;
-
-    background: var(--red);
-
-    transform: translate(-50%, -50%) rotate(-3deg);
-
-    transition: width 0.35s ease;
-
-    box-shadow: 0 0 10px var(--red);
-
-    opacity: 0;
-}
-
-.navbar li a:hover {
-    color: white;
-    text-shadow: 0 0 12px rgba(255, 0, 0, 0.7);
-}
-
-.navbar li a:hover::before {
-    width: 100%;
-    opacity: 1;
-}
 /* ==========================================================================
    MAIN LAYOUT & CONTROLS
    ========================================================================== */
