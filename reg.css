@@ -1,122 +1,178 @@
+/* ==========================================================================
+   GLOBAL RESET + FIXED BACKGROUND
+   ========================================================================== */
+html,
 body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    min-height: 100%;
+    overflow-x: hidden;
+    scroll-behavior: smooth;
+}
+
+body {
+    background: url("your-background-image.jpg") center center / cover no-repeat fixed;
     background-color: #0a0a0a;
     color: #e0e0e0;
     font-family: 'Courier New', Courier, monospace;
-    margin: 0;
-    padding: 0;
-    height: 100vh;
-    overflow: hidden; /* Prevents body scrolling */
-    
-    /* Fixed Background Image */
-    background-image: url('your-background-image.jpg'); /* Add your image path */
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    background-attachment: fixed;
-    position: relative;
+
+    /* Keeps content centered */
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+
+    /* Space for fixed navbar */
+    padding-top: 130px;
+    padding-bottom: 40px;
+
+    min-height: 100vh;
+    box-sizing: border-box;
 }
 
-/* Dark overlay for better readability */
+/* Dark overlay for readability */
 body::before {
-    content: '';
+    content: "";
     position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.7);
-    z-index: 0;
-    pointer-events: none;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.65);
+    z-index: -1;
 }
 
 /* ==========================================================================
-   NAVIGATION - THE MEATHOOKS (FIXED)
+   NAVIGATION - FIXED TOP NAVBAR
    ========================================================================== */
 .navbar {
-    width: 100%;
+    width: calc(100% - 40px);
     max-width: 1200px;
     height: 80px;
+
     position: fixed;
-    top: 0; /* Changed from 20px to 0 */
+    top: 20px;
     left: 50%;
     transform: translateX(-50%);
+
     background: linear-gradient(
-        to bottom, 
-        rgba(0, 0, 0, 0.95) 0%, 
+        to bottom,
+        rgba(0, 0, 0, 0.95) 0%,
         rgba(15, 0, 0, 0.85) 100%
     );
-    border-bottom: 2px solid #8b0000;
-    border-radius: 0 0 4px 4px; /* Rounded only at bottom */
-    z-index: 100;
+
+    border: 2px solid #8b0000;
+    border-radius: 8px;
+
     display: flex;
     justify-content: center;
     align-items: center;
+
+    z-index: 9999;
+
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
-    box-shadow: 0 4px 20px rgba(139, 0, 0, 0.3);
-    
-    /* The Organic Heartbeat Border Glow */
-    animation: organicHeartbeatBorder 4s infinite ease-in-out;
+
+    box-shadow:
+        0 0 20px rgba(139, 0, 0, 0.4),
+        0 0 40px rgba(139, 0, 0, 0.2);
 }
 
-/* Main content container - Fixed position, scrollable internally */
-.main-content {
-    position: fixed;
-    top: 100px; /* Height of navbar + some spacing */
+/* NAV LINKS */
+.nav-links {
+    display: flex;
+    gap: 60px;
+    list-style: none;
+    align-items: center;
+    justify-content: center;
+
+    margin: 0;
+    padding: 0;
+}
+
+.navbar li {
+    list-style: none;
+}
+
+.navbar li a {
+    font-size: 1.1rem;
+    font-weight: 700;
+    letter-spacing: 3px;
+    color: #cfcfcf;
+    text-decoration: none;
+    text-transform: uppercase;
+    position: relative;
+    padding: 8px 15px;
+    transition: all 0.3s ease;
+}
+
+/* Blood slash effect */
+.navbar li a::before {
+    content: "";
+    position: absolute;
+    top: 50%;
     left: 50%;
-    transform: translateX(-50%);
+
+    width: 0;
+    height: 2px;
+
+    background: #ff3333;
+
+    transform: translate(-50%, -50%) rotate(-3deg);
+
+    transition: width 0.4s ease;
+
+    box-shadow: 0 0 10px #ff3333;
+
+    opacity: 0;
+}
+
+.navbar li a:hover {
+    color: #ffffff;
+    text-shadow: 0 0 15px rgba(255, 5, 5, 0.6);
+}
+
+.navbar li a:hover::before {
+    width: 100%;
+    opacity: 1;
+}
+
+/* ==========================================================================
+   LOGIN / MAIN CONTAINER
+   ========================================================================== */
+.blood-web-container {
+    background: rgba(20, 20, 20, 0.88);
+
+    border: 2px solid #8b0000;
+
+    padding: 30px;
+
+    border-radius: 12px;
+
+    box-shadow:
+        0 0 20px rgba(139, 0, 0, 0.5),
+        0 0 40px rgba(0, 0, 0, 0.7);
+
     width: 100%;
     max-width: 600px;
-    height: calc(100vh - 140px); /* Full height minus navbar and bottom spacing */
-    overflow-y: auto; /* Allow scrolling inside this container */
-    overflow-x: hidden;
-    z-index: 10;
-    padding: 20px;
-    
-    /* Custom Scrollbar for main content */
-    scrollbar-width: thin;
-    scrollbar-color: #8b0000 #0a0a0a;
-}
 
-/* Webkit scrollbar for main content */
-.main-content::-webkit-scrollbar {
-    width: 8px;
-}
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
 
-.main-content::-webkit-scrollbar-track {
-    background: #0a0a0a;
-    border-radius: 8px;
-}
-
-.main-content::-webkit-scrollbar-thumb {
-    background: #8b0000;
-    border-radius: 8px;
-}
-
-.main-content::-webkit-scrollbar-thumb:hover {
-    background: #ff3333;
-}
-
-/* Container for the form */
-.blood-web-container {
-    background: rgba(20, 20, 20, 0.9);
-    border: 2px solid #8b0000;
-    padding: 30px;
-    border-radius: 10px;
-    box-shadow: 0 0 20px rgba(139, 0, 0, 0.5);
-    width: 100%;
     box-sizing: border-box;
-    margin-bottom: 20px; /* Space at bottom for scrolling */
 }
 
+/* ==========================================================================
+   HEADINGS
+   ========================================================================== */
 h1 {
     text-align: center;
     color: #ff3333;
     text-transform: uppercase;
     letter-spacing: 2px;
-    margin-top: 0;
+    margin-bottom: 30px;
 }
 
+/* ==========================================================================
+   FORM STYLES
+   ========================================================================== */
 .form-group {
     margin-bottom: 20px;
 }
@@ -128,17 +184,37 @@ label {
     font-weight: bold;
 }
 
-input[type="text"], select {
+input[type="text"],
+input[type="password"],
+select {
     width: 100%;
-    padding: 10px;
+    padding: 12px;
+
     background-color: #1a1a1a;
+
     border: 1px solid #444;
+
     color: #fff;
+
     border-radius: 5px;
+
     box-sizing: border-box;
+
+    outline: none;
+
+    transition: 0.3s;
 }
 
-/* Combination Lock Styles */
+input[type="text"]:focus,
+input[type="password"]:focus,
+select:focus {
+    border-color: #ff3333;
+    box-shadow: 0 0 10px rgba(255, 51, 51, 0.4);
+}
+
+/* ==========================================================================
+   COMBINATION LOCK
+   ========================================================================== */
 .combination-lock {
     display: flex;
     justify-content: space-between;
@@ -148,45 +224,59 @@ input[type="text"], select {
 .scroll-slot {
     width: 48%;
     height: 250px;
-    overflow-y: scroll;
+
+    overflow-y: auto;
+
     background: #111;
+
     border: 2px solid #333;
+
     border-radius: 8px;
+
     display: flex;
     flex-direction: column;
     align-items: center;
+
     padding: 10px 0;
     gap: 15px;
 }
 
-/* Custom Blood-red Scrollbar */
-.scroll-slot::-webkit-scrollbar { 
-    width: 8px; 
+/* Blood-red scrollbar */
+.scroll-slot::-webkit-scrollbar {
+    width: 8px;
 }
 
-.scroll-slot::-webkit-scrollbar-track { 
-    background: #0a0a0a; 
-    border-radius: 8px; 
+.scroll-slot::-webkit-scrollbar-track {
+    background: #0a0a0a;
+    border-radius: 8px;
 }
 
-.scroll-slot::-webkit-scrollbar-thumb { 
-    background: #8b0000; 
-    border-radius: 8px; 
+.scroll-slot::-webkit-scrollbar-thumb {
+    background: #8b0000;
+    border-radius: 8px;
 }
 
-.scroll-slot::-webkit-scrollbar-thumb:hover { 
-    background: #ff3333; 
+.scroll-slot::-webkit-scrollbar-thumb:hover {
+    background: #ff3333;
 }
 
+/* PERK ICONS */
 .perk-option {
     width: 80px;
     height: 80px;
+
     object-fit: contain;
+
     cursor: pointer;
+
     opacity: 0.4;
+
     transition: all 0.2s;
+
     border: 2px solid transparent;
+
     border-radius: 10px;
+
     padding: 5px;
 }
 
@@ -196,37 +286,73 @@ input[type="text"], select {
 
 .perk-option.selected {
     opacity: 1;
+
     border-color: #ff3333;
+
     background: rgba(255, 51, 51, 0.1);
+
     box-shadow: 0 0 15px rgba(139, 0, 0, 0.8);
+
     filter: drop-shadow(0 0 5px #8b0000);
 }
 
+/* ==========================================================================
+   BUTTONS
+   ========================================================================== */
 .submit-btn {
     width: 100%;
+
     padding: 15px;
+
     background-color: #8b0000;
+
     color: white;
+
     border: none;
+
     font-size: 18px;
     font-weight: bold;
+
     cursor: pointer;
+
     text-transform: uppercase;
-    transition: background 0.3s;
-    border-radius: 5px;
-    margin-top: 10px;
+
+    border-radius: 6px;
+
+    transition: 0.3s;
 }
 
 .submit-btn:hover {
     background-color: #cc0000;
+    box-shadow: 0 0 20px rgba(255, 0, 0, 0.5);
 }
 
-#statusMessage {
-    margin-top: 15px;
-    text-align: center;
+.secondary-btn {
+    background-color: #333;
+
+    color: white;
+
+    border: 1px solid #555;
+
+    padding: 10px 20px;
+
+    cursor: pointer;
+
+    border-radius: 5px;
+
     font-weight: bold;
+
+    transition: 0.3s;
 }
 
+.secondary-btn:hover {
+    background-color: #555;
+    border-color: #ff3333;
+}
+
+/* ==========================================================================
+   LOGIN LINK
+   ========================================================================== */
 .login-link {
     text-align: center;
     margin-bottom: 25px;
@@ -246,109 +372,69 @@ input[type="text"], select {
     text-shadow: 0 0 5px #ff3333;
 }
 
-.nav-links {
-    display: flex;
-    gap: 60px;
-    list-style: none;
-    align-items: center;
-    justify-content: center;
-    margin: 0;
-    padding: 0;
-}
-
-.navbar li a {
-    font-family: 'Courier New', Courier, monospace;
-    font-size: 1.8rem;
-    font-weight: 700;
-    letter-spacing: 4px;
-    color: #ccc;
-    text-decoration: none;
-    text-transform: uppercase;
-    position: relative;
-    padding: 8px 15px;
-    transition: all 0.3s ease-in-out;
-}
-
-/* Elegant Blood Slash on Hover */
-.navbar li a::before {
-    content: "";
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 0;
-    height: 2px;
-    background: #ff0000;
-    transform: translate(-50%, -50%) rotate(-3deg);
-    transition: width 0.4s ease-in-out;
-    box-shadow: 0 0 10px #ff0000;
-    z-index: 2;
-    opacity: 0;
-}
-
-.navbar li a:hover {
-    color: #fff;
-    text-shadow: 0 0 15px rgba(255, 5, 5, 0.6);
-}
-
-.navbar li a:hover::before {
-    width: 100%;
-    opacity: 1;
-}
-
-.secondary-btn {
-    background-color: #333;
-    color: white;
-    border: 1px solid #555;
-    padding: 10px 20px;
-    cursor: pointer;
-    border-radius: 5px;
-    font-weight: bold;
-    transition: 0.3s;
-}
-
-.secondary-btn:hover {
-    background-color: #555;
-    border-color: #ff3333;
-}
-
+/* ==========================================================================
+   QUESTION DISPLAY
+   ========================================================================== */
 .question-display {
     background: #0a0a0a;
+
     border: 1px solid #ff3333;
+
     padding: 15px;
+
     color: #ff9999;
+
     font-style: italic;
+
     border-radius: 5px;
+
     margin-bottom: 10px;
 }
 
-/* Simple animation for the navbar */
-@keyframes organicHeartbeatBorder {
-    0%, 100% {
-        box-shadow: 0 0 5px rgba(139, 0, 0, 0.3);
-    }
-    50% {
-        box-shadow: 0 0 20px rgba(255, 0, 0, 0.5);
-    }
+/* ==========================================================================
+   STATUS MESSAGE
+   ========================================================================== */
+#statusMessage {
+    margin-top: 15px;
+    text-align: center;
+    font-weight: bold;
 }
 
-/* Responsive adjustments */
+/* ==========================================================================
+   MOBILE RESPONSIVE
+   ========================================================================== */
 @media (max-width: 768px) {
+
+    body {
+        padding-top: 140px;
+        padding-left: 15px;
+        padding-right: 15px;
+    }
+
+    .navbar {
+        height: auto;
+        padding: 15px;
+    }
+
     .nav-links {
         gap: 20px;
+        flex-wrap: wrap;
     }
-    
+
     .navbar li a {
-        font-size: 1.2rem;
+        font-size: 0.9rem;
         letter-spacing: 2px;
     }
-    
-    .main-content {
-        padding: 10px;
-        top: 80px;
-        height: calc(100vh - 100px);
-    }
-    
+
     .blood-web-container {
         padding: 20px;
+    }
+
+    .combination-lock {
+        flex-direction: column;
+    }
+
+    .scroll-slot {
+        width: 100%;
     }
 }
