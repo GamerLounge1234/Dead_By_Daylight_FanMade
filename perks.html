@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DBD | Quantum Terminal</title>
     <style>
-     @import url('https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,300;0,700;1,400&family=Teko:wght@500;700&family=Nosifer&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,300;0,700;1,400&family=Teko:wght@500;700&family=Nosifer&display=swap');
 
 :root {
     /* The Carnage Palette - Enhanced for Maximum Depth & Legibility */
@@ -26,6 +26,8 @@
     --font-title: 'Nosifer', display;
     --font-head: 'Teko', sans-serif;
     --font-body: 'Crimson Pro', serif;
+    /* Fallback for --font-ui if missing */
+    --font-ui: 'Courier New', Courier, monospace;
 
     /* Premium Easing & UI Base */
     --smooth-curve: cubic-bezier(0.25, 1, 0.3, 1);
@@ -53,23 +55,31 @@
 ::-webkit-scrollbar-thumb { background: var(--dried-blood); border-radius: 3px; transition: background 0.3s ease; }
 ::-webkit-scrollbar-thumb:hover { background: var(--pulsing-red); }
 
-body {
-    color: var(--bone-white);
-    font-family: var(--font-body);
-    height: 100vh;
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-    margin: 60px
-}
 body, html {
     width: 100%;
-    min-height: 100%;
-    background-color: transparent; /* Changed from var(--pitch-black) */
+    height: 100vh; /* Lock to exactly one frame */
+    overflow: hidden; /* Prevent full-page scroll */
+    background-color: transparent;
     color: var(--bone-white);
-    overflow-x: hidden;
-    font-family: var(--font-journal);
-    scroll-behavior: smooth;
+    font-family: var(--font-body);
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    padding-top: 70px; /* Make room for the flush navbar */
+}
+
+/* Background Animation */
+.bg-gif {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    object-fit: cover;
+    z-index: -3; /* Keep it all the way in the back */
+    pointer-events: none;
 }
 
 /* Ambient Deep Breathing Vignette */
@@ -100,120 +110,113 @@ body::after {
 }
 
 /* ==========================================================================
-           NAVIGATION – MEATHOOKS, ALWAYS FIXED ON TOP
-           ========================================================================== */
-        .navbar {
-            width: 100%;
-            max-width: 1200px;
-            height: 80px;
-            position: fixed;
-            top: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: linear-gradient(
-                to bottom, 
-                rgba(0, 0, 0, 0.96) 0%, 
-                rgba(30, 5, 5, 0.92) 100%
-            );
-            border-bottom: 2px solid var(--dried-blood);
-            border-radius: 4px;
-            z-index: 1000;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            /* The Organic Heartbeat Border Glow */
-            animation: organicHeartbeatBorder 4s infinite var(--smooth-curve);
-            box-shadow: 0 4px 20px rgba(0,0,0,0.6);
-        }
+   NAVIGATION – MEATHOOKS, ALWAYS FIXED ON TOP (FLUSH)
+   ========================================================================== */
+.navbar {
+    width: 100%;
+    height: 70px; /* Medium size */
+    position: fixed;
+    top: 0; /* Flush to the top edge */
+    left: 0;
+    background: linear-gradient(
+        to bottom, 
+        rgba(0, 0, 0, 0.98) 0%, 
+        rgba(30, 5, 5, 0.92) 100%
+    );
+    border-bottom: 2px solid var(--dried-blood);
+    z-index: 1000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    animation: organicHeartbeatBorderBottom 4s infinite var(--smooth-curve);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.6);
+}
 
-        @keyframes organicHeartbeatBorder {
-            0% { border-bottom-color: #5e0f0f; box-shadow: 0 2px 8px rgba(197, 30, 30, 0.2); }
-            50% { border-bottom-color: #c41e1e; box-shadow: 0 0 18px rgba(196, 30, 30, 0.6); }
-            100% { border-bottom-color: #5e0f0f; box-shadow: 0 2px 8px rgba(197, 30, 30, 0.2); }
-        }
+.nav-links {
+    display: flex;
+    gap: 40px; /* Slightly tighter gap to fit medium size */
+    list-style: none;
+    align-items: center;
+    justify-content: center;
+}
 
-        .nav-links {
-            display: flex;
-            gap: 60px;
-            list-style: none;
-            align-items: center;
-            justify-content: center;
-        }
+.navbar li a {
+    font-family: var(--font-ui);
+    font-size: 1.5rem; /* Medium font */
+    font-weight: 700;
+    letter-spacing: 3px;
+    color: var(--muted-bone);
+    text-decoration: none;
+    text-transform: uppercase;
+    position: relative;
+    padding: 5px 15px;
+    transition: all 0.3s var(--smooth-curve);
+}
 
-        .navbar li a {
-            font-family: var(--font-ui);
-            font-size: 1.8rem;
-            font-weight: 700;
-            letter-spacing: 4px;
-            color: var(--muted-bone);
-            text-decoration: none;
-            text-transform: uppercase;
-            position: relative;
-            padding: 8px 15px;
-            transition: all 0.3s var(--smooth-curve);
-        }
+/* Elegant Blood Slash on Hover */
+.navbar li a::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 2px;
+    background: var(--arterial-spray);
+    transform: translate(-50%, -50%) rotate(-3deg);
+    transition: width 0.4s var(--smooth-curve);
+    box-shadow: 0 0 10px var(--arterial-spray);
+    z-index: 2;
+    opacity: 0;
+}
 
-        /* Elegant Blood Slash on Hover */
-        .navbar li a::before {
-            content: "";
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 0;
-            height: 2px;
-            background: var(--arterial-spray);
-            transform: translate(-50%, -50%) rotate(-3deg);
-            transition: width 0.4s var(--smooth-curve);
-            box-shadow: 0 0 10px var(--arterial-spray);
-            z-index: 2;
-            opacity: 0;
-        }
+.navbar li a:hover {
+    color: var(--bone-white);
+    text-shadow: 0 0 15px rgba(255, 5, 5, 0.7);
+}
 
-        .navbar li a:hover {
-            color: var(--bone-white);
-            text-shadow: 0 0 15px rgba(255, 5, 5, 0.7);
-        }
-
-        .navbar li a:hover::before {
-            width: 100%;
-            opacity: 1;
-        }
+.navbar li a:hover::before {
+    width: 100%;
+    opacity: 1;
+}
 
 /* ==========================================================================
-   MAIN LAYOUT & CONTROLS
+   MAIN LAYOUT & CONTROLS (FIT TO FRAME)
    ========================================================================== */
 .app-container {
     display: flex;
     flex-direction: column;
-    flex-grow: 1;
-    padding: 2rem 3rem;
-    overflow: hidden;
-    gap: 2rem;
-    max-width: 1600px;
+    flex: 1; /* Takes up remaining height after navbar */
+    height: calc(100vh - 70px);
+    padding: 1.5rem 2rem; /* Medium padding */
+    gap: 1.5rem;
+    max-width: 1400px;
     margin: 0 auto;
     width: 100%;
+    overflow: hidden; /* Crucial for one-frame layout */
+    box-sizing: border-box;
 }
 
 .controls-header {
     display: flex;
     flex-direction: column;
-    gap: 1.5rem;
+    gap: 1rem;
     background: var(--panel-bg);
-    padding: 1.5rem 2.5rem;
+    padding: 1rem 1.5rem;
     border-radius: 4px;
     border: 1px solid var(--dried-blood);
     backdrop-filter: blur(10px);
     box-shadow: 0 15px 35px rgba(0, 0, 0, 0.8);
     animation: organicHeartbeatBorderFull 4s infinite var(--smooth-curve);
+    flex-shrink: 0; /* Prevents this section from squishing */
 }
 
 .controls-top {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    gap: 2rem;
+    gap: 1.5rem;
 }
 
 /* Faction Toggles */
@@ -229,9 +232,9 @@ body::after {
     background: transparent;
     color: var(--muted-bone);
     border: none;
-    padding: 0.8rem 2.5rem;
+    padding: 0.6rem 1.5rem;
     font-family: var(--font-head);
-    font-size: 1.2rem;
+    font-size: 1.1rem;
     font-weight: 700;
     letter-spacing: 2px;
     transition: all 0.3s;
@@ -253,9 +256,9 @@ body::after {
     background: rgba(0,0,0,0.7);
     border: 1px solid var(--dried-blood);
     color: var(--bone-white);
-    padding: 0.8rem 1.5rem;
+    padding: 0.6rem 1.2rem;
     font-family: var(--font-body);
-    font-size: 1.2rem;
+    font-size: 1.1rem;
     border-radius: 2px;
     outline: none;
     transition: all 0.3s var(--smooth-curve);
@@ -272,9 +275,9 @@ body::after {
     background: rgba(0,0,0,0.7);
     color: var(--bone-white);
     border: 1px solid var(--dried-blood);
-    padding: 0.8rem 1.5rem;
+    padding: 0.6rem 1.2rem;
     font-family: var(--font-head);
-    font-size: 1.2rem;
+    font-size: 1.1rem;
     letter-spacing: 1px;
     border-radius: 2px;
     outline: none;
@@ -286,17 +289,17 @@ body::after {
     display: flex;
     justify-content: center;
     gap: 1rem;
-    padding-bottom: 0.5rem;
+    padding-bottom: 0.2rem;
 }
 
 .cat-tab {
     background: transparent;
     border: 1px solid var(--dried-blood);
     color: var(--muted-bone);
-    padding: 0.4rem 1.5rem;
+    padding: 0.3rem 1.2rem;
     border-radius: 20px;
     font-family: var(--font-head);
-    font-size: 1rem;
+    font-size: 0.9rem;
     letter-spacing: 1px;
     text-transform: uppercase;
     transition: all 0.3s;
@@ -310,32 +313,34 @@ body::after {
 }
 
 /* ==========================================================================
-   CONTENT AREA - SPLIT VIEW SYMMETRY
+   CONTENT AREA - SPLIT VIEW SYMMETRY (AUTO-SCROLLING PANELS)
    ========================================================================== */
 .content-area {
     display: flex;
-    gap: 2rem;
-    height: 100%;
+    gap: 1.5rem;
+    flex: 1; /* Takes the rest of the available app-container height */
+    min-height: 0; /* Important for preventing flexbox from overflowing */
     overflow: hidden;
 }
 
 /* Left: Archive List */
 .perk-list-container {
     width: 35%;
+    height: 100%;
     background: var(--panel-bg);
     border: 1px solid var(--dried-blood);
     border-radius: 4px;
-    overflow-y: auto;
+    overflow-y: auto; /* Scrolls only internally */
     backdrop-filter: blur(10px);
     animation: organicHeartbeatBorderFull 4s infinite var(--smooth-curve);
-    animation-delay: 0.5s; /* Offset heartbeat for organic feel */
+    animation-delay: 0.5s;
 }
 
 .perk-card {
     display: flex;
     align-items: center;
-    gap: 1.5rem;
-    padding: 1.2rem;
+    gap: 1.2rem;
+    padding: 1rem;
     border-bottom: 1px solid rgba(58, 0, 0, 0.4);
     transition: all 0.2s var(--smooth-curve);
     position: relative;
@@ -358,7 +363,7 @@ body::after {
 }
 
 .perk-card-icon {
-    width: 60px; height: 60px;
+    width: 50px; height: 50px;
     object-fit: contain;
     filter: grayscale(100%) brightness(0.5);
     transition: all 0.4s;
@@ -370,12 +375,12 @@ body::after {
 
 .perk-card-info h3 { 
     font-family: var(--font-head); 
-    font-size: 1.5rem; 
+    font-size: 1.3rem; 
     letter-spacing: 1px; 
     color: var(--bone-white); 
 }
 .perk-card-info span { 
-    font-size: 1rem; 
+    font-size: 0.9rem; 
     color: var(--pulsing-red); 
     font-style: italic; 
 }
@@ -383,16 +388,17 @@ body::after {
 /* Right: Display Panel */
 .perk-display-container {
     width: 65%;
+    height: 100%;
     background: var(--panel-bg);
     border: 1px solid var(--dried-blood);
     border-radius: 4px;
-    padding: 4rem;
+    padding: 2rem; /* Medium padding */
     display: flex;
     flex-direction: column;
     align-items: center;
     text-align: center;
     backdrop-filter: blur(10px);
-    overflow-y: auto;
+    overflow-y: auto; /* Scrolls only internally */
     animation: organicHeartbeatBorderFull 4s infinite var(--smooth-curve);
 }
 
@@ -400,16 +406,16 @@ body::after {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 2rem;
-    margin-bottom: 3rem;
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
     border-bottom: 1px dashed var(--dried-blood);
-    padding-bottom: 3rem;
+    padding-bottom: 1.5rem;
     width: 100%;
 }
 
 .display-icon-wrapper {
     position: relative;
-    width: 180px; height: 180px;
+    width: 140px; height: 140px; /* Medium size */
     display: flex; justify-content: center; align-items: center;
 }
 
@@ -429,7 +435,7 @@ body::after {
 @keyframes rotateDash { 100% { transform: rotate(360deg); } }
 
 #display-icon {
-    width: 130px; height: 130px;
+    width: 100px; height: 100px;
     object-fit: contain;
     filter: drop-shadow(0 10px 25px rgba(255, 5, 5, 0.4));
 }
@@ -442,35 +448,35 @@ body::after {
 
 .display-title-group h1 {
     font-family: var(--font-head);
-    font-size: 4.5rem;
+    font-size: 3rem; /* Medium-large to fit frame */
     text-transform: uppercase;
     color: var(--arterial-spray);
-    letter-spacing: 5px;
+    letter-spacing: 3px;
     text-shadow: 0 5px 15px rgba(138, 0, 0, 0.6);
-    margin-bottom: 1rem;
+    margin-bottom: 0.5rem;
     line-height: 1;
 }
 
-.meta-tags { display: flex; justify-content: center; gap: 1rem; }
+.meta-tags { display: flex; justify-content: center; gap: 0.8rem; }
 
 .meta-tag {
     background: rgba(23, 0, 0, 0.6);
     border: 1px solid var(--dried-blood);
-    padding: 0.4rem 1.2rem;
+    padding: 0.3rem 1rem;
     border-radius: 2px;
     font-family: var(--font-head);
-    font-size: 1.1rem;
+    font-size: 1rem;
     letter-spacing: 2px;
     color: var(--flesh-pale);
     text-transform: uppercase;
 }
 
 .display-desc {
-    font-size: 1.4rem;
-    line-height: 1.8;
+    font-size: 1.1rem; /* Better scale for frame fitting */
+    line-height: 1.6;
     color: var(--bone-white);
     max-width: 800px;
-    margin-bottom: 3rem;
+    margin-bottom: 2rem;
 }
 
 /* Automated Scenario Module - Horror Version */
@@ -478,7 +484,7 @@ body::after {
     background: linear-gradient(135deg, rgba(15,0,0,0.9), rgba(5,0,0,0.95));
     border: 1px solid var(--dried-blood);
     border-left: 4px solid var(--fresh-blood);
-    padding: 2rem 3rem;
+    padding: 1.5rem 2rem; /* Scaled down for medium size */
     width: 100%;
     max-width: 800px;
     position: relative;
@@ -490,24 +496,23 @@ body::after {
     display: block;
     font-family: var(--font-head);
     color: var(--pulsing-red);
-    font-size: 1.2rem;
-    margin-bottom: 1rem;
+    font-size: 1.1rem;
+    margin-bottom: 0.8rem;
     letter-spacing: 3px;
     text-shadow: 0 0 8px rgba(200, 0, 0, 0.4);
 }
 
 #display-scenario {
-    font-size: 1.2rem;
+    font-size: 1.1rem;
     color: var(--muted-bone);
     font-style: italic;
-    line-height: 1.6;
+    line-height: 1.5;
 }
 
 /* ==========================================================================
    VISCERAL ANIMATIONS & HEARTBEATS
    ========================================================================== */
 
-/* Subtly Blinking Full Borders (Cards, Display, Controls) */
 @keyframes organicHeartbeatBorderFull {
     0%, 100% { border-color: var(--dried-blood); box-shadow: 0 15px 35px rgba(0,0,0,0.8); }
     10% { border-color: var(--arterial-spray); box-shadow: 0 15px 40px rgba(200, 0, 0, 0.25), inset 0 0 10px rgba(200, 0, 0, 0.05); }
@@ -516,7 +521,6 @@ body::after {
     40%, 95% { border-color: var(--dried-blood); box-shadow: 0 15px 35px rgba(0,0,0,0.8); }
 }
 
-/* Bottom Border Heartbeat (Navbar) */
 @keyframes organicHeartbeatBorderBottom {
     0%, 100% { border-bottom-color: var(--dried-blood); box-shadow: 0 8px 25px rgba(0,0,0,0.5); }
     10% { border-bottom-color: var(--arterial-spray); box-shadow: 0 8px 30px rgba(255, 5, 5, 0.3); }
@@ -525,13 +529,11 @@ body::after {
     40%, 95% { border-bottom-color: var(--dried-blood); box-shadow: 0 8px 25px rgba(0,0,0,0.5); }
 }
 
-/* Ambient Deep Breathing Vignette */
 @keyframes ambientVignettePulse {
     0%, 100% { box-shadow: inset 0 0 100px rgba(30, 0, 0, 0.8); }
     50% { box-shadow: inset 0 0 180px rgba(100, 0, 0, 0.3); }
 }
 
-/* Violent Glitch Effect on text */
 .glitch-text { animation: bloodGlitch 0.4s cubic-bezier(0.25, 1, 0.3, 1) both; color: var(--arterial-spray); }
 @keyframes bloodGlitch {
     0% { transform: translate(0) }
@@ -541,16 +543,6 @@ body::after {
     80% { transform: translate(1px, -2px) }
     100% { transform: translate(0) }
 }
-.bg-gif{
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    z-index: -1;
-}
-
     </style>
 </head>
 <body>
