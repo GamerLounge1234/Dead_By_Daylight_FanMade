@@ -122,114 +122,57 @@ body::after {
 }
 
 /* ==========================================================================
-   RESPONSIVE NAVBAR
+   PREMIUM NAVBAR (Symmetrical)
    ========================================================================== */
-
 .navbar {
-    width: calc(100% - 30px);
-    max-width: 1200px;
-
-    position: fixed;
-    top: 15px;
-    left: 50%;
-    transform: translateX(-50%);
-
-    padding: 16px 28px;
-
-    background: linear-gradient(
-        to bottom,
-        rgba(0, 0, 0, 0.95) 0%,
-        rgba(15, 0, 0, 0.88) 100%
-    );
-
-    border: 1px solid rgba(255, 0, 0, 0.25);
-    border-radius: 14px;
-
-    z-index: 1000;
-
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.95) 0%, rgba(15, 0, 0, 0.85) 100%);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-bottom: 2px solid var(--dried-blood);
+    padding: 15px 40px;
     display: flex;
     justify-content: center;
     align-items: center;
-
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-
-    box-shadow:
-        0 0 25px rgba(255, 0, 0, 0.12);
-
-    overflow: hidden;
+    box-shadow: 0 4px 30px rgba(0,0,0,0.8);
+    z-index: 50;
+    animation: organicHeartbeatBorderBottom 4s infinite var(--smooth-curve);
 }
-
-/* LINKS CONTAINER */
 
 .nav-links {
-    display: flex;
-    flex-wrap: wrap; /* allows wrapping instead of cutting */
-    justify-content: center;
-    align-items: center;
-
-    gap: clamp(12px, 2vw, 40px);
-
     list-style: none;
-
-    width: 100%;
+    display: flex;
+    gap: 50px;
 }
 
-/* LINKS */
-
-.navbar li a {
-    font-family: 'Inter', sans-serif;
-
-    font-size: clamp(0.85rem, 1.2vw, 1.15rem);
-    font-weight: 700;
-
-    letter-spacing: clamp(1px, 0.25vw, 3px);
-
-    color: #d8d8d8;
+.nav-links li a {
     text-decoration: none;
+    color: var(--muted-bone);
+    font-family: var(--font-head);
+    font-size: 1.6rem;
+    font-weight: 700;
     text-transform: uppercase;
-
+    letter-spacing: 3px;
+    transition: all 0.3s var(--smooth-curve);
     position: relative;
-
-    padding: 8px 12px;
-
-    transition: all 0.3s ease;
-
-    white-space: nowrap;
+    padding: 5px 10px;
 }
 
-/* Hover */
-
-.navbar li a::before {
-    content: "";
+.nav-links li a::after {
+    content: '';
     position: absolute;
-
-    top: 50%;
-    left: 50%;
-
-    width: 0;
-    height: 2px;
-
-    background: var(--red);
-
-    transform: translate(-50%, -50%) rotate(-3deg);
-
-    transition: width 0.35s ease;
-
-    box-shadow: 0 0 10px var(--red);
-
-    opacity: 0;
+    bottom: -5px; left: 50%; transform: translateX(-50%);
+    width: 0%; height: 2px;
+    background: var(--arterial-spray);
+    transition: width 0.4s var(--smooth-curve);
+    box-shadow: 0 0 10px var(--arterial-spray);
 }
 
-.navbar li a:hover {
-    color: white;
-    text-shadow: 0 0 12px rgba(255, 0, 0, 0.7);
+.nav-links li a:hover, .nav-links li a.active {
+    color: var(--bone-white);
+    text-shadow: 0 0 15px rgba(255, 5, 5, 0.6);
 }
+.nav-links li a:hover::after, .nav-links li a.active::after { width: 100%; }
 
-.navbar li a:hover::before {
-    width: 100%;
-    opacity: 1;
-}
 /* ==========================================================================
    THE SACRIFICIAL ALTAR (HERO SECTION)
    ========================================================================== */
