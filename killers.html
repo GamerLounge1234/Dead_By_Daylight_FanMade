@@ -6,9 +6,7 @@
     <title>DBD Killer Randomizer</title>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        /* ==========================================================================
-           ROOT VARIABLES & THEMING
-           ========================================================================== */
+       
         :root {
             --dried-blood: #5a0000;
             --arterial-spray: #ff0000;
@@ -270,7 +268,7 @@
         <button id="randomize-btn">Summon Entity</button>
     </div>
 
-    <script>
+   <script>
         const killerNames = [
             "Artist.png", "Dredge.png", "Legion.png", "Skull.png",
             "Billy.png", "Executioner.png", "Lich.png", "Spirit.png",
@@ -287,6 +285,9 @@
         const voidContainer = document.getElementById('void-container');
         const randomizeBtn = document.getElementById('randomize-btn');
         const wrappers = [];
+
+        // NEW: Array to keep track of killers that haven't been picked yet
+        let availableKillers = [];
 
         // Helper to generate random 3D position
         function getRandomTransform() {
@@ -316,6 +317,9 @@
                 
                 voidContainer.appendChild(wrapper);
                 wrappers.push(wrapper);
+                
+                // NEW: Populate the available pool with every killer's index on load
+                availableKillers.push(index);
             });
         }
 
@@ -323,6 +327,13 @@
 
         // Start Randomization
         randomizeBtn.addEventListener('click', () => {
+            // NEW: If all killers have been picked, reset the pool
+            if (availableKillers.length === 0) {
+                console.log("All killers played! Resetting the Entity's pool...");
+                // Refill the array with numbers 0 through 39
+                availableKillers = wrappers.map((_, i) => i); 
+            }
+
             randomizeBtn.disabled = true;
             randomizeBtn.innerText = "The Entity is choosing...";
             
@@ -346,13 +357,17 @@
                 clearInterval(shuffleInterval);
                 voidContainer.classList.remove('is-shuffling');
 
-                const winningIndex = Math.floor(Math.random() * wrappers.length);
+                // NEW: Pick a random index FROM THE AVAILABLE POOL, not the full list
+                const poolIndex = Math.floor(Math.random() * availableKillers.length);
+                const winningIndex = availableKillers[poolIndex];
+
+                // NEW: Remove the chosen killer from the available pool so they can't be picked again
+                availableKillers.splice(poolIndex, 1);
 
                 wrappers.forEach((wrapper, i) => {
                     if (i === winningIndex) {
                         // Bring winner to the very front center
                         wrapper.classList.add('winner');
-                        // Transform is handled in CSS for the .winner class to ensure smooth snap to center
                     } else {
                         // Push losers into the background
                         wrapper.classList.add('loser');
@@ -364,7 +379,12 @@
                 // Re-enable button
                 setTimeout(() => {
                     randomizeBtn.disabled = false;
-                    randomizeBtn.innerText = "Resummon";
+                    // NEW: Shows how many killers are left before the pool resets
+                    if (availableKillers.length > 0) {
+                        randomizeBtn.innerText = `Resummon (${availableKillers.length} Left)`;
+                    } else {
+                        randomizeBtn.innerText = "Pool Empty - Click to Reset";
+                    }
                 }, 1500);
 
             }, 7000); // 7 seconds
