@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wreckers' Yard - Map Blueprint</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,300;0,700;1,400&family=Teko:wght@500;700&family=Nosifer&display=swap');
+
+        :root {
+            /* The Carnage Palette */
+            --pitch-black: #000000;
+            --void-black: #050303;
+            --coagulated-blood: #170000;
+            --dried-blood: #3a0000;
+            --fresh-blood: #8a0000;
+            --pulsing-red: #c70000;
+            --arterial-spray: #ff0505;
+            
+            /* Text Colors */
+            --flesh-pale: #e8d0d0;
+            --bone-white: #ffffff;
+            --muted-bone: #b8a5a5;
+            
+            /* Typography */
+            --font-title: 'Nosifer', display;
+            --font-head: 'Teko', sans-serif;
+            --font-body: 'Crimson Pro', serif;
+
+            /* Glass & Overlays */
+            --glass-panel: rgba(10, 2, 2, 0.85);
+            --smooth-curve: cubic-bezier(0.25, 1, 0.3, 1);
+            
+            /* Noise Overlay */
+            --fog-overlay: url('data:image/svg+xml;utf8,<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><filter id="noiseFilter"><feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch"/></filter><rect width="100%" height="100%" filter="url(%23noiseFilter)" opacity="0.04"/></svg>');
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            cursor: crosshair;
+        }
+
+        ::selection {
+            background: var(--arterial-spray);
+            color: var(--pitch-black);
+            text-shadow: none;
+        }
+
+        /* Base Layout */
+        body {
+            width: 100%;
+            min-height: 100vh;
+            background-color: #0a0a0a;
+            color: var(--bone-white);
+            font-family: var(--font-body);
+            background-image: radial-gradient(circle at 50% 0%, var(--coagulated-blood) 0%, var(--pitch-black) 80%), var(--fog-overlay);
+            overflow-x: hidden;
+            overflow-y: auto;
+        }
+
+        /* Ambient Background Effect */
+        body::before {
+            content: "";
+            position: fixed;
+            top: 50%; left: 50%; transform: translate(-50%, -50%);
+            width: 150vw; height: 150vh;
+            background: radial-gradient(ellipse at center, transparent 20%, var(--pitch-black) 80%);
+            pointer-events: none;
+            z-index: -1;
+            box-shadow: inset 0 0 150px rgba(138, 0, 0, 0.15);
+            animation: ambientVignettePulse 8s infinite ease-in-out;
+        }
+
+        /* ==========================================================================
+           NAVBAR & BETA BANNER
+           ========================================================================== */
+        .navbar {
+            width: 100%;
+            height: 70px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            background: linear-gradient(to bottom, rgba(0, 0, 0, 0.98) 0%, rgba(15, 0, 0, 0.90) 100%);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 2px solid var(--dried-blood);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.6);
+            z-index: 1000;
+            animation: organicHeartbeatBorderBottom 4s infinite var(--smooth-curve);
+        }
+
+        .nav-links {
+            list-style: none;
+            display: flex;
+            gap: 30px;
+        }
+
+        .nav-links li a {
+            text-decoration: none;
+            color: var(--muted-bone);
+            font-family: var(--font-head);
+            font-size: 1.4rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            transition: all 0.3s var(--smooth-curve);
+            position: relative;
+            padding: 5px 10px;
+        }
+
+        .nav-links li a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px; left: 50%; transform: translateX(-50%);
+            width: 0%; height: 2px;
+            background: var(--arterial-spray);
+            transition: width 0.4s var(--smooth-curve);
+            box-shadow: 0 0 10px var(--arterial-spray);
+        }
+
+        .nav-links li a:hover, .nav-links li a.active {
+            color: var(--bone-white);
+            text-shadow: 0 0 15px rgba(255, 5, 5, 0.6);
+        }
+        .nav-links li a:hover::after, .nav-links li a.active::after { width: 100%; }
+
+        /* Fixed Beta Banner */
+        .beta-banner {
+            position: fixed;
+            top: 70px;
+            width: 100%;
+            background: rgba(23, 0, 0, 0.95);
+            border-bottom: 1px solid var(--pulsing-red);
+            color: var(--flesh-pale);
+            font-family: var(--font-head);
+            font-size: 1.2rem;
+            text-align: center;
+            padding: 5px 0;
+            letter-spacing: 2px;
+            z-index: 999;
+            box-shadow: 0 4px 15px rgba(255, 5, 5, 0.2);
+            text-transform: uppercase;
+        }
+
+        .beta-banner span { color: var(--arterial-spray); font-weight: 700; }
+
+        /* ==========================================================================
+           FULL-SCREEN MAP HERO SECTION
+           ========================================================================== */
+        .map-hero {
+            height: 100vh;
+            width: 100%;
+            padding-top: 105px; /* Navbar + Banner */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .map-title {
+            font-family: var(--font-head);
+            font-size: 3rem;
+            color: var(--bone-white);
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            text-shadow: 0 0 15px rgba(255, 5, 5, 0.6);
+            margin-bottom: 10px;
+            z-index: 10;
+        }
+
+        .map-interactive-container {
+            width: 90%;
+            max-width: 1600px;
+            height: 75vh;
+            border: 2px solid var(--dried-blood);
+            border-radius: 4px;
+            background: #000;
+            overflow: hidden; /* Contains the zoomed image */
+            position: relative;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.9), inset 0 0 30px rgba(255,5,5,0.1);
+            animation: organicHeartbeatBorderFull 4s infinite var(--smooth-curve);
+        }
+
+        .map-image {
+            width: 100%;
+            height: 100%;
+            object-fit: contain; /* Ensures the whole map is visible at first glance */
+            transform-origin: center center;
+            transition: transform 0.1s ease-out; /* Smooth JS panning/zooming */
+            will-change: transform;
+            cursor: grab;
+        }
+        
+        .map-image:active { cursor: grabbing; }
+
+        .zoom-controls {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            display: flex;
+            gap: 10px;
+            z-index: 20;
+        }
+
+        .btn-zoom {
+            background: var(--glass-panel);
+            border: 1px solid var(--pulsing-red);
+            color: var(--bone-white);
+            font-family: var(--font-head);
+            font-size: 1.5rem;
+            width: 45px;
+            height: 45px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 3px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.8);
+            transition: all 0.3s ease;
+        }
+
+        .btn-zoom:hover {
+            background: var(--dried-blood);
+            border-color: var(--arterial-spray);
+            text-shadow: 0 0 10px var(--bone-white);
+        }
+
+        .zoom-instruction {
+            position: absolute;
+            bottom: 25px;
+            left: 20px;
+            font-family: var(--font-body);
+            color: var(--muted-bone);
+            font-size: 1rem;
+            background: rgba(0,0,0,0.6);
+            padding: 5px 10px;
+            border-radius: 3px;
+            pointer-events: none;
+        }
+
+        /* ==========================================================================
+           MAP INFORMATION GRID
+           ========================================================================== */
+        .info-section {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 4rem 2rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 2rem;
+        }
+
+        .info-card {
+            background: var(--glass-panel);
+            border: 1px solid var(--dried-blood);
+            padding: 2rem;
+            border-radius: 4px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.7);
+            backdrop-filter: blur(8px);
+            transition: transform 0.3s var(--smooth-curve), border-color 0.3s ease;
+        }
+
+        .info-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--pulsing-red);
+            box-shadow: 0 15px 40px rgba(200, 0, 0, 0.2);
+        }
+
+        .card-title {
+            font-family: var(--font-head);
+            font-size: 2rem;
+            color: var(--arterial-spray);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            border-bottom: 2px dashed var(--dried-blood);
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+            text-shadow: 0 2px 10px rgba(255, 5, 5, 0.3);
+        }
+
+        .info-card h4 {
+            font-family: var(--font-head);
+            font-size: 1.4rem;
+            color: var(--bone-white);
+            margin-top: 15px;
+            margin-bottom: 5px;
+            letter-spacing: 1px;
+        }
+
+        .info-card p, .info-card li {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            color: var(--muted-bone);
+            margin-bottom: 10px;
+        }
+
+        .info-card ul {
+            list-style-type: none;
+            padding-left: 10px;
+        }
+
+        .info-card ul li::before {
+            content: "»";
+            color: var(--pulsing-red);
+            font-weight: bold;
+            margin-right: 8px;
+        }
+
+        .highlight {
+            color: var(--flesh-pale);
+            font-weight: 700;
+        }
+
+        /* Tier List Styling */
+        .tier { display: flex; align-items: flex-start; margin-bottom: 10px; }
+        .tier-label {
+            background: var(--dried-blood);
+            color: white;
+            font-family: var(--font-head);
+            padding: 2px 10px;
+            border-radius: 2px;
+            margin-right: 15px;
+            font-size: 1.2rem;
+            min-width: 50px;
+            text-align: center;
+            border: 1px solid var(--pulsing-red);
+        }
+        .tier-content { flex: 1; padding-top: 2px; color: var(--muted-bone); }
+
+        /* Animations */
+        @keyframes ambientVignettePulse {
+            0%, 100% { box-shadow: inset 0 0 100px rgba(30, 0, 0, 0.8); }
+            50% { box-shadow: inset 0 0 180px rgba(100, 0, 0, 0.3); }
+        }
+        @keyframes organicHeartbeatBorderBottom {
+            0%, 100% { border-bottom-color: var(--dried-blood); }
+            50% { border-bottom-color: var(--arterial-spray); }
+        }
+        @keyframes organicHeartbeatBorderFull {
+            0%, 100% { border-color: var(--dried-blood); }
+            50% { border-color: var(--pulsing-red); }
+        }
+
+        /* Responsive tweaks */
+        @media (max-width: 768px) {
+            .nav-links { gap: 15px; }
+            .nav-links li a { font-size: 1rem; }
+            .info-section { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Premium Navbar -->
+    <nav class="navbar">
+        <ul class="nav-links">
+            <li><a href="index.html">Lobby</a></li>
+            <li><a href="perks.html">Perks</a></li>
+            <li><a href="Randomizer.html">Randomizer</a></li>
+            <li><a href="login.html">Challenges</a></li>
+            <li><a href="killers.html">Killer Wheel</a></li>
+            <li><a href="maps.html" class="active">Maps</a></li>
+            <li><a href="CreatorsLounge.html">Creators</a></li>
+        </ul>
+    </nav>
+
+    <!-- Fixed Beta Notice -->
+    <div class="beta-banner">
+        ⚠ <span>BETA BUILD:</span> Map visuals are AI-generated based on current Dead by Daylight data. Subject to Entity alterations. ⚠
+    </div>
+
+    <!-- First Frame: Full View Map -->
+    <section class="map-hero">
+        <h1 class="map-title">Wreckers' Yard (Autohaven)</h1>
+        
+        <div class="map-interactive-container" id="map-container">
+            <!-- REPLACE SRC WITH YOUR GENERATED AI IMAGE PATH -->
+            <img src="autoheaven.png" alt="Wreckers Yard Map" class="map-image" id="map-image" draggable="false">
+            
+            <div class="zoom-instruction">Scroll to Zoom • Drag to Pan</div>
+            
+            <div class="zoom-controls">
+                <button class="btn-zoom" id="zoom-out" title="Zoom Out">-</button>
+                <button class="btn-zoom" id="zoom-reset" title="Reset View">↺</button>
+                <button class="btn-zoom" id="zoom-in" title="Zoom In">+</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Map Intel Section -->
+    <main class="info-section">
+        
+        <!-- Basics & Landmarks -->
+        <div class="info-card">
+            <h2 class="card-title">The Foundation</h2>
+            <h4>Basic Information</h4>
+            <p><span class="highlight">Realm:</span> Autohaven Wreckers</p>
+            <p><span class="highlight">Map Name:</span> Wreckers' Yard (Internal: "Scrapyard")</p>
+            <p><span class="highlight">Size:</span> 9,216 m² (144 tiles). One of the smallest Autohaven maps.</p>
+            
+            <h4>Main Landmark: Killer Shack</h4>
+            <p>Unlike many maps, Wreckers' Yard has <strong>no true main building</strong>. The only guaranteed landmark is the Killer Shack.</p>
+            <ul>
+                <li>Always spawns near the center of the map.</li>
+                <li>The Basement is guaranteed to spawn inside the Shack.</li>
+                <li>Surrounded by safer "filler tiles" instead of giant scrap walls.</li>
+                <li>Often has an elevated dirt hill nearby.</li>
+            </ul>
+        </div>
+
+        <!-- Tile Spawns -->
+        <div class="info-card">
+            <h2 class="card-title">Architecture of Scrap</h2>
+            <p>The map normally contains about <strong>5 major maze tiles</strong>. Common tiles include:</p>
+            <ul>
+                <li><span class="highlight">LT Walls:</span> The classic L-wall + T-wall combination.</li>
+                <li><span class="highlight">Jungle Gyms:</span> Long Wall, Standard, and Window variations.</li>
+                <li><span class="highlight">Car Wall Tiles:</span> Corridors made of crushed vehicles.</li>
+                <li><span class="highlight">The Bus Tile:</span> Debris surrounding a crashed bus; one of the strongest structures.</li>
+                <li><span class="highlight">The Crane:</span> A massive crane structure offering tight loops.</li>
+                <li><span class="highlight">Fuel Tanker:</span> A long vehicle tile with loops around it.</li>
+                <li><span class="highlight">Dead Zones:</span> Open junkyard sections with very limited resources once pallets are broken.</li>
+            </ul>
+        </div>
+
+        <!-- Objective Spawns -->
+        <div class="info-card">
+            <h2 class="card-title">Objective Spawns</h2>
+            <h4>Generators</h4>
+            <p>Generators use a spawn-slot system and are not fixed. Typical distribution:</p>
+            <ul>
+                <li>1 guaranteed near the Killer Shack area.</li>
+                <li>2–3 near major tiles (Bus, Crane, or Tanker).</li>
+                <li>2 along the map edges (scrap corners).</li>
+                <li>1 in an open, risky center area.</li>
+            </ul>
+
+            <h4>Totems (Bone Locations)</h4>
+            <p>Roughly 10–15 possible spawn slots exist, but only 5 totems will spawn per match. Check these common anchor points:</p>
+            <ul>
+                <li>Behind/beside the Hill rocks.</li>
+                <li>Outside the perimeter walls of the Shack.</li>
+                <li>Hidden in the debris of the Bus, Crane, or Tanker tiles.</li>
+                <li>Tucked into the sharp corners of map-edge scrap walls.</li>
+            </ul>
+            <p><em>Pro Tip: Veteran players look for the surrounding props (like specific trees or scrap piles) rather than the bones themselves.</em></p>
+        </div>
+
+        <!-- Entity Placements (Players & Hatch) -->
+        <div class="info-card">
+            <h2 class="card-title">Entity Placements</h2>
+            <h4>Survivor Spawns</h4>
+            <p>Survivors usually spawn in groups of 2-4 along the map edges (North scrap wall, South junk pile, East/West edges). They rarely spawn directly beside the Shack.</p>
+
+            <h4>Killer Spawns</h4>
+            <p>The Killer usually spawns on the opposite side of the map from survivors, often near the edges, the Crane, or the Bus.</p>
+
+            <h4>The Hatch</h4>
+            <p>When the hatch spawns, common priority zones include:</p>
+            <ul>
+                <li>Near the Killer Shack.</li>
+                <li>Adjacent to the Bus, Crane, or Tanker.</li>
+                <li>Tucked against outer boundary map edges.</li>
+            </ul>
+        </div>
+
+        <!-- Tier Lists (Strengths & Weaknesses) -->
+        <div class="info-card">
+            <h2 class="card-title">Power Dynamics</h2>
+            <h4>Strong Survivor Areas</h4>
+            <div class="tier">
+                <div class="tier-label" style="background:#ffcc00; color:black;">S</div>
+                <div class="tier-content">Shack & nearby filler tiles, The Bus Tile, Strong LT Wall combos.</div>
+            </div>
+            <div class="tier">
+                <div class="tier-label" style="background:#ff3333;">A</div>
+                <div class="tier-content">Crane loops, Tanker loops, Long Wall Jungle Gyms.</div>
+            </div>
+            <div class="tier">
+                <div class="tier-label" style="background:#666666;">Weak</div>
+                <div class="tier-content">Open scrapyard sections, empty corners, and dead zones after pallets are dropped.</div>
+            </div>
+
+            <h4 style="margin-top: 20px;">Killer Advantages</h4>
+            <p><span class="highlight">Very Strong:</span> Nurse, Blight, Spirit, Hillbilly.<br>
+            <em>Reason:</em> The map's small/medium size combined with long lines of sight.</p>
+            <p><span class="highlight">Strong:</span> Huntress, Deathslinger, Artist.</p>
+            <p><span class="highlight">Weaker:</span> Trapper, Pig (due to high visibility of traps and small map size).</p>
+        </div>
+
+        <!-- Strategy -->
+        <div class="info-card">
+            <h2 class="card-title">Competitive Strategy</h2>
+            <h4>The Opening Play</h4>
+            <p>As soon as you spawn, visually locate the <strong>Shack, Bus, Crane, and Tanker</strong>. Once you identify these four structures, you can mentally divide the map into manageable quadrants.</p>
+            
+            <h4>Generator Management</h4>
+            <p>To prevent a deadly 3-gen scenario, aim to repair generators spread across the strongest structures early. Break the triangle between the Shack, Bus, and Crane generators.</p>
+
+            <h4>Efficient Totem Route</h4>
+            <p>If looking for a Hex, run this perimeter sweep: <br>
+            <span class="highlight">Shack → Hill → Bus → Crane → Map Edge → Tanker → Center.</span></p>
+        </div>
+
+    </main>
+
+    <!-- Interactive Map Script -->
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const container = document.getElementById('map-container');
+            const image = document.getElementById('map-image');
+            const btnIn = document.getElementById('zoom-in');
+            const btnOut = document.getElementById('zoom-out');
+            const btnReset = document.getElementById('zoom-reset');
+
+            let scale = 1;
+            let translateX = 0;
+            let translateY = 0;
+            let isDragging = false;
+            let startX, startY;
+
+            const updateTransform = () => {
+                image.style.transform = `translate(${translateX}px, ${translateY}px) scale(${scale})`;
+            };
+
+            // Scroll to Zoom
+            container.addEventListener('wheel', (e) => {
+                e.preventDefault();
+                const zoomIntensity = 0.1;
+                if (e.deltaY < 0) {
+                    scale = Math.min(scale + zoomIntensity, 4); // Max zoom 4x
+                } else {
+                    scale = Math.max(scale - zoomIntensity, 1); // Min zoom 1x
+                }
+                
+                // Reset translation if fully zoomed out to snap it back to center
+                if (scale === 1) {
+                    translateX = 0;
+                    translateY = 0;
+                }
+                updateTransform();
+            });
+
+            // Drag to Pan
+            image.addEventListener('mousedown', (e) => {
+                if (scale > 1) {
+                    isDragging = true;
+                    startX = e.clientX - translateX;
+                    startY = e.clientY - translateY;
+                }
+            });
+
+            window.addEventListener('mouseup', () => {
+                isDragging = false;
+            });
+
+            window.addEventListener('mousemove', (e) => {
+                if (isDragging && scale > 1) {
+                    e.preventDefault();
+                    translateX = e.clientX - startX;
+                    translateY = e.clientY - startY;
+                    updateTransform();
+                }
+            });
+
+            // Button Controls
+            btnIn.addEventListener('click', () => {
+                scale = Math.min(scale + 0.5, 4);
+                updateTransform();
+            });
+
+            btnOut.addEventListener('click', () => {
+                scale = Math.max(scale - 0.5, 1);
+                if (scale === 1) {
+                    translateX = 0;
+                    translateY = 0;
+                }
+                updateTransform();
+            });
+
+            btnReset.addEventListener('click', () => {
+                scale = 1;
+                translateX = 0;
+                translateY = 0;
+                updateTransform();
+            });
+        });
+    </script>
+</body>
+</html>
