@@ -369,17 +369,14 @@
         </ul>
     </nav>
 
-    <!-- Fixed Beta Notice -->
     <div class="beta-banner">
         ⚠ <span>BETA BUILD:</span> Map visuals are AI-generated based on current Dead by Daylight data. Subject to Entity alterations. ⚠
     </div>
 
-    <!-- First Frame: Full View Map -->
     <section class="map-hero">
         <h1 class="map-title">Wreckers' Yard (Autohaven)</h1>
         
         <div class="map-interactive-container" id="map-container">
-            <!-- REPLACE SRC WITH YOUR GENERATED AI IMAGE PATH -->
             <img src="autoheaven.png" alt="Wreckers Yard Map" class="map-image" id="map-image" draggable="false">
             
             <div class="zoom-instruction">Scroll to Zoom • Drag to Pan</div>
@@ -538,7 +535,6 @@
                     scale = Math.max(scale - zoomIntensity, 1); // Min zoom 1x
                 }
                 
-                // Reset translation if fully zoomed out to snap it back to center
                 if (scale === 1) {
                     translateX = 0;
                     translateY = 0;
@@ -546,7 +542,6 @@
                 updateTransform();
             });
 
-            // Drag to Pan
             image.addEventListener('mousedown', (e) => {
                 if (scale > 1) {
                     isDragging = true;
