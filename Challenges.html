@@ -1,430 +1,992 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DBD Challenges - Beta</title>
+    <title>DBD Challenges - The Entity's Descent</title>
+    <!-- Supabase -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
-        /* CSS Reset & Core Variables */
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-        :root { 
-            --bg-dark: #0a0a0f; 
-            --entity-red: #d32f2f; 
-            --neon-glow: 0 0 15px rgba(211, 47, 47, 0.7); 
-            --glass-bg: rgba(20, 20, 25, 0.85); 
-            --text-light: #e0e0e0; 
-            --text-muted: #888; 
+        /* ==========================================================================
+           ROOT VARIABLES & PREMIUM THEME DEFINITIONS
+           ========================================================================== */
+        :root {
+            /* Core Colors */
+            --bg-dark: #050508;
+            --bg-void: #0a0505;
+            --entity-red: #d32f2f;
+            --entity-blood: #9a031e;
+            --entity-glow: rgba(211, 47, 47, 0.8);
+            --neon-glow: 0 0 20px rgba(211, 47, 47, 0.7), 0 0 40px rgba(154, 3, 30, 0.5);
+            
+            /* UI Elements */
+            --glass-bg: rgba(15, 10, 15, 0.65);
+            --glass-border: rgba(211, 47, 47, 0.25);
+            --steel-grey: #1a1a24;
+            --text-light: #f0f0f5;
+            --text-muted: #888899;
+            --gold-ascension: #e5b824;
+            
+            /* Typography & Animation Variables */
+            --font-main: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            --font-mono: 'Courier New', Courier, monospace;
+            --transition-smooth: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+            --transition-bounce: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
-        
+
+        /* ==========================================================================
+           GLOBAL RESETS & BASE STYLES
+           ========================================================================== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         body, html {
             width: 100%;
             min-height: 100%;
-            background-color: transparent; 
-            color: var(--text-light); 
+            background-color: var(--bg-dark);
+            color: var(--text-light);
+            font-family: var(--font-main);
             overflow-x: hidden;
             scroll-behavior: smooth;
         }
 
-        body {
-            background-image: radial-gradient(circle at 50% 0%, #2a0808 0%, transparent 50%); 
-        }
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 10px; }
+        ::-webkit-scrollbar-track { background: var(--bg-dark); }
+        ::-webkit-scrollbar-thumb { background: #331111; border-radius: 5px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--entity-red); }
 
-        .bg-gif {
+        /* Looping Cinematic Fog Background */
+        .fog-overlay {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
+            top: 0; left: 0; width: 200vw; height: 100vh;
+            background: transparent url('https://www.transparenttextures.com/patterns/stardust.png') repeat;
+            opacity: 0.12;
+            animation: driftFog 60s linear infinite;
+            pointer-events: none;
             z-index: -1;
+            mix-blend-mode: screen;
         }
 
-        .beta-banner { 
-            background: rgba(211, 47, 47, 0.1); 
-            color: var(--entity-red); 
-            text-align: center; 
-            padding: 0.6rem; 
-            font-size: 0.85rem; 
-            letter-spacing: 2px; 
-            text-transform: uppercase; 
-            border-bottom: 1px solid rgba(211, 47, 47, 0.3); 
-            font-weight: bold; 
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5); 
+        .bg-gradient {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            background: radial-gradient(circle at 50% 10%, #2a0808 0%, var(--bg-dark) 60%);
+            z-index: -2;
+        }
+
+        .beta-banner {
+            background: linear-gradient(90deg, rgba(211,47,47,0) 0%, rgba(211,47,47,0.2) 50%, rgba(211,47,47,0) 100%);
+            color: var(--entity-red);
+            text-align: center;
+            padding: 0.8rem;
+            font-size: 0.85rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            font-weight: 800;
+            border-bottom: 1px solid rgba(211, 47, 47, 0.4);
+            animation: pulseBanner 2s infinite;
         }
 
         /* ==========================================================================
-           RESPONSIVE NAVBAR - SINGLE LINE AUTO ADJUST
+           KEYFRAME ANIMATIONS (LOOPING & PREMIUM EFFECTS)
+           ========================================================================== */
+        @keyframes driftFog {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50vw); }
+        }
+
+        @keyframes pulseBanner {
+            0% { text-shadow: 0 0 5px var(--entity-red); }
+            50% { text-shadow: 0 0 15px var(--entity-red), 0 0 30px var(--entity-blood); }
+            100% { text-shadow: 0 0 5px var(--entity-red); }
+        }
+
+        @keyframes glitchText {
+            0% { text-shadow: 0.05em 0 0 rgba(255,0,0,0.75), -0.025em -0.05em 0 rgba(0,255,0,0.75), 0.025em 0.05em 0 rgba(0,0,255,0.75); }
+            14% { text-shadow: 0.05em 0 0 rgba(255,0,0,0.75), -0.025em -0.05em 0 rgba(0,255,0,0.75), 0.025em 0.05em 0 rgba(0,0,255,0.75); }
+            15% { text-shadow: -0.05em -0.025em 0 rgba(255,0,0,0.75), 0.025em 0.025em 0 rgba(0,255,0,0.75), -0.05em -0.05em 0 rgba(0,0,255,0.75); }
+            49% { text-shadow: -0.05em -0.025em 0 rgba(255,0,0,0.75), 0.025em 0.025em 0 rgba(0,255,0,0.75), -0.05em -0.05em 0 rgba(0,0,255,0.75); }
+            50% { text-shadow: 0.025em 0.05em 0 rgba(255,0,0,0.75), 0.05em 0 0 rgba(0,255,0,0.75), 0 -0.05em 0 rgba(0,0,255,0.75); }
+            99% { text-shadow: 0.025em 0.05em 0 rgba(255,0,0,0.75), 0.05em 0 0 rgba(0,255,0,0.75), 0 -0.05em 0 rgba(0,0,255,0.75); }
+            100% { text-shadow: -0.025em 0 0 rgba(255,0,0,0.75), -0.025em -0.025em 0 rgba(0,255,0,0.75), -0.025em -0.05em 0 rgba(0,0,255,0.75); }
+        }
+
+        @keyframes entityBreathe {
+            0% { box-shadow: 0 0 20px rgba(154, 3, 30, 0.2); border-color: rgba(211, 47, 47, 0.3); }
+            50% { box-shadow: 0 0 40px rgba(154, 3, 30, 0.6); border-color: rgba(211, 47, 47, 0.8); }
+            100% { box-shadow: 0 0 20px rgba(154, 3, 30, 0.2); border-color: rgba(211, 47, 47, 0.3); }
+        }
+
+        @keyframes floatCard {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+
+        /* ==========================================================================
+           RESPONSIVE NAVBAR (GLASSMORPHISM)
            ========================================================================== */
         .navbar {
-            width: calc(100% - 60px); /* Adjusting for body margins */
-            max-width: 1400px;
+            width: calc(100% - 60px);
+            max-width: 1600px;
             margin: 20px auto;
-            padding: 12px 24px;
-            background: linear-gradient(to bottom, rgba(0, 0, 0, 0.95) 0%, rgba(15, 0, 0, 0.88) 100%);
-            border: 1px solid rgba(255, 0, 0, 0.25);
-            border-radius: 14px;
+            padding: 15px 30px;
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
             z-index: 1000;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            box-shadow: 0 0 25px rgba(255, 0, 0, 0.12);
-            /* This allows horizontal scrolling on mobile instead of breaking to a new line */
-            overflow-x: auto; 
-            scrollbar-width: none; /* Firefox */
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), inset 0 0 15px rgba(211, 47, 47, 0.1);
+            overflow-x: auto;
+            scrollbar-width: none;
         }
         
-        .navbar::-webkit-scrollbar { 
-            display: none; /* Chrome/Safari */
-        }
-
-        /* LINKS CONTAINER */
         .nav-links {
             display: flex;
-            flex-wrap: nowrap; /* FORCES ONE LINE */
             align-items: center;
-            gap: clamp(10px, 1.5vw, 30px);
+            gap: clamp(15px, 2vw, 40px);
             list-style: none;
-            margin: 0;
-            padding: 0;
         }
 
-        /* LINKS */
         .navbar li a {
-            font-size: clamp(0.85rem, 1vw, 1.1rem);
+            font-size: 0.95rem;
             font-weight: 700;
-            letter-spacing: 1px;
-            color: #d8d8d8;
+            letter-spacing: 2px;
+            color: #b0b0b0;
             text-decoration: none;
             text-transform: uppercase;
             position: relative;
-            padding: 8px 10px;
-            transition: all 0.3s ease;
-            white-space: nowrap; /* Prevents text from breaking into two lines */
+            padding: 8px 12px;
+            transition: var(--transition-smooth);
+            white-space: nowrap;
         }
 
-        /* Hover Effect */
-        .navbar li a::before {
+        .navbar li a::after {
             content: "";
             position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 0;
-            height: 2px;
+            bottom: 0; left: 50%; width: 0; height: 2px;
             background: var(--entity-red);
-            transform: translate(-50%, -50%) rotate(-3deg);
-            transition: width 0.35s ease;
+            transform: translateX(-50%);
+            transition: var(--transition-smooth);
             box-shadow: 0 0 10px var(--entity-red);
-            opacity: 0;
         }
 
         .navbar li a:hover, .navbar li a.active {
-            color: white;
-            text-shadow: 0 0 12px rgba(255, 0, 0, 0.7);
+            color: #fff;
+            text-shadow: 0 0 12px var(--entity-glow);
         }
 
-        .navbar li a:hover::before, .navbar li a.active::before {
+        .navbar li a:hover::after, .navbar li a.active::after {
             width: 100%;
-            opacity: 1;
         }
 
-        /* Auth Buttons Container */
-        .auth-links {
-            display: flex;
-            gap: 15px;
-            align-items: center;
-            flex-shrink: 0; /* Prevents buttons from shrinking if space is tight */
-            margin-left: 20px;
+        .auth-links { display: flex; gap: 15px; align-items: center; }
+
+        /* ==========================================================================
+           ENTITY'S DESCENT HERO SECTION
+           ========================================================================== */
+        .entity-gauntlet-container {
+            font-family: var(--font-mono);
+            position: relative;
+            line-height: 1.6;
+            margin-top: 40px;
+        }
+
+        .descent-hero {
+            text-align: center;
+            padding: 8rem 2rem;
+            background: radial-gradient(circle at center, rgba(30,10,10,0.8) 0%, transparent 70%);
+            position: relative;
+            z-index: 2;
+            border-bottom: 2px solid var(--glass-border);
+            border-top: 2px solid var(--glass-border);
+            margin-bottom: 3rem;
+        }
+
+        .glitch-text {
+            font-size: clamp(3rem, 5vw, 6rem);
+            color: #fff;
+            text-transform: uppercase;
+            letter-spacing: 8px;
+            margin-bottom: 20px;
+            position: relative;
+            display: inline-block;
+            animation: glitchText 3s infinite;
+        }
+
+        .glitch-text::before, .glitch-text::after {
+            content: attr(data-text);
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            opacity: 0.8;
+        }
+
+        .glitch-text::before {
+            left: 2px;
+            text-shadow: -2px 0 red;
+            clip: rect(24px, 550px, 90px, 0);
+            animation: glitchText 2s infinite linear alternate-reverse;
+        }
+
+        .glitch-text::after {
+            left: -2px;
+            text-shadow: -2px 0 blue;
+            clip: rect(85px, 550px, 140px, 0);
+            animation: glitchText 2.5s infinite linear alternate-reverse;
+        }
+
+        .descent-hero p.quote {
+            font-size: 1.2rem;
+            font-style: italic;
+            color: #aaa;
+            letter-spacing: 1px;
+            text-shadow: 0 0 5px rgba(0,0,0,0.8);
         }
 
         /* ==========================================================================
-           MAIN CONTENT STYLES
+           CONTENT SECTIONS & PREMIUM CARDS
            ========================================================================== */
-        .content-wrapper { padding: 3rem 2rem; max-width: 1200px; margin: 0 auto; }
-        header { text-align: center; margin-bottom: 3rem; margin-top: 2rem; }
-        header h1 { font-size: 3rem; color: #fff; text-transform: uppercase; letter-spacing: 4px; text-shadow: var(--neon-glow); }
-        header p { color: var(--text-muted); margin-top: 1rem; font-size: 1.1rem; }
-        
-        .challenge-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; }
-        .challenge-card { background: linear-gradient(145deg, #1a1a24 0%, #0d0d12 100%); border: 1px solid #333; border-radius: 12px; padding: 2rem; cursor: pointer; transition: all 0.3s ease; position: relative; overflow: hidden; }
-        .challenge-card::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 4px; background: var(--entity-red); transform: scaleX(0); transition: transform 0.3s ease; transform-origin: left; }
-        .challenge-card:hover { transform: translateY(-5px); border-color: var(--entity-red); box-shadow: var(--neon-glow); }
+        .descent-section {
+            padding: 4rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto 3rem auto;
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+            position: relative;
+            z-index: 2;
+        }
+
+        .section-header {
+            color: var(--entity-red);
+            font-size: 2.5rem;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            border-left: 6px solid var(--entity-red);
+            padding-left: 20px;
+            margin-bottom: 1.5rem;
+            text-shadow: var(--neon-glow);
+        }
+
+        .section-desc {
+            font-size: 1.1rem;
+            color: var(--text-muted);
+            margin-bottom: 3rem;
+            max-width: 800px;
+            line-height: 1.8;
+        }
+
+        /* ==========================================================================
+           PREMIUM ACCORDION (PERK DISCIPLINES)
+           ========================================================================== */
+        .perk-accordion-wrapper {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .perk-accordion {
+            background: rgba(10, 10, 15, 0.8);
+            border: 1px solid #333;
+            border-radius: 8px;
+            overflow: hidden;
+            transition: var(--transition-smooth);
+        }
+
+        .perk-accordion:hover {
+            border-color: var(--entity-red);
+            box-shadow: 0 0 15px rgba(211, 47, 47, 0.2);
+        }
+
+        .accordion-header {
+            padding: 20px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            background: linear-gradient(90deg, rgba(20,20,30,1) 0%, rgba(10,10,15,1) 100%);
+            user-select: none;
+            transition: var(--transition-smooth);
+        }
+
+        .accordion-header h4 {
+            font-size: 1.4rem;
+            color: #fff;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .accordion-header h4::before {
+            content: '';
+            display: inline-block;
+            width: 12px; height: 12px;
+            background: var(--entity-red);
+            border-radius: 50%;
+            box-shadow: 0 0 10px var(--entity-red);
+        }
+
+        .accordion-icon {
+            font-size: 1.5rem;
+            color: var(--entity-red);
+            transition: transform 0.4s ease;
+        }
+
+        .perk-accordion.active .accordion-icon { transform: rotate(180deg); }
+        .perk-accordion.active .accordion-header { border-bottom: 1px solid var(--glass-border); }
+
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+            background: #08080a;
+        }
+
+        .perk-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 15px;
+            padding: 30px;
+        }
+
+        .perk-item {
+            background: #111116;
+            border: 1px dashed #444;
+            padding: 12px 15px;
+            border-radius: 6px;
+            font-size: 0.95rem;
+            color: #ccc;
+            text-align: center;
+            transition: var(--transition-smooth);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 60px;
+        }
+
+        .perk-item:hover {
+            border-color: var(--entity-red);
+            background: rgba(211, 47, 47, 0.1);
+            color: #fff;
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+            cursor: default;
+        }
+
+        /* ==========================================================================
+           THE DESCENT ANIMATION (LOOPING MECHANIC)
+           ========================================================================== */
+        .descent-altar {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: clamp(20px, 5vw, 60px);
+            margin: 4rem 0;
+            padding: 40px 0;
+            position: relative;
+        }
+
+        /* Blood Line connecting perks */
+        .descent-altar::before {
+            content: '';
+            position: absolute;
+            top: 50%; left: 10%; right: 10%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--entity-red), transparent);
+            z-index: 0;
+            opacity: 0.5;
+        }
+
+        .altar-slot {
+            position: relative;
+            z-index: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .perk-diamond {
+            width: 80px; height: 80px;
+            background: linear-gradient(135deg, #222 0%, #0a0a0a 100%);
+            border: 2px solid #555;
+            transform: rotate(45deg);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: var(--transition-bounce);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.8);
+            position: relative;
+        }
+
+        .perk-diamond span {
+            transform: rotate(-45deg);
+            font-weight: bold;
+            color: #aaa;
+            font-size: 1.2rem;
+            font-family: var(--font-main);
+        }
+
+        .slot-label {
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-size: 0.85rem;
+            font-weight: bold;
+            transition: var(--transition-smooth);
+        }
+
+        /* Active Looping Animation States via JS classes */
+        .altar-slot.consumed .perk-diamond {
+            background: var(--entity-blood);
+            border-color: #ff0000;
+            box-shadow: 0 0 30px var(--entity-red), inset 0 0 20px #000;
+            transform: rotate(45deg) scale(0.8);
+            animation: shake 0.5s ease-in-out;
+        }
+
+        .altar-slot.consumed .perk-diamond span { color: #000; text-shadow: none; }
+        .altar-slot.consumed .slot-label { color: var(--entity-red); text-shadow: 0 0 10px var(--entity-red); }
+
+        @keyframes shake {
+            0%, 100% { transform: rotate(45deg) scale(0.8) translate(0, 0); }
+            25% { transform: rotate(45deg) scale(0.8) translate(5px, 5px); }
+            50% { transform: rotate(45deg) scale(0.8) translate(-5px, -5px); }
+            75% { transform: rotate(45deg) scale(0.8) translate(5px, -5px); }
+        }
+
+        /* ==========================================================================
+           ASCENSION TIERS
+           ========================================================================== */
+        .ascension-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .ascension-card {
+            background: rgba(20, 20, 25, 0.8);
+            border: 1px solid #333;
+            padding: 30px;
+            border-radius: 12px;
+            text-align: center;
+            transition: var(--transition-smooth);
+            position: relative;
+            overflow: hidden;
+            animation: floatCard 6s infinite ease-in-out;
+        }
+
+        /* Stagger float animation */
+        .ascension-card:nth-child(2) { animation-delay: 1.5s; }
+        .ascension-card:nth-child(3) { animation-delay: 3s; }
+        .ascension-card:nth-child(4) { animation-delay: 4.5s; }
+
+        .ascension-card::after {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(180deg, rgba(229, 184, 36, 0.1) 0%, transparent 100%);
+            opacity: 0;
+            transition: var(--transition-smooth);
+            pointer-events: none;
+        }
+
+        .ascension-card:hover {
+            border-color: var(--gold-ascension);
+            transform: translateY(-15px) scale(1.02);
+            box-shadow: 0 15px 30px rgba(229, 184, 36, 0.15);
+        }
+
+        .ascension-card:hover::after { opacity: 1; }
+
+        .tier-num {
+            font-size: 3rem;
+            color: var(--gold-ascension);
+            font-weight: 900;
+            opacity: 0.3;
+            position: absolute;
+            top: -10px; right: 10px;
+        }
+
+        .ascension-card h4 {
+            font-size: 1.3rem;
+            color: #fff;
+            margin-bottom: 15px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .ascension-card p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* ==========================================================================
+           OTHER CHALLENGES (OLD THEME MAINTAINED BUT ANIMATED)
+           ========================================================================== */
+        .challenge-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2.5rem;
+        }
+
+        .challenge-card {
+            background: linear-gradient(145deg, #1a1a24 0%, #0d0d12 100%);
+            border: 1px solid #333;
+            border-radius: 12px;
+            padding: 2.5rem;
+            cursor: pointer;
+            transition: var(--transition-bounce);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .challenge-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 4px;
+            background: var(--entity-red);
+            transform: scaleX(0);
+            transition: transform 0.4s ease;
+            transform-origin: left;
+        }
+
+        .challenge-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--entity-red);
+            box-shadow: var(--neon-glow);
+            animation: entityBreathe 3s infinite;
+        }
+
         .challenge-card:hover::before { transform: scaleX(1); }
-        
-        .card-type { font-size: 0.8rem; text-transform: uppercase; color: var(--entity-red); letter-spacing: 2px; margin-bottom: 0.5rem; display: block; }
-        .card-title { font-size: 1.5rem; margin-bottom: 1rem; }
-        
-        /* Modal Styles */
-        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.8); backdrop-filter: blur(8px); display: flex; justify-content: center; align-items: center; opacity: 0; pointer-events: none; transition: opacity 0.4s ease; z-index: 1000; }
+
+        .card-type {
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            color: var(--entity-red);
+            letter-spacing: 2px;
+            margin-bottom: 1rem;
+            font-weight: bold;
+        }
+
+        .card-title {
+            font-size: 1.8rem;
+            color: #fff;
+            margin-bottom: 1rem;
+        }
+
+        /* ==========================================================================
+           MODAL & LEADERBOARD (PREMIUM STYLING)
+           ========================================================================== */
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            background: rgba(0, 0, 0, 0.9);
+            backdrop-filter: blur(12px);
+            display: flex; justify-content: center; align-items: center;
+            opacity: 0; pointer-events: none;
+            transition: var(--transition-smooth);
+            z-index: 2000;
+        }
+
         .modal-overlay.active { opacity: 1; pointer-events: all; }
-        .modal-content { background: var(--glass-bg); border: 1px solid rgba(211, 47, 47, 0.3); border-radius: 16px; width: 90%; max-width: 800px; padding: 3rem; position: relative; transform: scale(0.9); transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5), var(--neon-glow); max-height: 90vh; overflow-y: auto; }
-        .modal-overlay.active .modal-content { transform: scale(1); }
-        .close-btn { position: absolute; top: 1.5rem; right: 2rem; font-size: 2rem; color: var(--text-muted); cursor: pointer; transition: color 0.2s; }
-        .close-btn:hover { color: var(--entity-red); }
+
+        .modal-content {
+            background: linear-gradient(180deg, #15151a 0%, #050508 100%);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            width: 90%; max-width: 850px;
+            padding: 3rem;
+            position: relative;
+            transform: scale(0.95) translateY(20px);
+            transition: var(--transition-bounce);
+            box-shadow: 0 30px 60px rgba(0,0,0,0.8), inset 0 0 20px rgba(211,47,47,0.1);
+            max-height: 90vh; overflow-y: auto;
+        }
+
+        .modal-overlay.active .modal-content { transform: scale(1) translateY(0); }
+
+        .close-btn {
+            position: absolute; top: 1.5rem; right: 2rem;
+            font-size: 2.5rem; color: #666;
+            cursor: pointer; transition: color 0.2s;
+            line-height: 1;
+        }
         
-        .modal-body h2 { font-size: 2.5rem; margin-bottom: 0.5rem; color: #fff; }
-        .modal-meta { color: var(--entity-red); font-weight: bold; margin-bottom: 2rem; display: inline-block; border-bottom: 1px solid #333; padding-bottom: 0.5rem; width: 100%; }
-        
-        .perk-build { display: flex; flex-wrap: wrap; gap: 1rem; margin: 2rem 0; background: rgba(0, 0, 0, 0.4); padding: 1.5rem; border-radius: 8px; }
-        .perk-slot { flex: 1; min-width: 120px; text-align: center; font-size: 0.9rem; color: #aaa; border: 1px dashed #444; padding: 1rem; border-radius: 4px; }
-        
-        .db-action-area { margin-top: 2rem; display: flex; flex-wrap: wrap; gap: 15px; justify-content: space-between; align-items: center; background: #000; padding: 1.5rem; border-radius: 8px; border-left: 4px solid var(--entity-red); }
-        .progress-input { background: #111; border: 1px solid #333; color: #fff; padding: 0.8rem; border-radius: 4px; width: 100px; outline: none; }
-        .progress-input:focus { border-color: var(--entity-red); }
-        
-        .btn-update { background: transparent; color: var(--entity-red); border: 1px solid var(--entity-red); padding: 0.8rem 2rem; font-size: 1rem; text-transform: uppercase; letter-spacing: 1px; cursor: pointer; border-radius: 4px; transition: all 0.3s; white-space: nowrap; }
-        .btn-update:hover { background: var(--entity-red); color: #fff; box-shadow: var(--neon-glow); }
-        
-        .btn-logout { background: var(--entity-red); color: #fff; text-decoration: none; padding: 8px 20px; border-radius: 4px; font-weight: bold; box-shadow: var(--neon-glow); transition: 0.3s; border: none; cursor: pointer; text-transform: uppercase; font-size: 0.9rem; white-space: nowrap; }
-        .btn-logout:hover { background: #ff3333; }
-        
-        /* Leaderboard Styles */
-        .leaderboard-section { margin-top: 2rem; background: rgba(0,0,0,0.5); padding: 1.5rem; border-radius: 8px; border: 1px solid #333; }
-        .leaderboard-section h3 { color: var(--entity-red); margin-bottom: 1rem; text-transform: uppercase; letter-spacing: 2px; }
-        .leaderboard-list { list-style: none; }
-        .leaderboard-list li { display: flex; justify-content: space-between; padding: 0.5rem 0; border-bottom: 1px dashed #444; color: #ccc; }
-        .leaderboard-list li span:last-child { font-weight: bold; color: #fff; }
+        .close-btn:hover { color: var(--entity-red); text-shadow: 0 0 10px red; }
     </style>
 </head>
 
 <body>
-    <img src="camfire.gif" class="bg-gif" alt="Background Animation" onerror="this.style.display='none'">
+    <!-- Background Layers -->
+    <div class="bg-gradient"></div>
+    <div class="fog-overlay"></div>
     
     <div class="beta-banner">
-        ⚠️ Beta Phase: Content and features are currently under development.
+        ⚠️ Premium Beta Phase: The Entity Is Watching ⚠️
     </div>
 
+    <!-- Responsive Navbar -->
     <nav class="navbar">
         <ul class="nav-links">
-            <li><a href="index.html">Lobby</a></li>
-            <li><a href="perks.html">Perks</a></li>
-            <li><a href="Randomizer.html">Randomizer</a></li>
-            <li><a href="Challenges.html" class="active">Challenges</a></li>
-            <li><a href="killers.html">Killer Wheel</a></li>
-            <li><a href="maps.html">Maps</a></li>
-            <li><a href="CreatorsLounge.html">Creators</a></li>
+            <li><a href="#lobby">Lobby</a></li>
+            <li><a href="#perks">Perks</a></li>
+            <li><a href="#randomizer">Randomizer</a></li>
+            <li><a href="#challenges" class="active">Challenges</a></li>
+            <li><a href="#killers">Killer Wheel</a></li>
+            <li><a href="#maps">Maps</a></li>
         </ul>
-        <div id="authContainer" class="auth-links"></div>
+        <div id="authContainer" class="auth-links">
+            <!-- Simulated Auth State -->
+            <a href="#" style="color: var(--text-light); text-decoration: none; font-weight: bold; font-size: 0.9rem; letter-spacing: 1px;">LOGIN</a>
+            <a href="#" style="background: var(--entity-red); color: #fff; text-decoration: none; padding: 10px 24px; border-radius: 6px; font-weight: bold; font-size: 0.9rem; letter-spacing: 1px; box-shadow: 0 0 10px rgba(211,47,47,0.5);">REGISTER</a>
+        </div>
     </nav>
 
-    <div class="content-wrapper">
-        <header>
-            <h1>Hardest Trials</h1>
-            <p>Pro-Level Campaigns. Redefine your survival.</p>
-        </header>
+<!-- MAIN CAMPAIGN CONTAINER -->
+    <section class="entity-gauntlet-container">
+        
+        <!-- Hero Section -->
+        <div class="descent-hero">
+            <h1 class="glitch-text" data-text="THE ENTITY'S DESCENT">THE ENTITY'S DESCENT</h1>
+            <h2 style="color: #ccc; letter-spacing: 4px; font-size: 1.5rem; margin-bottom: 2rem; text-transform: uppercase;">A Story of Survival and Sacrifice</h2>
+            <p class="quote">"The Entity doesn't want you to be perfect. It just wants to see how much pain you can take."</p>
+            <p style="margin-top: 1rem; color: #888;">Time to finish: 15–25 Hours (Over 30 Hours if you dare to try the hardest modes)</p>
+            <p style="color: #eee; font-size: 1.1rem; max-width: 800px; margin: 1rem auto; line-height: 1.6;">
+                Welcome to the fog! This is a massive, long-form challenge where every single choice matters. Your ultimate goal? <strong>Win a game with every single Killer.</strong> But there is a twist: if you lose a match, the game isn't over. Instead, things just get darker and harder. Here is how your story unfolds.
+            </p>
+        </div>
 
+        <!-- How to Play / Step 1 -->
+        <div class="descent-section">
+            <h3 class="section-header">Step 1: Choose Your Weapons</h3>
+            <p class="section-desc">Before your Killer steps into the trial, you have to build their loadout. Think of the perks in Dead by Daylight as 8 different "schools of magic" (we call them <strong>Disciplines</strong>). You are only allowed to pick <strong>four different schools</strong>. You cannot pick the same one twice! Once you have your four schools, choose exactly <strong>one perk</strong> from each.</p>
+            
+            <!-- Premium Accordion Data -->
+            <div class="perk-accordion-wrapper">
+                
+                <!-- INFO -->
+                <div class="perk-accordion">
+                    <div class="accordion-header" onclick="toggleAccordion(this)">
+                        <h4>INFO <span style="font-size:0.8rem; color:#888; font-weight:normal;">(Finding & Tracking Survivors)</span></h4>
+                        <span class="accordion-icon">▼</span>
+                    </div>
+                    <div class="accordion-content">
+                        <div class="perk-grid">
+                            <div class="perk-item">A Nurse's Calling</div><div class="perk-item">Alien Instinct</div><div class="perk-item">Awakened Awareness</div><div class="perk-item">Barbecue & Chilli</div><div class="perk-item">Bitter Murmur</div><div class="perk-item">Darkness Revealed</div><div class="perk-item">Deathbound</div><div class="perk-item">Deerstalker</div><div class="perk-item">Discordance</div><div class="perk-item">Gearhead</div><div class="perk-item">Hoarder</div><div class="perk-item">Human Greed</div><div class="perk-item">I'm All Ears</div><div class="perk-item">Infectious Fright</div><div class="perk-item">Lethal Pursuer</div><div class="perk-item">Nemesis</div><div class="perk-item">Nowhere to Hide</div><div class="perk-item">Phantom Fear</div><div class="perk-item">Scourge Hook: Floods of Rage</div><div class="perk-item">Scourge Hook: Hangman's Trick</div><div class="perk-item">Scourge Hook: Jagged Compass</div><div class="perk-item">Shattered Hope</div><div class="perk-item">Spies from the Shadows</div><div class="perk-item">Stridor</div><div class="perk-item">Surveillance</div><div class="perk-item">THWACK!</div><div class="perk-item">Territorial Imperative</div><div class="perk-item">Thrilling Tremors</div><div class="perk-item">Tinkerer</div><div class="perk-item">Ultimate Weapon</div><div class="perk-item">Wandering Eye</div><div class="perk-item">Weave Attunement</div><div class="perk-item">Whispers</div><div class="perk-item">Zanshin Tactics</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CHASE -->
+                <div class="perk-accordion">
+                    <div class="accordion-header" onclick="toggleAccordion(this)">
+                        <h4>CHASE <span style="font-size:0.8rem; color:#888; font-weight:normal;">(Stopping Loops & Brutality)</span></h4>
+                        <span class="accordion-icon">▼</span>
+                    </div>
+                    <div class="accordion-content">
+                        <div class="perk-grid">
+                            <div class="perk-item">All-Shaking Thunder</div><div class="perk-item">Bamboozle</div><div class="perk-item">Bloodhound</div><div class="perk-item">Brutal Strength</div><div class="perk-item">Coup de Grâce</div><div class="perk-item">Cruel Limits</div><div class="perk-item">Dark Arrogance</div><div class="perk-item">Dissolution</div><div class="perk-item">Enduring</div><div class="perk-item">Iron Grasp</div><div class="perk-item">Lightborn</div><div class="perk-item">Mad Grit</div><div class="perk-item">Predator</div><div class="perk-item">Spirit Fury</div><div class="perk-item">Superior Anatomy</div><div class="perk-item">Unrelenting</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SPEED -->
+                <div class="perk-accordion">
+                    <div class="accordion-header" onclick="toggleAccordion(this)">
+                        <h4>SPEED <span style="font-size:0.8rem; color:#888; font-weight:normal;">(Moving Faster & Haste)</span></h4>
+                        <span class="accordion-icon">▼</span>
+                    </div>
+                    <div class="accordion-content">
+                        <div class="perk-grid">
+                            <div class="perk-item">Agitation</div><div class="perk-item">Batteries Included</div><div class="perk-item">Fire Up</div><div class="perk-item">Forever Entwined</div><div class="perk-item">Game Afoot</div><div class="perk-item">Help Wanted</div><div class="perk-item">Keep Them Waiting</div><div class="perk-item">Machine Learning</div><div class="perk-item">Play With Your Food</div><div class="perk-item">Rampage</div><div class="perk-item">Rapid Brutality</div><div class="perk-item">Save the Best for Last</div><div class="perk-item">Scourge Hook: Monstrous Shrine</div><div class="perk-item">See How They Run</div><div class="perk-item">Shadowborn</div><div class="perk-item">Unbound</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SLOWDOWN -->
+                <div class="perk-accordion">
+                    <div class="accordion-header" onclick="toggleAccordion(this)">
+                        <h4>SLOWDOWN <span style="font-size:0.8rem; color:#888; font-weight:normal;">(Stopping Healing & Actions)</span></h4>
+                        <span class="accordion-icon">▼</span>
+                    </div>
+                    <div class="accordion-content">
+                        <div class="perk-grid">
+                            <div class="perk-item">Blood Echo</div><div class="perk-item">Blood Warden</div><div class="perk-item">Corrupt Intervention</div><div class="perk-item">Coulrophobia</div><div class="perk-item">Cull the Weak</div><div class="perk-item">Dead Man's Switch</div><div class="perk-item">Deadlock</div><div class="perk-item">Dominance</div><div class="perk-item">Dying Light</div><div class="perk-item">Forced Hesitation</div><div class="perk-item">Forced Penance</div><div class="perk-item">Franklin's Demise</div><div class="perk-item">Genetic Limits</div><div class="perk-item">Grim Embrace</div><div class="perk-item">Haywire</div><div class="perk-item">Hysteria</div><div class="perk-item">Knock Out</div><div class="perk-item">Languid Touch</div><div class="perk-item">Leverage</div><div class="perk-item">Mindbreaker</div><div class="perk-item">No Holds Barred</div><div class="perk-item">No Quarter</div><div class="perk-item">No Way Out</div><div class="perk-item">None Are Free</div><div class="perk-item">Overwhelming Presence</div><div class="perk-item">Remember Me</div><div class="perk-item">Scourge Hook: Gift of Pain</div><div class="perk-item">Scourge Hook: Weeping Wounds</div><div class="perk-item">Septic Touch</div><div class="perk-item">Sloppy Butcher</div><div class="perk-item">Terminus</div><div class="perk-item">Thanatophobia</div><div class="perk-item">Unnerving Presence</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- GEN -->
+                <div class="perk-accordion">
+                    <div class="accordion-header" onclick="toggleAccordion(this)">
+                        <h4>GEN <span style="font-size:0.8rem; color:#888; font-weight:normal;">(Blowing Up Generators)</span></h4>
+                        <span class="accordion-icon">▼</span>
+                    </div>
+                    <div class="accordion-content">
+                        <div class="perk-grid">
+                            <div class="perk-item">Call of Brine</div><div class="perk-item">Eruption</div><div class="perk-item">Merciless Storm</div><div class="perk-item">Oppression</div><div class="perk-item">Overcharge</div><div class="perk-item">Pop Goes the Weasel</div><div class="perk-item">Pain Resonance</div><div class="perk-item">Surge</div><div class="perk-item">Turn Back the Clock</div><div class="perk-item">Undone</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- TERROR -->
+                <div class="perk-accordion">
+                    <div class="accordion-header" onclick="toggleAccordion(this)">
+                        <h4>TERROR <span style="font-size:0.8rem; color:#888; font-weight:normal;">(Being Sneaky & Scary)</span></h4>
+                        <span class="accordion-icon">▼</span>
+                    </div>
+                    <div class="accordion-content">
+                        <div class="perk-grid">
+                            <div class="perk-item">Beast of Prey</div><div class="perk-item">Dark Devotion</div><div class="perk-item">Distressing</div><div class="perk-item">Furtive Chase</div><div class="perk-item">Insidious</div><div class="perk-item">Monitor & Abuse</div><div class="perk-item">Secret Project</div><div class="perk-item">Silent Shadow</div><div class="perk-item">Trail of Torment</div><div class="perk-item">Unforeseen</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- EXPOSE -->
+                <div class="perk-accordion">
+                    <div class="accordion-header" onclick="toggleAccordion(this)">
+                        <h4>EXPOSE <span style="font-size:0.8rem; color:#888; font-weight:normal;">(One-Hit Downs)</span></h4>
+                        <span class="accordion-icon">▼</span>
+                    </div>
+                    <div class="accordion-content">
+                        <div class="perk-grid">
+                            <div class="perk-item">Dragon's Grip</div><div class="perk-item">Friends 'til the End</div><div class="perk-item">Hubris</div><div class="perk-item">Iron Maiden</div><div class="perk-item">Make Your Choice</div><div class="perk-item">Rancor</div><div class="perk-item">Ravenous</div><div class="perk-item">Starstruck</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- HEX -->
+                <div class="perk-accordion">
+                    <div class="accordion-header" onclick="toggleAccordion(this)">
+                        <h4>HEX <span style="font-size:0.8rem; color:#888; font-weight:normal;">(Powerful Totems, High Risk)</span></h4>
+                        <span class="accordion-icon">▼</span>
+                    </div>
+                    <div class="accordion-content">
+                        <div class="perk-grid">
+                            <div class="perk-item">Blood Favour</div><div class="perk-item">Crowd Control</div><div class="perk-item">Devour Hope</div><div class="perk-item">Face the Darkness</div><div class="perk-item">Fortune's Fool</div><div class="perk-item">Haunted Ground</div><div class="perk-item">Hive Mind</div><div class="perk-item">Huntress Lullaby</div><div class="perk-item">NOED</div><div class="perk-item">Nothing but Misery</div><div class="perk-item">Overture of Doom</div><div class="perk-item">Pentimento</div><div class="perk-item">Plaything</div><div class="perk-item">Retribution</div><div class="perk-item">Ruin</div><div class="perk-item">Scared to Death</div><div class="perk-item">Third Seal</div><div class="perk-item">Thrill of the Hunt</div><div class="perk-item">Two Can Play</div><div class="perk-item">Undying</div><div class="perk-item">Wretched Fate</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Step 2: The Descent Mechanic (Looping Animation) -->
+        <div class="descent-section">
+            <h3 class="section-header">Step 2: The Downward Spiral</h3>
+            <p class="section-desc">You start your first game feeling powerful with all 4 of your chosen perks. If you win, congratulations! That Killer is completely finished. But if you lose? You begin <strong>The Descent</strong>. The Entity demands a sacrifice. You must throw away one of your perks forever. You get to choose which one to lose, but you are now weaker. If you lose again, you lose another perk. And another.</p>
+            
+            <div class="descent-altar" id="descentLoopContainer">
+                <div class="altar-slot" id="loop-perk-1">
+                    <div class="perk-diamond"><span>I</span></div>
+                    <div class="slot-label">1st Loss (3 Perks left)</div>
+                </div>
+                <div class="altar-slot" id="loop-perk-2">
+                    <div class="perk-diamond"><span>II</span></div>
+                    <div class="slot-label">2nd Loss (2 Perks left)</div>
+                </div>
+                <div class="altar-slot" id="loop-perk-3">
+                    <div class="perk-diamond"><span>III</span></div>
+                    <div class="slot-label">3rd Loss (1 Perk left)</div>
+                </div>
+                <div class="altar-slot" id="loop-perk-4" style="transform: scale(1.1);">
+                    <div class="perk-diamond"><span>Lifeline</span></div>
+                    <div class="slot-label" style="color: #fff;">0 Perks (The Abyss)</div>
+                </div>
+            </div>
+
+            <div style="background: rgba(0,0,0,0.5); padding: 20px; border-left: 4px solid var(--entity-red); border-radius: 4px; margin-top: 30px;">
+                <h4 style="color: #fff; margin-bottom: 10px; font-size: 1.2rem;">The Last Hope: The Perkless Lifeline</h4>
+                <p style="color: #aaa; font-size: 0.95rem; line-height: 1.6;">What happens when you lose all your perks? The Entity gives you one final chance to prove yourself. You must play a game with <strong>no perks at all</strong>. <br><br>If you somehow survive and win this test, you get to climb back up! You earn back 1 perk and get to keep trying.<br><br>But if you lose this final test? The Entity gets angry. Those 4 perks you originally picked are now <strong>banned forever</strong> for that specific Killer. You have to start their story all over again by drafting 4 brand new perks.</p>
+            </div>
+        </div>
+
+        <!-- Ascension Tiers -->
+        <div class="descent-section">
+            <h3 class="section-header">The True Nightmare: Ascension Tiers</h3>
+            <p class="section-desc">Did you manage to win a game with every single Killer? Amazing! But the story isn't over. Now, you unlock the endgame. These are terrifying new rules that change everything.</p>
+            
+            <div class="ascension-grid">
+                <div class="ascension-card">
+                    <div class="tier-num">I</div>
+                    <h4>Weakened Tools</h4>
+                    <p>You are no longer allowed to use strong items. Only the weakest Brown and Yellow add-ons are allowed.</p>
+                </div>
+                <div class="ascension-card">
+                    <div class="tier-num">II</div>
+                    <h4>The Entity's Choice</h4>
+                    <p>Before you even pick your perks, the Entity randomly bans two whole Disciplines. You have to make do with what's left.</p>
+                </div>
+                <div class="ascension-card">
+                    <div class="tier-num">III</div>
+                    <h4>A Fast Fall</h4>
+                    <p>The punishment for losing is much faster. If you lose once, you drop straight down to 2 perks. Lose again, and you are immediately at zero.</p>
+                </div>
+                <div class="ascension-card">
+                    <div class="tier-num">IV</div>
+                    <h4>Perfect or Nothing</h4>
+                    <p>A normal win isn't good enough anymore. If even one survivor escapes (through the gates or the hatch), it counts as a loss. You must kill all four.</p>
+                </div>
+            </div>
+        </div>
+
+    </section>
+
+    <!-- OTHER CHALLENGES (Retained Theme) -->
+    <div style="max-width: 1200px; margin: 0 auto 5rem auto; padding: 0 2rem;">
+        <h2 style="color: #fff; font-size: 2.5rem; text-transform: uppercase; text-align: center; margin-bottom: 3rem; text-shadow: 0 0 20px rgba(255,255,255,0.3);">Other Hardest Trials</h2>
         <div class="challenge-grid">
             <div class="challenge-card" onclick="openModal('phantom')">
                 <span class="card-type">Survivor Campaign</span>
                 <h3 class="card-title">The Phantom of the Fog</h3>
-                <p style="color: var(--text-muted); font-size: 0.9rem;">Complete pacifism. Never trigger a chase sequence.</p>
+                <p style="color: var(--text-muted); font-size: 0.95rem;">Complete pacifism. Never trigger a chase sequence.</p>
             </div>
             <div class="challenge-card" onclick="openModal('warden')">
                 <span class="card-type">Killer Campaign</span>
                 <h3 class="card-title">The Entity's Warden</h3>
-                <p style="color: var(--text-muted); font-size: 0.9rem;">Total territorial dominance. Confine your prey.</p>
+                <p style="color: var(--text-muted); font-size: 0.95rem;">Total territorial dominance. Confine your prey.</p>
             </div>
             <div class="challenge-card" onclick="openModal('purifier')">
                 <span class="card-type">Saboteur Campaign</span>
                 <h3 class="card-title">The Hex Purifier</h3>
-                <p style="color: var(--text-muted); font-size: 0.9rem;">Cleanse the realm. Touch no generators until the end.</p>
+                <p style="color: var(--text-muted); font-size: 0.95rem;">Cleanse the realm. Touch no generators until the end.</p>
             </div>
         </div>
     </div>
 
+    <!-- MODAL POPUP -->
     <div class="modal-overlay" id="modalOverlay">
         <div class="modal-content">
             <span class="close-btn" onclick="closeModal()">&times;</span>
-            <div class="modal-body" id="modalBody"></div>
-            
-            <div class="leaderboard-section">
-                <h3>Top Escapers</h3>
-                <ul class="leaderboard-list" id="leaderboardList">
-                    <li>Loading...</li>
-                </ul>
+            <div id="modalBody" style="color: #fff; line-height: 1.6;">
+                <!-- Populated via JS -->
             </div>
-
-            <div class="db-action-area">
-                <div>
-                    <span style="display: block; margin-bottom: 0.5rem; color: #888;">Update Trial Progress:</span>
-                    <input type="number" class="progress-input" placeholder="0" min="0" id="progressVal">
-                    <span style="color: #aaa; margin-left: 10px;">/ 10 Successful Trials</span>
-                </div>
-                <button class="btn-update" id="syncBtn" onclick="saveToDatabase()">Sync to Database</button>
-            </div>
-            <p id="syncStatus" style="text-align: right; margin-top: 10px; font-weight: bold;"></p>
         </div>
     </div>
 
+    <!-- JAVASCRIPT LOGIC -->
     <script>
-        // --- DATABASE SETUP ---
-        const SUPABASE_URL = 'https://snihsgtulbtnwjyrhman.supabase.co'; // ADD YOUR PROJECT URL HERE
-        const SUPABASE_ANON_KEY = 'YOUR_ANON_KEY_HERE'; // Keep this safe in production if possible!
+        // ==========================================================================
+        // UI INTERACTIONS: ACCORDION
+        // ==========================================================================
+        function toggleAccordion(header) {
+            const accordion = header.parentElement;
+            const content = accordion.querySelector('.accordion-content');
+            
+            // Close all others
+            document.querySelectorAll('.perk-accordion').forEach(acc => {
+                if(acc !== accordion) {
+                    acc.classList.remove('active');
+                    acc.querySelector('.accordion-content').style.maxHeight = null;
+                }
+            });
 
-        let supabaseClient;
-        if (SUPABASE_URL && SUPABASE_ANON_KEY && window.supabase) {
-            supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-        }
-
-        // --- AUTH LOGIC ---
-        let currentUser = null;
-
-        // NOTE: There are absolutely no redirects in this logic. 
-        // Users can stay on this page freely without being forced to login.html
-        function checkAuthStatus() {
-            const authContainer = document.getElementById('authContainer');
-            const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
-            currentUser = localStorage.getItem('currentUser'); // Get the logged-in username
-
-            if (isLoggedIn) {
-                authContainer.innerHTML = `<button onclick="handleLogout()" class="btn-logout">LOGOUT (${currentUser})</button>`;
+            // Toggle current
+            accordion.classList.toggle('active');
+            if (accordion.classList.contains('active')) {
+                content.style.maxHeight = content.scrollHeight + "px";
             } else {
-                authContainer.innerHTML = `
-                    <a href="login.html" style="color: var(--text-light); text-decoration: none; font-weight: bold; white-space: nowrap; font-size: 0.9rem; letter-spacing: 1px;">LOGIN</a>
-                    <a href="register.html" style="background: var(--entity-red); color: #fff; text-decoration: none; padding: 8px 20px; border-radius: 4px; font-weight: bold; font-size: 0.9rem; letter-spacing: 1px; white-space: nowrap;">REGISTER</a>
-                `;
+                content.style.maxHeight = null;
             }
         }
 
-        function handleLogout() {
-            localStorage.removeItem('isLoggedIn');
-            localStorage.removeItem('currentUser');
-            // Simply refresh the state without changing pages
-            checkAuthStatus(); 
+        // ==========================================================================
+        // UI INTERACTIONS: LOOPING DESCENT ANIMATION
+        // ==========================================================================
+        function startDescentLoop() {
+            const slots = [
+                document.getElementById('loop-perk-1'),
+                document.getElementById('loop-perk-2'),
+                document.getElementById('loop-perk-3'),
+                document.getElementById('loop-perk-4')
+            ];
+            
+            let currentIndex = 0;
+
+            setInterval(() => {
+                // If we've reached the end, reset all after a brief pause
+                if (currentIndex >= slots.length) {
+                    slots.forEach(slot => slot.classList.remove('consumed'));
+                    currentIndex = 0;
+                    return;
+                }
+
+                // Consume current perk
+                slots[currentIndex].classList.add('consumed');
+                currentIndex++;
+
+            }, 1500); // Trigger every 1.5 seconds. Full cycle takes 6 seconds + 1.5s reset.
         }
 
-        checkAuthStatus();
+        // Initialize Loop
+        window.addEventListener('DOMContentLoaded', () => {
+            startDescentLoop();
+        });
 
-        // --- CHALLENGE MODAL LOGIC ---
-        const challengeData = {
-            'phantom': {
-                title: "The Phantom of the Fog",
-                meta: "Survivor // Difficulty: Extreme // Est. Time: 15 Hours",
-                desc: "You must survive the trial without ever triggering a chase sequence with the Killer. If the chase music starts, the trial is void. You are required to complete the equivalent of 2 full generators entirely unseen, and escape.",
-                perks: ["Distortion", "Urban Evasion", "Calm Spirit", "Iron Will"]
-            },
-            'warden': {
-                title: "The Entity's Warden",
-                meta: "Killer // Difficulty: Hard // Est. Time: 10 Hours",
-                desc: "Claim a specific quadrant of the map (e.g., the main building). You are not allowed to hook any survivor outside of your designated territory. If they go down across the map, you must carry them back.",
-                perks: ["Agitation", "Iron Grasp", "Territorial Imperative", "Monstrous Shrine"]
-            },
-            'purifier': {
-                title: "The Hex Purifier",
-                meta: "Mixed // Difficulty: Insane // Est. Time: 20 Hours",
-                desc: "You are not allowed to touch a generator until the endgame collapse. You must cleanse all 5 totems, open at least 3 chests, and achieve 4 safe unhooks before the exit gates are powered.",
-                perks: ["Counterforce", "Small Game", "Plunderer's Instinct", "We'll Make It"]
-            }
-        };
+        // ==========================================================================
+        // UI INTERACTIONS: MODALS & OLD THEME CHALLENGES
+        // ==========================================================================
+const challengeData = {
+    'phantom': {
+        title: "The Phantom of the Fog",
+        meta: "Survivor // Difficulty: Extreme // 10 wins only Not A Streak",
+        desc: "Imagine being a ghost in a horror anime. You aren't here to fight, and you definitely aren't here to run. You are here to vanish. Your ultimate goal is to escape and get 10 total wins under your belt. (Don't worry, it doesn't have to be a streak just 10 wins total!). But here is the massive catch: the Killer can never, ever know you exist. If the chase music starts playing even for a single second, your trial is immediately ruined and it counts as a loss. You have to creep through the tall grass, hold your breath while the killer walks right past you, and let your teammates take all the heat. You will rely heavily on your perks to hide your scratch marks, silence your grunts of pain, and keep your aura completely hidden. Play like a shadow.",
+        perks: ["Distortion", "Urban Evasion", "Calm Spirit", "Iron Will"]
+    },
+    'warden': {
+        title: "The Entity's Warden",
+        meta: "Killer // Difficulty: Hard // 10 wins only Not A Streak",
+        desc: "Think of yourself as the final boss waiting deep inside your castle. When the match starts, look around and pick one specific area of the map. It could be the big main building, or maybe the creepy killer shack. That spot is now your kingdom. Your goal is to secure 10 total victories, but you are absolutely forbidden from hooking anyone outside of your kingdom. If you knock a survivor down on the complete opposite side of the map, you have to throw them over your shoulder and carry them all the way back to your chosen zone. It turns the game into a desperate tug-of-war. Will they wiggle out before you reach your dungeon? Your perk build is designed entirely around moving incredibly fast while carrying bodies, ensuring nobody escapes your grasp once they enter your territory.",
+        perks: ["Agitation", "Iron Grasp", "Territorial Imperative", "Monstrous Shrine"]
+    },
+    'purifier': {
+        title: "The Hex Purifier",
+        meta: "Mixed // Difficulty: Insane // 10 wins only Not A Streak",
+        desc: "While your teammates are playing a normal game of Dead by Daylight, you are basically the magical support character on a secret side quest. You need 10 wins to complete this challenge, but you are not allowed to touch a single generator. Not even for one second! Your only true mission is to rid the map of dark magic. You must hunt down and crush all 5 bone totems hidden around the environment before the final generator pops. Since you aren't doing generators, you have to be the ultimate team player in other ways rescuing people from hooks, healing the injured, and cleansing totems as fast as humanly possible. Once the exit gates are finally powered by your team, your curse is lifted and you can help open the doors to escape.",
+        perks: ["Counterforce", "Small Game", "Plunderer's Instinct", "We'll Make It"]
+    }
+};
 
         const modal = document.getElementById('modalOverlay');
         const modalBody = document.getElementById('modalBody');
-        let currentChallengeId = '';
 
         function openModal(challengeId) {
-            currentChallengeId = challengeId;
             const data = challengeData[challengeId];
             
-            document.getElementById('progressVal').value = '';
-            document.getElementById('syncStatus').textContent = '';
-            
             modalBody.innerHTML = `
-                <h2>${data.title}</h2>
-                <div class="modal-meta">${data.meta}</div>
-                <p>${data.desc}</p>
-                <h4 style="margin-top: 2rem; color: var(--entity-red);">Mandatory Build</h4>
-                <div class="perk-build">
-                    ${data.perks.map(perk => `<div class="perk-slot">${perk}</div>`).join('')}
-                </div>`;
-            
+                <h2 style="font-size: 2.5rem; color: #fff; margin-bottom: 0.5rem; text-shadow: 0 0 10px rgba(211,47,47,0.8);">${data.title}</h2>
+                <div style="color: var(--entity-red); font-weight: bold; margin-bottom: 2rem; border-bottom: 1px solid #333; padding-bottom: 1rem;">${data.meta}</div>
+                <p style="font-size: 1.1rem; color: #ccc;">${data.desc}</p>
+                <h4 style="margin-top: 2rem; color: var(--entity-red); font-size: 1.2rem; text-transform: uppercase;">Mandatory Build</h4>
+                <div style="display: flex; gap: 1rem; margin-top: 1rem; flex-wrap: wrap;">
+                    ${data.perks.map(perk => `<div style="background: rgba(255,255,255,0.05); border: 1px dashed #555; padding: 1rem 1.5rem; border-radius: 6px; flex: 1; text-align: center; min-width: 150px;">${perk}</div>`).join('')}
+                </div>
+            `;
             modal.classList.add('active');
-            fetchLeaderboard(challengeId); 
         }
 
-        function closeModal() { 
-            modal.classList.remove('active'); 
-        }
-        
-        window.onclick = (e) => { 
-            if (e.target == modal) closeModal(); 
+        function closeModal() {
+            modal.classList.remove('active');
         }
 
-        // --- LEADERBOARD & SYNC LOGIC ---
-        async function fetchLeaderboard(challengeId) {
-            const listEl = document.getElementById('leaderboardList');
-            listEl.innerHTML = '<li>Summoning The Entity...</li>';
-            
-            if (!supabaseClient) {
-                listEl.innerHTML = '<li>Database connection not established.</li>';
-                return;
-            }
-
-            const columnName = `${challengeId}_progress`;
-
-            const { data, error } = await supabaseClient
-                .from('sacrifices')
-                .select(`sacrifice_name, ${columnName}`)
-                .order(columnName, { ascending: false })
-                .limit(5);
-
-            if (error) {
-                console.error(error);
-                listEl.innerHTML = '<li>Error loading records.</li>';
-                return;
-            }
-
-            if (data && data.length > 0) {
-                listEl.innerHTML = '';
-                data.forEach((player, index) => {
-                    const score = player[columnName] || 0;
-                    listEl.innerHTML += `
-                        <li>
-                            <span>#${index + 1} ${player.sacrifice_name}</span>
-                            <span>${score} / 10</span>
-                        </li>`;
-                });
-            } else {
-                listEl.innerHTML = '<li>No survivors have attempted this trial yet.</li>';
-            }
-        }
-
-        async function saveToDatabase() {
-            const val = document.getElementById('progressVal').value;
-            const statusMsg = document.getElementById('syncStatus');
-            
-            if (!currentUser) {
-                statusMsg.style.color = '#ff3333';
-                statusMsg.innerHTML = "You must be logged in to sync progress! <a href='login.html' style='color: white; text-decoration: underline;'>Login Here</a>";
-                return;
-            }
-            if (val === '' || val < 0) {
-                statusMsg.style.color = '#ff3333';
-                statusMsg.textContent = "Enter a valid progress number.";
-                return;
-            }
-
-            statusMsg.style.color = 'white';
-            statusMsg.textContent = "Syncing...";
-
-            const columnName = `${currentChallengeId}_progress`;
-
-            const { error } = await supabaseClient
-                .from('sacrifices')
-                .update({ [columnName]: parseInt(val) })
-                .eq('sacrifice_name', currentUser);
-
-            if (error) {
-                console.error(error);
-                statusMsg.style.color = '#ff3333';
-                statusMsg.textContent = "Failed to sync to The Entity.";
-            } else {
-                statusMsg.style.color = '#33ff33';
-                statusMsg.textContent = "Progress Synced!";
-                fetchLeaderboard(currentChallengeId); 
-            }
+        window.onclick = (e) => {
+            if (e.target == modal) closeModal();
         }
     </script>
 </body>
