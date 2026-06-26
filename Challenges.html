@@ -127,69 +127,123 @@
             100% { transform: translateY(0px); }
         }
 
-        /* ==========================================================================
-           RESPONSIVE NAVBAR (GLASSMORPHISM)
-           ========================================================================== */
-        .navbar {
-            width: calc(100% - 60px);
-            max-width: 1600px;
-            margin: 20px auto;
-            padding: 15px 30px;
-            background: var(--glass-bg);
-            border: 1px solid var(--glass-border);
-            border-radius: 16px;
-            z-index: 1000;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), inset 0 0 15px rgba(211, 47, 47, 0.1);
-            overflow-x: auto;
-            scrollbar-width: none;
-        }
-        
-        .nav-links {
-            display: flex;
-            align-items: center;
-            gap: clamp(15px, 2vw, 40px);
-            list-style: none;
-        }
+       /* ==========================================================================
+   RESPONSIVE EDGE-TO-EDGE NAVBAR
+   ========================================================================== */
 
-        .navbar li a {
-            font-size: 0.95rem;
-            font-weight: 700;
-            letter-spacing: 2px;
-            color: #b0b0b0;
-            text-decoration: none;
-            text-transform: uppercase;
-            position: relative;
-            padding: 8px 12px;
-            transition: var(--transition-smooth);
-            white-space: nowrap;
-        }
+.navbar {
+    width: 100%; /* Edge to edge */
+    
+    position: fixed;
+    top: 0; /* Snapped to the very top */
+    left: 0;
+    
+    padding: 16px 4vw; /* Uses viewport width for responsive padding */
 
-        .navbar li a::after {
-            content: "";
-            position: absolute;
-            bottom: 0; left: 50%; width: 0; height: 2px;
-            background: var(--entity-red);
-            transform: translateX(-50%);
-            transition: var(--transition-smooth);
-            box-shadow: 0 0 10px var(--entity-red);
-        }
+    background: linear-gradient(
+        to bottom,
+        rgba(0, 0, 0, 0.95) 0%,
+        rgba(15, 0, 0, 0.88) 100%
+    );
 
-        .navbar li a:hover, .navbar li a.active {
-            color: #fff;
-            text-shadow: 0 0 12px var(--entity-glow);
-        }
+    /* Changed to bottom-border only since it touches the screen edges */
+    border-bottom: 1px solid rgba(255, 0, 0, 0.25); 
 
-        .navbar li a:hover::after, .navbar li a.active::after {
-            width: 100%;
-        }
+    z-index: 1000;
 
-        .auth-links { display: flex; gap: 15px; align-items: center; }
+    display: flex;
+    justify-content: center;
+    align-items: center;
 
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+
+    box-shadow: 0 4px 25px rgba(255, 0, 0, 0.12);
+}
+
+/* LINKS CONTAINER */
+
+.nav-links {
+    display: flex;
+    flex-wrap: nowrap; /* STRICTLY forces one line */
+    justify-content: center; 
+    align-items: center;
+
+    /* Slightly reduced min-gap to squeeze in more items naturally */
+    gap: clamp(10px, 1.5vw, 35px); 
+
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    
+    /* Mobile-friendly fallback: allows swiping on tiny screens instead of breaking */
+    overflow-x: auto; 
+    scrollbar-width: none; /* Hides scrollbar in Firefox */
+}
+
+/* Hides scrollbar in Chrome/Safari/Edge for the swipable container */
+.nav-links::-webkit-scrollbar {
+    display: none;
+}
+
+/* LINKS */
+
+.navbar li a {
+    font-family: 'Inter', sans-serif;
+
+    /* Tweaked scaling so it fits more text gracefully */
+    font-size: clamp(0.8rem, 1vw, 1.15rem); 
+    font-weight: 700;
+
+    letter-spacing: clamp(0.5px, 0.2vw, 2.5px);
+
+    color: #d8d8d8;
+    text-decoration: none;
+    text-transform: uppercase;
+
+    position: relative;
+
+    padding: 8px 10px;
+
+    transition: all 0.3s ease;
+
+    white-space: nowrap; /* Prevents the text inside the link from wrapping */
+    flex-shrink: 0; /* Prevents the flexbox from crushing the text */
+}
+
+/* Hover Elements (Unchanged) */
+
+.navbar li a::before {
+    content: "";
+    position: absolute;
+
+    top: 50%;
+    left: 50%;
+
+    width: 0;
+    height: 2px;
+
+    background: var(--red);
+
+    transform: translate(-50%, -50%) rotate(-3deg);
+
+    transition: width 0.35s ease;
+
+    box-shadow: 0 0 10px var(--red);
+
+    opacity: 0;
+}
+
+.navbar li a:hover {
+    color: white;
+    text-shadow: 0 0 12px rgba(255, 0, 0, 0.7);
+}
+
+.navbar li a:hover::before {
+    width: 100%;
+    opacity: 1;
+}
         /* ==========================================================================
            ENTITY'S DESCENT HERO SECTION
            ========================================================================== */
