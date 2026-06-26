@@ -714,6 +714,68 @@
                 font-size: 2rem;
             }
         }
+
+        /* ==========================================================
+   MODAL PROFILE BUTTON
+   ========================================================== */
+
+.modal-profile-btn{
+
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+
+    margin-top:28px;
+
+    padding:14px 32px;
+
+    background:linear-gradient(
+        135deg,
+        #ff2a2a,
+        #9b0000
+    );
+
+    color:#fff;
+
+    text-decoration:none;
+
+    font-weight:700;
+
+    letter-spacing:2px;
+
+    text-transform:uppercase;
+
+    border:1px solid rgba(255,0,0,.45);
+
+    border-radius:10px;
+
+    transition:
+        transform .25s ease,
+        box-shadow .25s ease,
+        background .25s ease;
+
+    box-shadow:
+        0 0 20px rgba(255,0,0,.25);
+}
+
+.modal-profile-btn:hover{
+
+    transform:translateY(-3px);
+
+    box-shadow:
+        0 0 30px rgba(255,0,0,.55);
+
+    background:linear-gradient(
+        135deg,
+        #ff3b3b,
+        #c40000
+    );
+}
+
+.modal-profile-btn:active{
+
+    transform:scale(.97);
+}
     </style>
 </head>
 
@@ -908,7 +970,6 @@
     <div class="creator-name">YatoTheMad</div>
     <div class="creator-role">Killer Strategist</div>
     <div class="creator-tag">Build Analyst</div>
-    <a href="request.html" class="profile-link-btn" onclick="event.stopPropagation();">Build Requests</a>
 
 </div>
 
@@ -952,6 +1013,13 @@
                     </div>
 
                     <div class="footer-note" id="modalNote"></div>
+                    <a id="modalProfileButton"
+   class="modal-profile-btn"
+   href="#"
+   target="_self"
+   style="display:none;">
+    Build Requests
+</a>
 
                 </div>
 
@@ -972,6 +1040,9 @@
             document.getElementById("modalImage").src = image;
             document.getElementById("modalDescription").innerText = description;
             document.getElementById("modalNote").innerText = note;
+            const profileButton = document.getElementById("modalProfileButton");
+
+profileButton.style.display = "none";
 
             let knownContainer = document.getElementById("modalKnown");
             knownContainer.innerHTML = "";
@@ -986,6 +1057,15 @@
             rep.split(",").forEach(item => {
                 repContainer.innerHTML += `<div class="badge">${item.trim()}</div>`;
             });
+            if(name === "YatoTheMad"){
+
+    profileButton.style.display = "inline-flex";
+
+    profileButton.href = "request.html";
+
+    profileButton.textContent = "Build Requests";
+
+}
 
         }
 
