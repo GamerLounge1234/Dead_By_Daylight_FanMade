@@ -433,7 +433,7 @@
         </div>
     </div>
 
- <script>
+<script>
         const KILLERS_DB = {
             "The Trapper": ["trapper", "evan", "macmillan"],
             "The Wraith": ["wraith", "bing bong", "philip", "ojomo", "bingbong", "bell boy"],
@@ -484,7 +484,6 @@
             { name:"A Nurse's Calling", category:"INFO", desc:"The Auras of injured Survivors being healed are revealed within 28/30/32m." },
             { name:"Agitation", category:"SPEED", desc:"Increases Carrying speed by 6/12/18% and Terror Radius by +12m." },
             { name:"Alien Instinct", category:"INFO", desc:"Hooking reveals farthest injured Survivor for 8s, inflicts Oblivious." },
-            { name:"All-Shaking Thunder", category:"CHASE", desc:"After falling, Lunge Attack range +75% for 15/20/25s." },
             { name:"Awakened Awareness", category:"INFO", desc:"While carrying, Auras of Survivors within 16/18/20m revealed." },
             { name:"Bamboozle", category:"CHASE", desc:"Vaulting speed +15%. Vaulting a Window blocks it for 16s." },
             { name:"Barbecue & Chilli", category:"INFO", desc:"After hooking, Survivors 40m+ away are revealed for 5s." },
@@ -500,7 +499,6 @@
             { name:"Coulrophobia", category:"SLOW DOWN", desc:"Healing in Terror Radius -50% speed, fast skill checks." },
             { name:"Coup de Grâce", category:"CHASE", desc:"Completed Gen = Token. Consume for +80% Lunge range." },
             { name:"Cruel Limits", category:"CHASE", desc:"Gen complete blocks all Windows for 30s." },
-            { name:"Cull the Weak", category:"SLOW DOWN", desc:"Hooking non-Obsession slows repair/heal/sabotage." },
             { name:"Dark Arrogance", category:"CHASE", desc:"Vault speed +25%. Stun/Blind duration increased." },
             { name:"Dark Devotion", category:"TERROR", desc:"Injure Obsession -> Transfers TR, grants Undetectable." },
             { name:"Darkness Revealed", category:"INFO", desc:"Search locker -> Reveal Auras near all lockers for 8s." },
@@ -511,7 +509,6 @@
             { name:"Discordance", category:"INFO", desc:"Gens with 2+ Survivors highlighted yellow." },
             { name:"Dissolution", category:"CHASE", desc:"Injure -> Next fast vault breaks Pallet." },
             { name:"Distressing", category:"TERROR", desc:"Terror Radius +30%." },
-            { name:"Dominance", category:"SLOW DOWN", desc:"First time Chest/Totem interacted, blocked for 16s." },
             { name:"Dragon's Grip", category:"EXPOSE", desc:"Damage Gen -> Next touch screams, Exposed." },
             { name:"Dying Light", category:"SLOW DOWN", desc:"Hook non-Obsession slows team. Obsession gets buff." },
             { name:"Enduring", category:"CHASE", desc:"Pallet Stun duration -50%." },
@@ -519,7 +516,6 @@
             { name:"Fire Up", category:"SPEED", desc:"Gens done -> Actions faster." },
             { name:"Forced Hesitation", category:"SLOW DOWN", desc:"Down Survivor -> Nearby suffer Hindered." },
             { name:"Forced Penance", category:"SLOW DOWN", desc:"Protection Hit -> Broken for 80s." },
-            { name:"Forever Entwined", category:"SPEED", desc:"Damage -> Token. Increases Drop/Hook/Pickup speed." },
             { name:"Franklin's Demise", category:"SLOW DOWN", desc:"Basic Attacks make Survivors drop Items." },
             { name:"Friends 'til the End", category:"EXPOSE", desc:"Hook non-Obsession -> Obsession Exposed." },
             { name:"Furtive Chase", category:"TERROR", desc:"Hook Obsession -> Undetectable and Haste." },
@@ -527,41 +523,29 @@
             { name:"Gearhead", category:"INFO", desc:"Injure -> Good Skill Checks reveal Aura." },
             { name:"Genetic Limits", category:"SLOW DOWN", desc:"Lose Health State -> Exhausted for 8s." },
             { name:"Grim Embrace", category:"SLOW DOWN", desc:"Hook everyone once -> Block all Gens for 40s." },
-            { name:"Haywire", category:"SLOW DOWN", desc:"Stop Exit Gate opening -> Regresses fast." },
-            { name:"Help Wanted", category:"SPEED", desc:"Compromised Gen completed -> Basic Attack recovery faster." },
             { name:"Hex: Blood Favour", category:"HEX", desc:"Injure -> Blocks nearby pallets." },
             { name:"Hex: Crowd Control", category:"HEX", desc:"Fast vault blocks Window." },
             { name:"Hex: Devour Hope", category:"HEX", desc:"Unhooks far away grant tokens. 3 = Exposed. 5 = Kill." },
             { name:"Hex: Face the Darkness", category:"HEX", desc:"Injure -> Others scream periodically." },
-            { name:"Hex: Fortune's Fool", category:"HEX", desc:"First hook -> Oblivious, totem blocked for others." },
             { name:"Hex: Haunted Ground", category:"HEX", desc:"Cleanse -> All Exposed for 60s." },
-            { name:"Hex: Hive Mind", category:"HEX", desc:"See repair progress. 4 Gens done -> Remaining explode." },
             { name:"Hex: Huntress Lullaby", category:"HEX", desc:"Hooks silence Skill Check warning." },
             { name:"Hex: No One Escapes Death", category:"HEX", desc:"Gates powered -> Exposed, Haste." },
-            { name:"Hex: Nothing but Misery", category:"HEX", desc:"8 Basic Hits -> Hits cause Hindered." },
-            { name:"Hex: Overture of Doom", category:"HEX", desc:"Transfers TR to Gen, grants Undetectable." },
             { name:"Hex: Pentimento", category:"HEX", desc:"Rekindle cleansed totems to slow game down." },
             { name:"Hex: Plaything", category:"HEX", desc:"First hook -> Cursed Survivor is Oblivious." },
             { name:"Hex: Retribution", category:"HEX", desc:"Cleanse/Bless -> Oblivious. Break Hex -> Reveal Auras." },
             { name:"Hex: Ruin", category:"HEX", desc:"Unrepaired Gens automatically regress at 150%." },
-            { name:"Hex: Scared to Death", category:"HEX", desc:"Break Pallet in chase -> Scream, Hindered." },
             { name:"Hex: The Third Seal", category:"HEX", desc:"Hits inflict Blindness." },
             { name:"Hex: Thrill of the Hunt", category:"HEX", desc:"Slows cleansing/blessing based on totems left." },
-            { name:"Hex: Two Can Play", category:"HEX", desc:"Stun/Blind you multiple times -> They get Blinded." },
             { name:"Hex: Undying", category:"HEX", desc:"Auras near Dull Totems revealed. Saves broken Hex." },
-            { name:"Hex: Wretched Fate", category:"HEX", desc:"Gen done -> Curses Obsession, slows repair." },
             { name:"Hoarder", category:"INFO", desc:"Noise when chest unlocked/item picked up." },
             { name:"Hubris", category:"EXPOSE", desc:"Stunning you inflicts Exposed." },
-            { name:"Human Greed", category:"INFO", desc:"Close chests, see unopened chests, see Auras near chests." },
             { name:"Hysteria", category:"SLOW DOWN", desc:"Injure -> Injured suffer Oblivious." },
             { name:"I'm All Ears", category:"INFO", desc:"Fast vault near you reveals Aura." },
             { name:"Infectious Fright", category:"INFO", desc:"Down Survivor -> Others in TR scream." },
             { name:"Insidious", category:"TERROR", desc:"Stand still -> Undetectable." },
             { name:"Iron Grasp", category:"CHASE", desc:"Wiggle effects reduced, wiggle time increased." },
             { name:"Iron Maiden", category:"EXPOSE", desc:"Search lockers faster. Exiting locker -> Exposed." },
-            { name:"Keep Them Waiting", category:"SPEED", desc:"Hits on non-Obsession reduce Attack cooldown." },
             { name:"Knock Out", category:"SLOW DOWN", desc:"Downed Survivors' Auras hidden from afar." },
-            { name:"Languid Touch", category:"SLOW DOWN", desc:"Scare crow -> Exhausted." },
             { name:"Lethal Pursuer", category:"INFO", desc:"Start of trial: see Auras. Aura reading +2s." },
             { name:"Leverage", category:"SLOW DOWN", desc:"Unhooking reduces Healing speed." },
             { name:"Lightborn", category:"CHASE", desc:"Immunity to Blinds. Attempted blinds reveal Aura." },
@@ -572,37 +556,22 @@
             { name:"Mindbreaker", category:"SLOW DOWN", desc:"Repairing causes Blindness and Exhausted." },
             { name:"Monitor & Abuse", category:"TERROR", desc:"In chase TR increased, out of chase TR decreased." },
             { name:"Nemesis", category:"INFO", desc:"Stun/Blind makes them Obsession, Oblivious." },
-            { name:"No Holds Barred", category:"SLOW DOWN", desc:"Gen complete blocks highest progressed Gen." },
-            { name:"No Quarter", category:"SLOW DOWN", desc:"Self-Heal 75% -> Skill checks. Fail -> Broken." },
             { name:"No Way Out", category:"SLOW DOWN", desc:"Hooks grant tokens. Blocks gate switches." },
-            { name:"None Are Free", category:"SLOW DOWN", desc:"Gens done -> Blocks Windows/Pallets based on hooks." },
             { name:"Nowhere to Hide", category:"INFO", desc:"Damage Gen -> Reveal nearby Auras." },
             { name:"Oppression", category:"GEN", desc:"Damage Gen -> 4 others regress." },
             { name:"Overcharge", category:"GEN", desc:"Damage Gen -> Hard skill check, fast regression." },
             { name:"Overwhelming Presence", category:"SLOW DOWN", desc:"Using items in TR causes Exhausted." },
-            { name:"Phantom Fear", category:"INFO", desc:"Looking at you in TR -> Scream, reveal Aura." },
             { name:"Play with Your Food", category:"SPEED", desc:"Chase & lose Obsession -> Token for Haste." },
             { name:"Pop Goes the Weasel", category:"GEN", desc:"Hook -> Next Gen kick removes 20% total progress." },
             { name:"Predator", category:"CHASE", desc:"Lose chase -> Aura revealed." },
-            { name:"Rampage", category:"SPEED", desc:"Break stuff -> Tokens. Stunned -> Haste based on Tokens." },
             { name:"Rancor", category:"EXPOSE", desc:"Gens done -> See Auras. Gates done -> Obsession Exposed/Mori." },
             { name:"Rapid Brutality", category:"SPEED", desc:"No Bloodlust. Basic Hit -> Haste." },
-            { name:"Ravenous", category:"EXPOSE", desc:"Hook everyone once -> All scream, Exposed." },
             { name:"Remember Me", category:"SLOW DOWN", desc:"Obsession hits increase gate opening time." },
             { name:"Save the Best for Last", category:"SPEED", desc:"Hits on non-Obsession reduce attack cooldown." },
             { name:"Scourge Hook: Floods of Rage", category:"INFO", desc:"Unhook from Scourge -> Reveal all Auras." },
             { name:"Scourge Hook: Gift of Pain", category:"SLOW DOWN", desc:"Unhook from Scourge -> Slow heal/repair." },
-            { name:"Scourge Hook: Hangman's Trick", category:"INFO", desc:"See Auras near Scourge Hooks while carrying." },
-            { name:"Scourge Hook: Jagged Compass", category:"INFO", desc:"Unhook converts to Scourge. Hooking shows best Gen." },
-            { name:"Scourge Hook: Monstrous Shrine", category:"SPEED", desc:"Basement hooks accelerate sacrifice." },
             { name:"Scourge Hook: Pain Resonance", category:"GEN", desc:"Scourge hook -> Explode highest progressed Gen." },
-            { name:"Scourge Hook: Weeping Wounds", category:"SLOW DOWN", desc:"Unhook -> Haemorrhage, reduced speeds." },
-            { name:"Secret Project", category:"TERROR", desc:"Totem cleansed -> Block Gen, gain Undetectable." },
-            { name:"See How They Run", category:"SPEED", desc:"Lose Obsession -> Token for Haste." },
-            { name:"Septic Touch", category:"SLOW DOWN", desc:"Heal in TR -> Blindness & Exhausted." },
             { name:"Shadowborn", category:"SPEED", desc:"Blinded -> Haste." },
-            { name:"Shattered Hope", category:"INFO", desc:"Destroy Boon totems, reveal Auras." },
-            { name:"Silent Shadow", category:"TERROR", desc:"Undetectable at start and end of trial." },
             { name:"Sloppy Butcher", category:"SLOW DOWN", desc:"Basic hits cause Mangled & Haemorrhage." },
             { name:"Spies from the Shadows", category:"INFO", desc:"Crows give visual notifications." },
             { name:"Spirit Fury", category:"CHASE", desc:"Break Pallets -> Next stun auto-breaks Pallet." },
@@ -611,32 +580,24 @@
             { name:"Superior Anatomy", category:"CHASE", desc:"Survivor fast vaults -> Your vault speed +40%." },
             { name:"Surge", category:"GEN", desc:"Down Survivor -> Nearby Gens explode." },
             { name:"Surveillance", category:"INFO", desc:"See regression colors. Hear repair further." },
-            { name:"THWACK!", category:"INFO", desc:"Break wall/pallet -> Nearby scream & reveal Aura." },
             { name:"Terminus", category:"SLOW DOWN", desc:"Gates powered -> Injured suffer Broken." },
             { name:"Territorial Imperative", category:"INFO", desc:"Enter basement -> Reveal Aura." },
             { name:"Thanatophobia", category:"SLOW DOWN", desc:"Injured Survivors slow team's action speeds." },
             { name:"Thrilling Tremors", category:"INFO", desc:"Pick up -> Block un-repaired Gens." },
             { name:"Tinkerer", category:"INFO", desc:"Gen hits 70% -> Notification, Undetectable." },
             { name:"Trail of Torment", category:"TERROR", desc:"Damage Gen -> Undetectable." },
-            { name:"Turn Back the Clock", category:"GEN", desc:"Hook -> Ability to remotely explode Gen." },
             { name:"Ultimate Weapon", category:"INFO", desc:"Search Locker -> Nearby scream, suffer Blindness." },
-            { name:"Unbound", category:"SPEED", desc:"Injure -> Vault Window for Haste." },
-            { name:"Undone", category:"GEN", desc:"Failed skill checks = tokens. Damage Gen with tokens -> instant regression." },
             { name:"Unforeseen", category:"TERROR", desc:"Damage Gen -> Transfers TR to Gen, Undetectable." },
             { name:"Unnerving Presence", category:"SLOW DOWN", desc:"TR reduces skill check success zone." },
             { name:"Unrelenting", category:"CHASE", desc:"Missed attack cooldown reduced." },
-            { name:"Wandering Eye", category:"INFO", desc:"Start chase -> See other injured Auras." },
-            { name:"Weave Attunement", category:"INFO", desc:"Depleted items drop. See Auras near dropped items." },
             { name:"Whispers", category:"INFO", desc:"Hear Entity when Survivor is close." },
             { name:"Zanshin Tactics", category:"INFO", desc:"See Pallet/Window Auras." }
         ];
 
-        // Advanced Alias System
+        // Massively Upgraded Dictionary
         const PERK_ALIASES = {
             "bbq": "Barbecue & Chilli",
-            "barchique": "Barbecue & Chilli",
             "barbecue": "Barbecue & Chilli",
-            "barchique and chilli": "Barbecue & Chilli",
             "noed": "Hex: No One Escapes Death",
             "ruin": "Hex: Ruin",
             "stbfl": "Save the Best for Last",
@@ -649,43 +610,158 @@
             "lethal": "Lethal Pursuer",
             "brutal": "Brutal Strength",
             "corrupt": "Corrupt Intervention",
+            "corrupt intervention": "Corrupt Intervention",
             "deadlock": "Deadlock",
             "dms": "Dead Man's Switch",
             "nurses": "A Nurse's Calling",
-            "nurses calling": "A Nurse's Calling",
+            "nurse's": "A Nurse's Calling",
             "nurse's calling": "A Nurse's Calling",
-            "thrill for hunt": "Hex: Thrill of the Hunt",
+            "nurses calling": "A Nurse's Calling",
             "thrill of the hunt": "Hex: Thrill of the Hunt",
-            "face the darkness": "Hex: Face the Darkness",
             "blood warden": "Blood Warden",
             "end game": "Blood Warden",
             "bamboozle": "Bamboozle",
             "bam bam": "Bamboozle",
-            "sloppy": "Sloppy Butcher"
+            "surge": "Surge",
+            "jolt": "Surge", 
+            "sloppy": "Sloppy Butcher",
+            "sloppy butcher": "Sloppy Butcher",
+            "devour": "Hex: Devour Hope",
+            "plaything": "Hex: Plaything",
+            "pentimento": "Hex: Pentimento",
+            "undying": "Hex: Undying",
+            "retribution": "Hex: Retribution",
+            "haunted": "Hex: Haunted Ground",
+            "franklins": "Franklin's Demise",
+            "franklin's": "Franklin's Demise",
+            "lightborn": "Lightborn",
+            "shadowborn": "Shadowborn",
+            "discordance": "Discordance",
+            "tinkerer": "Tinkerer",
+            "infectious": "Infectious Fright",
+            "monitor": "Monitor & Abuse",
+            "m&a": "Monitor & Abuse",
+            "aw": "Awakened Awareness",
+            "no way out": "No Way Out",
+            "eruption": "Eruption",
+            "call of brine": "Call of Brine",
+            "cob": "Call of Brine",
+            "overcharge": "Overcharge",
+            "trail": "Trail of Torment",
+            "merciless": "Merciless Storm",
+            "mindbreaker": "Mindbreaker",
+            "fearmonger": "Mindbreaker",
+            "claustrophobia": "Cruel Limits",
+            "lullaby": "Hex: Huntress Lullaby"
         };
 
-        // ----------------------------------------------------------------------------
-        // STATE MANAGEMENT
-        // ----------------------------------------------------------------------------
         let globalQueue = [];
         let autoIncId = 1;
 
-        // ----------------------------------------------------------------------------
-        // INTELLIGENCE ALGORITHM (PARSING)
-        // ----------------------------------------------------------------------------
         function logDebug(msg) {
             const consoleEl = document.getElementById('debugLog');
-            if (consoleEl) {
-                consoleEl.innerHTML += `<br>> ${msg}`;
-                consoleEl.scrollTop = consoleEl.scrollHeight;
-            } else {
-                console.log(msg); // Fallback for dev tools
+            consoleEl.innerHTML += `<br>> ${msg}`;
+            consoleEl.scrollTop = consoleEl.scrollHeight;
+        }
+
+        // INTELLIGENCE ALGORITHM 1: Extractor for Perks via Index Tracking
+        function extractPerks(rawText) {
+            let foundPerks = [];
+            let textLower = rawText.toLowerCase();
+            // Critical fix for viewers forgetting spaces (e.g., "Surge,Sloppy")
+            // Replaces basic punctuation with spaces while protecting apostrophes
+            let cleanSearchString = textLower.replace(/[.,:;!\-_]/g, ' ');
+
+            // Pass 1: Aliases
+            for (let [alias, official] of Object.entries(PERK_ALIASES)) {
+                let cleanAlias = alias.toLowerCase().replace(/[.,:;!\-_]/g, ' ');
+                let regex = new RegExp(`\\b${cleanAlias}\\b`, 'i');
+                let match = cleanSearchString.match(regex);
+                
+                if (match && !foundPerks.some(p => p.name === official)) {
+                    const perkObj = PERKS_DB.find(p => p.name === official);
+                    if (perkObj) foundPerks.push({ ...perkObj, _index: match.index });
+                }
             }
+
+            // Pass 2: Official Database
+            const sortedDB = [...PERKS_DB].sort((a, b) => b.name.length - a.name.length);
+            for (let perk of sortedDB) {
+                let cleanPerk = perk.name.toLowerCase().replace(/[.,:;!\-_]/g, ' ');
+                let regex = new RegExp(`\\b${cleanPerk}\\b`, 'i');
+                let match = cleanSearchString.match(regex);
+                
+                if (match && !foundPerks.some(p => p.name === perk.name)) {
+                    foundPerks.push({ ...perk, _index: match.index });
+                }
+            }
+
+            // Intelligence upgrade: Sort by appearance in the text, extract up to 4
+            foundPerks.sort((a, b) => a._index - b._index);
+            return foundPerks.slice(0, 4).map(p => {
+                let clean = { ...p };
+                delete clean._index;
+                return clean;
+            });
+        }
+
+        // INTELLIGENCE ALGORITHM 2: Masks Out Perks to Protect Killer Extraction
+        function maskExtractedPerks(rawText, perks) {
+            let masked = rawText.toLowerCase();
+            
+            // Mask official names
+            perks.forEach(p => {
+                masked = masked.replace(p.name.toLowerCase(), '');
+            });
+            
+            // Mask aliases that triggered those perks
+            for (let [alias, official] of Object.entries(PERK_ALIASES)) {
+                if (perks.some(p => p.name === official)) {
+                    masked = masked.replace(alias.toLowerCase(), '');
+                }
+            }
+            return masked;
+        }
+
+        // INTELLIGENCE ALGORITHM 3: Index-Based Killer Extraction
+        function extractKiller(maskedText) {
+            let textLower = maskedText.replace(/[.,:;!\-_]/g, ' ');
+            let bestMatch = "Dealer's Choice";
+            let earliestIndex = Infinity;
+
+            for (let [officialName, aliases] of Object.entries(KILLERS_DB)) {
+                let searchTerms = [
+                    officialName.toLowerCase().replace(/[.,:;!\-_]/g, ' '), 
+                    ...aliases.map(a => a.toLowerCase().replace(/[.,:;!\-_]/g, ' '))
+                ];
+                
+                for (let term of searchTerms) {
+                    let regex = new RegExp(`\\b${term}\\b`, 'i');
+                    let match = textLower.match(regex);
+                    
+                    if (match && match.index < earliestIndex) {
+                        earliestIndex = match.index;
+                        bestMatch = officialName;
+                    }
+                }
+            }
+            return bestMatch;
+        }
+
+        // INTELLIGENCE ALGORITHM 4: Add-on Regex Parsing
+        function extractAddons(rawText) {
+            const addonRegex = /add-?ons?[:\s]+(.*?)(?:$|\n)/i;
+            const match = rawText.match(addonRegex);
+            if (match && match[1]) {
+                // Return string up to end, removing trailing periods
+                return match[1].trim().replace(/\.$/, '');
+            }
+            return null;
         }
 
         function processInput() {
             const inputEl = document.getElementById('viewerInput');
-            let rawText = inputEl.value.trim();
+            const rawText = inputEl.value.trim();
             
             if (!rawText) {
                 alert("Please paste a viewer message first.");
@@ -694,90 +770,25 @@
 
             logDebug(`Analyzing payload...`);
             
-            // PRE-PROCESSING: Fix typos like "callingAddons" missing a space
-            // 1. Separate camelCase words
-            rawText = rawText.replace(/([a-z])([A-Z])/g, '$1 $2');
-            // 2. Ensure "addon" or "addons" always has a space before it if it was mashed together
-            rawText = rawText.replace(/addon/gi, ' addon').replace(/\s+/g, ' ').trim();
+            // 1. Extract Perks first
+            const perksAssigned = extractPerks(rawText);
+            logDebug(`Extracted Perks: [${perksAssigned.map(p => p.name).join(', ')}]`);
             
-            let textLower = rawText.toLowerCase();
-
-            // 1. EXTRACT ADD-ONS (Before it interferes with killer/perk logic)
-            let addonsAssigned = "None requested";
-            // Match "addon:", "addons - ", "add-ons " and capture everything after it
-            const addonMatch = textLower.match(/add[- ]?ons?\s*:?-?\s*(.+)/i);
-            if (addonMatch) {
-                // Keep the original casing for the UI display
-                const origAddonMatch = rawText.match(/add[- ]?ons?\s*:?-?\s*(.+)/i);
-                addonsAssigned = origAddonMatch ? origAddonMatch[1].trim() : addonMatch[1].trim();
-                
-                // Remove the Add-ons portion from the search string so add-on names don't trigger perks/killers
-                textLower = textLower.replace(addonMatch[0], '');
-            }
+            // 2. Erase the detected perk text entirely from a shadow-copy to prevent false killer matching
+            const shadowText = maskExtractedPerks(rawText, perksAssigned);
             
-            // Normalize punctuation so alias boundaries match cleaner
-            let cleanStringForPerks = textLower.replace(/['":,\-\.]/g, ''); 
-            let foundPerks = [];
-
-            // 2. EXTRACT PERKS & SCRUB THEM FROM THE TEXT
-            // Scrubbing perks out ensures "A Nurse's Calling" doesn't accidentally trigger "The Nurse" killer
-            
-            // A. Check direct Aliases first
-            for (let [alias, official] of Object.entries(PERK_ALIASES)) {
-                let cleanAlias = alias.replace(/['":,\-\.]/g, '');
-                const regex = new RegExp(`\\b${cleanAlias}\\b`, 'i');
-                
-                if (regex.test(cleanStringForPerks) && !foundPerks.some(p => p.name === official)) {
-                    const perkObj = PERKS_DB.find(p => p.name === official);
-                    if (perkObj) foundPerks.push(perkObj);
-                    
-                    // Remove matched alias to avoid conflicting with Killers
-                    cleanStringForPerks = cleanStringForPerks.replace(regex, '');
-                }
-            }
-
-            // B. Check full official names
-            const sortedDB = [...PERKS_DB].sort((a, b) => b.name.length - a.name.length);
-            for (let perk of sortedDB) {
-                if (foundPerks.length >= 4) break; 
-                
-                const cleanPerkName = perk.name.toLowerCase().replace(/['":,\-\.]/g, '');
-
-                if (cleanStringForPerks.includes(cleanPerkName) && !foundPerks.some(p => p.name === perk.name)) {
-                    foundPerks.push(perk);
-                    // Remove matched perk
-                    cleanStringForPerks = cleanStringForPerks.replace(cleanPerkName, '');
-                }
-            }
-
-            // 3. EXTRACT KILLER (Using the scrubbed string)
-            let killerAssigned = "Dealer's Choice"; 
-            for (let [officialName, aliases] of Object.entries(KILLERS_DB)) {
-                if (cleanStringForPerks.includes(officialName.toLowerCase())) {
-                    killerAssigned = officialName;
-                    break;
-                }
-                
-                let found = false;
-                for (let alias of aliases) {
-                    const regex = new RegExp(`\\b${alias}\\b`, 'i');
-                    if (regex.test(cleanStringForPerks)) {
-                        killerAssigned = officialName;
-                        found = true;
-                        break;
-                    }
-                }
-                if (found) break;
-            }
-
+            // 3. Extract Killer safely
+            const killerAssigned = extractKiller(shadowText);
             logDebug(`Extracted Killer: ${killerAssigned}`);
-            logDebug(`Extracted Perks: [${foundPerks.map(p => p.name).join(', ')}]`);
-            logDebug(`Extracted Add-ons: ${addonsAssigned}`);
+
+            // 4. Extract Add-ons
+            const addonsAssigned = extractAddons(rawText);
+            if (addonsAssigned) logDebug(`Extracted Addons: ${addonsAssigned}`);
 
             const buildObj = {
                 id: autoIncId++,
                 killer: killerAssigned,
-                perks: foundPerks,
+                perks: perksAssigned,
                 addons: addonsAssigned,
                 raw: rawText
             };
@@ -790,15 +801,10 @@
             updateDOM();
         }
 
-        // ----------------------------------------------------------------------------
-        // DOM MANIPULATION & RENDERING
-        // ----------------------------------------------------------------------------
         function updateDOM() {
             const detailContainer = document.getElementById('detailedQueue');
             const miniContainer = document.getElementById('miniQueue');
             
-            if(!detailContainer || !miniContainer) return; // Prevent errors if DOM isn't ready
-
             detailContainer.innerHTML = '';
             miniContainer.innerHTML = '';
 
@@ -811,7 +817,6 @@
             globalQueue.forEach((build, index) => {
                 const qNum = index + 1;
 
-                // --- Render Detailed Card ---
                 let perksHTML = '';
                 if (build.perks.length > 0) {
                     build.perks.forEach(perk => {
@@ -822,7 +827,6 @@
                             </div>
                         `;
                     });
-                    // Fill empty slots up to 4
                     for(let i = build.perks.length; i < 4; i++) {
                         perksHTML += `
                             <div class="perk-slot" style="opacity: 0.3; justify-content: center; align-items: center;">
@@ -832,38 +836,32 @@
                     }
                 } else {
                     perksHTML = `
-                        <div class="perk-slot" style="grid-column: span 2; text-align: center; color: var(--entity-red, #ff4c4c);">
+                        <div class="perk-slot" style="grid-column: span 2; text-align: center; color: var(--entity-red);">
                             <strong>Dealer's Choice (No valid perks detected)</strong>
                         </div>
                     `;
                 }
 
-                // Append Add-ons UI Segment dynamically inside the card
-                const addonsHTML = `
-                    <div class="addons-section" style="margin-top: 15px; padding: 10px; background: rgba(0,0,0,0.2); border-left: 3px solid #ff4c4c;">
-                        <strong style="color: #ff4c4c;">Add-ons:</strong> <span style="font-style: italic;">${build.addons}</span>
-                    </div>
-                `;
+                let addonHTML = build.addons ? `<div class="addon-section"><strong>➕ Requested Add-ons:</strong> ${build.addons}</div>` : '';
 
                 const cardHTML = `
                     <div class="challenge-card" id="card-${build.id}">
                         <div class="queue-number">#${qNum}</div>
                         <div class="card-header-top">
                             <div class="killer-title">🔪 ${build.killer}</div>
+                            ${addonHTML}
                         </div>
                         <div class="perk-grid">
                             ${perksHTML}
                         </div>
-                        ${addonsHTML}
-                        <button class="btn-complete" onclick="completeRequest(${build.id})" style="margin-top: 15px;">✔ Mark as Complete</button>
+                        <button class="btn-complete" onclick="completeRequest(${build.id})">✔ Mark as Complete</button>
                     </div>
                 `;
                 detailContainer.insertAdjacentHTML('beforeend', cardHTML);
 
-                // --- Render Mini Queue Item ---
                 const miniHTML = `
                     <li class="mini-queue-item">
-                        <span class="index">${qNum}.</span>
+                        <span class="index" style="color: var(--entity-red); font-weight: bold;">${qNum}.</span>
                         <span>${build.killer}</span>
                     </li>
                 `;
@@ -875,7 +873,6 @@
             const idx = globalQueue.findIndex(b => b.id === id);
             if (idx > -1) {
                 const card = document.getElementById(`card-${id}`);
-                card.style.transition = "all 0.3s ease";
                 card.style.transform = "translateX(50px)";
                 card.style.opacity = "0";
                 
@@ -883,7 +880,7 @@
                     globalQueue.splice(idx, 1);
                     logDebug(`Build Request ID ${id} completed & removed.`);
                     updateDOM();
-                }, 300); 
+                }, 300);
             }
         }
 
@@ -895,15 +892,11 @@
             }
         }
 
-        // ----------------------------------------------------------------------------
-        // VISUAL EFFECTS & GREEN SCREEN UTILITIES
-        // ----------------------------------------------------------------------------
         function toggleGreenScreen() {
             document.body.classList.toggle('chroma-key-mode');
             const isActive = document.body.classList.contains('chroma-key-mode');
             logDebug(`Chroma Key (Green Screen) Mode: ${isActive ? 'ON' : 'OFF'}`);
         }
-
     </script>
 </body>
 </html>
