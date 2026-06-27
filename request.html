@@ -433,8 +433,7 @@
         </div>
     </div>
 
-    <script>
-       
+ <script>
         const KILLERS_DB = {
             "The Trapper": ["trapper", "evan", "macmillan"],
             "The Wraith": ["wraith", "bing bong", "philip", "ojomo", "bingbong", "bell boy"],
@@ -481,9 +480,6 @@
             "The Ghoul": ["ghoul", "ken", "kaneki", "tokyo"]
         };
 
-        // ----------------------------------------------------------------------------
-        // DATABASE: ALL KILLER PERKS (Supplied & Formatted)
-        // ----------------------------------------------------------------------------
         const PERKS_DB = [
             { name:"A Nurse's Calling", category:"INFO", desc:"The Auras of injured Survivors being healed are revealed within 28/30/32m." },
             { name:"Agitation", category:"SPEED", desc:"Increases Carrying speed by 6/12/18% and Terror Radius by +12m." },
@@ -635,7 +631,7 @@
             { name:"Zanshin Tactics", category:"INFO", desc:"See Pallet/Window Auras." }
         ];
 
-        // Advanced Alias System for Perks (Slang, Abbreviations, Typos)
+        // Advanced Alias System
         const PERK_ALIASES = {
             "bbq": "Barbecue & Chilli",
             "barchique": "Barbecue & Chilli",
@@ -656,13 +652,16 @@
             "deadlock": "Deadlock",
             "dms": "Dead Man's Switch",
             "nurses": "A Nurse's Calling",
+            "nurses calling": "A Nurse's Calling",
+            "nurse's calling": "A Nurse's Calling",
             "thrill for hunt": "Hex: Thrill of the Hunt",
             "thrill of the hunt": "Hex: Thrill of the Hunt",
             "face the darkness": "Hex: Face the Darkness",
             "blood warden": "Blood Warden",
-            "end game": "Blood Warden", // Contextual mapping
+            "end game": "Blood Warden",
             "bamboozle": "Bamboozle",
-            "bam bam": "Bamboozle"
+            "bam bam": "Bamboozle",
+            "sloppy": "Sloppy Butcher"
         };
 
         // ----------------------------------------------------------------------------
@@ -676,62 +675,17 @@
         // ----------------------------------------------------------------------------
         function logDebug(msg) {
             const consoleEl = document.getElementById('debugLog');
-            consoleEl.innerHTML += `<br>> ${msg}`;
-            consoleEl.scrollTop = consoleEl.scrollHeight;
-        }
-
-        function extractKiller(textLower) {
-            // Check all killer aliases
-            for (let [officialName, aliases] of Object.entries(KILLERS_DB)) {
-                if (textLower.includes(officialName.toLowerCase())) {
-                    return officialName;
-                }
-                for (let alias of aliases) {
-                    // Use word boundaries for short aliases to avoid false positives (e.g., "pig" in "epigenetic")
-                    const regex = new RegExp(`\\b${alias}\\b`, 'i');
-                    if (regex.test(textLower)) {
-                        return officialName;
-                    }
-                }
+            if (consoleEl) {
+                consoleEl.innerHTML += `<br>> ${msg}`;
+                consoleEl.scrollTop = consoleEl.scrollHeight;
+            } else {
+                console.log(msg); // Fallback for dev tools
             }
-            return "Dealer's Choice"; // Default fallback
-        }
-
-        function extractPerks(textLower) {
-            let foundPerks = [];
-            
-            // 1. Check direct Aliases first (highest priority)
-            for (let [alias, official] of Object.entries(PERK_ALIASES)) {
-                const regex = new RegExp(`\\b${alias}\\b`, 'i');
-                if (regex.test(textLower) && !foundPerks.some(p => p.name === official)) {
-                    const perkObj = PERKS_DB.find(p => p.name === official);
-                    if (perkObj) foundPerks.push(perkObj);
-                }
-            }
-
-            // 2. Check full official names
-            // Sort by length descending so longer names match before partials (e.g., Hex: Ruin before Ruin)
-            const sortedDB = [...PERKS_DB].sort((a, b) => b.name.length - a.name.length);
-            
-            for (let perk of sortedDB) {
-                if (foundPerks.length >= 4) break; // Max 4 perks
-                
-                const nameLower = perk.name.toLowerCase();
-                // Strip punctuation for matching (e.g., A Nurse's Calling -> a nurses calling)
-                const cleanText = textLower.replace(/['":,-]/g, '');
-                const cleanPerkName = nameLower.replace(/['":,-]/g, '');
-
-                if (cleanText.includes(cleanPerkName) && !foundPerks.some(p => p.name === perk.name)) {
-                    foundPerks.push(perk);
-                }
-            }
-
-            return foundPerks;
         }
 
         function processInput() {
             const inputEl = document.getElementById('viewerInput');
-            const rawText = inputEl.value.trim();
+            let rawText = inputEl.value.trim();
             
             if (!rawText) {
                 alert("Please paste a viewer message first.");
@@ -739,18 +693,92 @@
             }
 
             logDebug(`Analyzing payload...`);
-            const textLower = rawText.toLowerCase();
             
-            const killerAssigned = extractKiller(textLower);
-            const perksAssigned = extractPerks(textLower);
+            // PRE-PROCESSING: Fix typos like "callingAddons" missing a space
+            // 1. Separate camelCase words
+            rawText = rawText.replace(/([a-z])([A-Z])/g, '$1 $2');
+            // 2. Ensure "addon" or "addons" always has a space before it if it was mashed together
+            rawText = rawText.replace(/addon/gi, ' addon').replace(/\s+/g, ' ').trim();
+            
+            let textLower = rawText.toLowerCase();
+
+            // 1. EXTRACT ADD-ONS (Before it interferes with killer/perk logic)
+            let addonsAssigned = "None requested";
+            // Match "addon:", "addons - ", "add-ons " and capture everything after it
+            const addonMatch = textLower.match(/add[- ]?ons?\s*:?-?\s*(.+)/i);
+            if (addonMatch) {
+                // Keep the original casing for the UI display
+                const origAddonMatch = rawText.match(/add[- ]?ons?\s*:?-?\s*(.+)/i);
+                addonsAssigned = origAddonMatch ? origAddonMatch[1].trim() : addonMatch[1].trim();
+                
+                // Remove the Add-ons portion from the search string so add-on names don't trigger perks/killers
+                textLower = textLower.replace(addonMatch[0], '');
+            }
+            
+            // Normalize punctuation so alias boundaries match cleaner
+            let cleanStringForPerks = textLower.replace(/['":,\-\.]/g, ''); 
+            let foundPerks = [];
+
+            // 2. EXTRACT PERKS & SCRUB THEM FROM THE TEXT
+            // Scrubbing perks out ensures "A Nurse's Calling" doesn't accidentally trigger "The Nurse" killer
+            
+            // A. Check direct Aliases first
+            for (let [alias, official] of Object.entries(PERK_ALIASES)) {
+                let cleanAlias = alias.replace(/['":,\-\.]/g, '');
+                const regex = new RegExp(`\\b${cleanAlias}\\b`, 'i');
+                
+                if (regex.test(cleanStringForPerks) && !foundPerks.some(p => p.name === official)) {
+                    const perkObj = PERKS_DB.find(p => p.name === official);
+                    if (perkObj) foundPerks.push(perkObj);
+                    
+                    // Remove matched alias to avoid conflicting with Killers
+                    cleanStringForPerks = cleanStringForPerks.replace(regex, '');
+                }
+            }
+
+            // B. Check full official names
+            const sortedDB = [...PERKS_DB].sort((a, b) => b.name.length - a.name.length);
+            for (let perk of sortedDB) {
+                if (foundPerks.length >= 4) break; 
+                
+                const cleanPerkName = perk.name.toLowerCase().replace(/['":,\-\.]/g, '');
+
+                if (cleanStringForPerks.includes(cleanPerkName) && !foundPerks.some(p => p.name === perk.name)) {
+                    foundPerks.push(perk);
+                    // Remove matched perk
+                    cleanStringForPerks = cleanStringForPerks.replace(cleanPerkName, '');
+                }
+            }
+
+            // 3. EXTRACT KILLER (Using the scrubbed string)
+            let killerAssigned = "Dealer's Choice"; 
+            for (let [officialName, aliases] of Object.entries(KILLERS_DB)) {
+                if (cleanStringForPerks.includes(officialName.toLowerCase())) {
+                    killerAssigned = officialName;
+                    break;
+                }
+                
+                let found = false;
+                for (let alias of aliases) {
+                    const regex = new RegExp(`\\b${alias}\\b`, 'i');
+                    if (regex.test(cleanStringForPerks)) {
+                        killerAssigned = officialName;
+                        found = true;
+                        break;
+                    }
+                }
+                if (found) break;
+            }
 
             logDebug(`Extracted Killer: ${killerAssigned}`);
-            logDebug(`Extracted Perks: [${perksAssigned.map(p => p.name).join(', ')}]`);
+            logDebug(`Extracted Perks: [${foundPerks.map(p => p.name).join(', ')}]`);
+            logDebug(`Extracted Add-ons: ${addonsAssigned}`);
 
             const buildObj = {
                 id: autoIncId++,
                 killer: killerAssigned,
-                perks: perksAssigned,
+                perks: foundPerks,
+                addons: addonsAssigned,
                 raw: rawText
             };
 
@@ -769,6 +797,8 @@
             const detailContainer = document.getElementById('detailedQueue');
             const miniContainer = document.getElementById('miniQueue');
             
+            if(!detailContainer || !miniContainer) return; // Prevent errors if DOM isn't ready
+
             detailContainer.innerHTML = '';
             miniContainer.innerHTML = '';
 
@@ -802,11 +832,18 @@
                     }
                 } else {
                     perksHTML = `
-                        <div class="perk-slot" style="grid-column: span 2; text-align: center; color: var(--entity-red);">
+                        <div class="perk-slot" style="grid-column: span 2; text-align: center; color: var(--entity-red, #ff4c4c);">
                             <strong>Dealer's Choice (No valid perks detected)</strong>
                         </div>
                     `;
                 }
+
+                // Append Add-ons UI Segment dynamically inside the card
+                const addonsHTML = `
+                    <div class="addons-section" style="margin-top: 15px; padding: 10px; background: rgba(0,0,0,0.2); border-left: 3px solid #ff4c4c;">
+                        <strong style="color: #ff4c4c;">Add-ons:</strong> <span style="font-style: italic;">${build.addons}</span>
+                    </div>
+                `;
 
                 const cardHTML = `
                     <div class="challenge-card" id="card-${build.id}">
@@ -817,7 +854,8 @@
                         <div class="perk-grid">
                             ${perksHTML}
                         </div>
-                        <button class="btn-complete" onclick="completeRequest(${build.id})">✔ Mark as Complete</button>
+                        ${addonsHTML}
+                        <button class="btn-complete" onclick="completeRequest(${build.id})" style="margin-top: 15px;">✔ Mark as Complete</button>
                     </div>
                 `;
                 detailContainer.insertAdjacentHTML('beforeend', cardHTML);
@@ -834,11 +872,10 @@
         }
 
         function completeRequest(id) {
-            // Find index, remove, re-render
             const idx = globalQueue.findIndex(b => b.id === id);
             if (idx > -1) {
-                // Optional: add exit animation class to card before deleting
                 const card = document.getElementById(`card-${id}`);
+                card.style.transition = "all 0.3s ease";
                 card.style.transform = "translateX(50px)";
                 card.style.opacity = "0";
                 
@@ -846,7 +883,7 @@
                     globalQueue.splice(idx, 1);
                     logDebug(`Build Request ID ${id} completed & removed.`);
                     updateDOM();
-                }, 300); // match animation speed
+                }, 300); 
             }
         }
 
