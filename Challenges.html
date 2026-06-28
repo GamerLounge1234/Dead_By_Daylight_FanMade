@@ -127,68 +127,82 @@
             100% { transform: translateY(0px); }
         }
 
-        /* ==========================================================================
-           RESPONSIVE NAVBAR (GLASSMORPHISM)
-           ========================================================================== */
-        .navbar {
-            width: calc(100% - 60px);
-            max-width: 1600px;
-            margin: 20px auto;
-            padding: 15px 30px;
-            background: var(--glass-bg);
-            border: 1px solid var(--glass-border);
-            border-radius: 16px;
-            z-index: 1000;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), inset 0 0 15px rgba(211, 47, 47, 0.1);
-            overflow-x: auto;
-            scrollbar-width: none;
-        }
-        
-        .nav-links {
-            display: flex;
-            align-items: center;
-            gap: clamp(15px, 2vw, 40px);
-            list-style: none;
-        }
+/* ==========================================================================
+   NAVIGATION - FLUSH TO TOP & MEDIUM SIZED
+   ========================================================================== */
+.navbar {
+    width: 100%;
+    height: 70px; /* Medium size */
+    position: fixed;
+    top: 0; /* Pinned exactly to the top edge */
+    left: 0;
+    background: linear-gradient(
+        to bottom, 
+        rgba(0, 0, 0, 0.98) 0%, 
+        rgba(15, 0, 0, 0.90) 100%
+    );
+    border-bottom: 2px solid var(--dried-blood);
+    z-index: 1000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    
+    /* The Organic Heartbeat Border Glow */
+    animation: organicHeartbeatBorder 4s infinite var(--smooth-curve);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.6);
+}
 
-        .navbar li a {
-            font-size: 0.95rem;
-            font-weight: 700;
-            letter-spacing: 2px;
-            color: #b0b0b0;
-            text-decoration: none;
-            text-transform: uppercase;
-            position: relative;
-            padding: 8px 12px;
-            transition: var(--transition-smooth);
-            white-space: nowrap;
-        }
+.nav-links {
+    display: flex;
+    gap: 40px; /* Tighter gap for medium size */
+    list-style: none;
+    align-items: center;
+    justify-content: center;
+    margin: 0;
+    padding: 0;
+}
 
-        .navbar li a::after {
-            content: "";
-            position: absolute;
-            bottom: 0; left: 50%; width: 0; height: 2px;
-            background: var(--entity-red);
-            transform: translateX(-50%);
-            transition: var(--transition-smooth);
-            box-shadow: 0 0 10px var(--entity-red);
-        }
+.navbar li a {
+    font-family: var(--font-ui);
+    font-size: 1.5rem; /* Medium font */
+    font-weight: 700;
+    letter-spacing: 3px;
+    color: var(--muted-bone);
+    text-decoration: none;
+    text-transform: uppercase;
+    position: relative;
+    padding: 5px 15px;
+    transition: all 0.3s var(--smooth-curve);
+}
 
-        .navbar li a:hover, .navbar li a.active {
-            color: #fff;
-            text-shadow: 0 0 12px var(--entity-glow);
-        }
+/* Elegant Blood Slash on Hover */
+.navbar li a::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 2px;
+    background: var(--arterial-spray);
+    transform: translate(-50%, -50%) rotate(-3deg);
+    transition: width 0.4s var(--smooth-curve);
+    box-shadow: 0 0 10px var(--arterial-spray);
+    z-index: 2;
+    opacity: 0;
+}
 
-        .navbar li a:hover::after, .navbar li a.active::after {
-            width: 100%;
-        }
+.navbar li a:hover {
+    color: var(--bone-white);
+    text-shadow: 0 0 15px rgba(255, 5, 5, 0.7);
+}
 
-        .auth-links { display: flex; gap: 15px; align-items: center; }
+.navbar li a:hover::before {
+    width: 100%;
+    opacity: 1;
+}
+
 
         /* ==========================================================================
            ENTITY'S DESCENT HERO SECTION
