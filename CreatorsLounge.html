@@ -544,8 +544,8 @@
         }
 
         .modal-box {
-            width: min(1100px, 100%);
-            min-height: 650px;
+            width:min(1100px,100%);
+            max-height:90vh;
             position: relative;
             overflow: hidden;
             border: 1px solid rgba(255, 0, 0, 0.25);
@@ -580,11 +580,14 @@
             z-index: 5;
         }
 
-        .modal-content {
-            display: grid;
-            grid-template-columns: 400px 1fr;
-            min-height: 650px;
-        }
+        .modal-content{
+
+    display:grid;
+    grid-template-columns:400px 1fr;
+
+    max-height:90vh;
+
+}
 
         .modal-left {
             border-right: 1px solid rgba(255, 0, 0, 0.18);
@@ -593,6 +596,7 @@
             align-items: center;
             padding: 40px;
             position: relative;
+            overflow:hidden;
         }
 
         .modal-left::after {
@@ -624,10 +628,17 @@
             object-fit: cover;
         }
 
-        .modal-right {
-            padding: 60px;
-            overflow-y: auto;
-        }
+        .modal-right{
+
+    padding:60px;
+
+    overflow-y:auto;
+
+    max-height:90vh;
+
+    scrollbar-width:thin;
+
+}
 
         .modal-right h2 {
             font-family: 'Cinzel', serif;
@@ -718,6 +729,14 @@
         /* ==========================================================
    MODAL PROFILE BUTTON
    ========================================================== */
+        .modal-buttons{
+
+    display:flex;
+    gap:16px;
+    margin-top:28px;
+    flex-wrap:wrap;
+
+}
 
 .modal-profile-btn{
 
@@ -1076,14 +1095,25 @@
                     </div>
 
                     <div class="footer-note" id="modalNote"></div>
-                    <a id="modalProfileButton"
-   class="modal-profile-btn"
-   href="request.html"
-   target="_self"
-   style="display:none;">
-    Build Requests
-</a>
+                    <div class="modal-buttons">
 
+    <a id="modalProfileButton"
+       class="modal-profile-btn"
+       href="request.html"
+       target="_self"
+       style="display:none;">
+        Build Requests
+    </a>
+
+    <a id="modalChallengeButton"
+       class="modal-profile-btn"
+       href="progress.html"
+       target="_self"
+       style="display:none;">
+        Challenge Progress
+    </a>
+
+</div>
                 </div>
 
             </div>
@@ -1103,9 +1133,11 @@
             document.getElementById("modalImage").src = image;
             document.getElementById("modalDescription").innerText = description;
             document.getElementById("modalNote").innerText = note;
-            const profileButton = document.getElementById("modalProfileButton");
+           const profileButton = document.getElementById("modalProfileButton");
+const challengeButton = document.getElementById("modalChallengeButton");
 
 profileButton.style.display = "none";
+challengeButton.style.display = "none";
 
             let knownContainer = document.getElementById("modalKnown");
             knownContainer.innerHTML = "";
@@ -1123,12 +1155,12 @@ profileButton.style.display = "none";
             if(name === "YatoTheMad"){
 
     profileButton.style.display = "inline-flex";
-
     profileButton.href = "request.html";
-
     profileButton.textContent = "Build Requests";
 
-
+    challengeButton.style.display = "inline-flex";
+    challengeButton.href = "progress.html";
+    challengeButton.textContent = "Challenge Progress";
 
 }
 
