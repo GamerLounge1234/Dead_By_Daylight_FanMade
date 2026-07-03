@@ -1135,6 +1135,13 @@
        style="display:none;">
         Challenge Progress
     </a>
+    <a id="modalChallengeButton"
+       class="modal-profile-btn"
+       href="newprogress.html"
+       target="_self"
+       style="display:none;">
+        Challenge Progress
+    </a>
 
 </div>
                 </div>
@@ -1200,6 +1207,14 @@
             if(name === "itswhitesugar"){
                 showcaseContainer.style.display = "block";
                 showcaseGif.src = "sugar.gif"; 
+            }
+
+            if(name === "Kala-aKaar Gaming"){
+
+                challengeButton.style.display = "inline-flex";
+                challengeButton.href = "newprogress.html";
+                challengeButton.textContent = "Challenge Progress";
+
             }
         }
 
