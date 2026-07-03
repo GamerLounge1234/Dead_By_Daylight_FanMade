@@ -1148,63 +1148,75 @@
     <script>
 
         function openModal(name, sub, image, description, known, rep, note) {
+            document.getElementById("modal").classList.add("active");
 
-    document.getElementById("modal").classList.add("active");
+            document.getElementById("modalTitle").innerText = name;
+            document.getElementById("modalSub").innerText = sub;
+            document.getElementById("modalImage").src = image;
+            document.getElementById("modalDescription").innerText = description;
+            document.getElementById("modalNote").innerText = note;
+            
+            const profileButton = document.getElementById("modalProfileButton");
+            const challengeButton = document.getElementById("modalChallengeButton");
+            
+            const showcaseContainer = document.getElementById("modalShowcaseContainer");
+            const showcaseGif = document.getElementById("modalShowcaseGif");
 
-    document.getElementById("modalTitle").innerText = name;
-    document.getElementById("modalSub").innerText = sub;
-    document.getElementById("modalImage").src = image;
-    document.getElementById("modalDescription").innerText = description;
-    document.getElementById("modalNote").innerText = note;
-    
-    const profileButton = document.getElementById("modalProfileButton");
-    const challengeButton = document.getElementById("modalChallengeButton");
-    
-    // NEW: Grab the GIF elements
-    const showcaseContainer = document.getElementById("modalShowcaseContainer");
-    const showcaseGif = document.getElementById("modalShowcaseGif");
+            // Hide buttons and GIF by default for all creators
+            profileButton.style.display = "none";
+            challengeButton.style.display = "none";
+            showcaseContainer.style.display = "none";
+            showcaseGif.src = "";
 
-    // Hide buttons and GIF by default for all creators
-    profileButton.style.display = "none";
-    challengeButton.style.display = "none";
-    showcaseContainer.style.display = "none";
-    showcaseGif.src = "";
+            let knownContainer = document.getElementById("modalKnown");
+            knownContainer.innerHTML = "";
 
-    let knownContainer = document.getElementById("modalKnown");
-    knownContainer.innerHTML = "";
+            known.split(",").forEach(item => {
+                knownContainer.innerHTML += `<div class="badge">${item.trim()}</div>`;
+            });
 
-    known.split(",").forEach(item => {
-        knownContainer.innerHTML += `<div class="badge">${item.trim()}</div>`;
-    });
+            let repContainer = document.getElementById("modalRep");
+            repContainer.innerHTML = "";
 
-    let repContainer = document.getElementById("modalRep");
-    repContainer.innerHTML = "";
+            rep.split(",").forEach(item => {
+                repContainer.innerHTML += `<div class="badge">${item.trim()}</div>`;
+            });
 
-    rep.split(",").forEach(item => {
-        repContainer.innerHTML += `<div class="badge">${item.trim()}</div>`;
-    });
+            // Check for YatoTheMad's buttons
+            if(name === "YatoTheMad"){
+                profileButton.style.display = "inline-flex";
+                profileButton.href = "request.html";
+                profileButton.textContent = "Build Requests";
 
-    // Check for YatoTheMad's buttons
-    if(name === "YatoTheMad"){
-        profileButton.style.display = "inline-flex";
-        profileButton.href = "request.html";
-        profileButton.textContent = "Build Requests";
+                challengeButton.style.display = "inline-flex";
+                challengeButton.href = "progress.html";
+                challengeButton.textContent = "Challenge Progress";
+            }
 
-        challengeButton.style.display = "inline-flex";
-        challengeButton.href = "progress.html";
-        challengeButton.textContent = "Challenge Progress";
-    }
+            // Check for itswhitesugar's GIF
+            if(name === "itswhitesugar"){
+                showcaseContainer.style.display = "block";
+                showcaseGif.src = "sugar.gif"; 
+            }
+        }
 
-    // NEW: Check for itswhitesugar's GIF
-    if(name === "itswhitesugar"){
-        showcaseContainer.style.display = "block";
-        // REPLACE this path with the actual path to your GIF
-        showcaseGif.src = "sugar.gif"; 
-    }
-}
+        /* --- ADD THESE MISSING FUNCTIONS BACK --- */
+
+        function closeModal() {
+            document.getElementById("modal").classList.remove("active");
+            // Clears the GIF so it doesn't keep playing invisibly in the background
+            document.getElementById("modalShowcaseGif").src = ""; 
+        }
+
+        // This lets the user click the dark background to close the modal too
+        window.onclick = function (e) {
+            let modal = document.getElementById("modal");
+            if (e.target === modal) {
+                closeModal();
+            }
+        }
 
     </script>
-
 </body>
 
 </html>
