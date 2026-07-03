@@ -706,7 +706,7 @@
                 padding-top: 80px;
             }
 
-            .modal-right {
+            . {
                 padding: 40px 25px;
             }
         }
@@ -794,6 +794,26 @@
 .modal-profile-btn:active{
 
     transform:scale(.97);
+}
+
+        /* ==========================================================
+   MODAL SHOWCASE GIF
+   ========================================================== */
+.modal-showcase {
+    width: 100%;
+    margin-bottom: 25px;
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid rgba(255, 0, 0, 0.35);
+    box-shadow: 0 0 20px rgba(255, 0, 0, 0.15);
+}
+
+.modal-showcase img {
+    width: 100%;
+    height: auto;
+    display: block;
+    object-fit: cover;
+    max-height: 250px; /* Adjust this to control how tall the GIF is */
 }
     </style>
 </head>
@@ -1081,6 +1101,9 @@
 
                     <h2 id="modalTitle"></h2>
                     <div class="modal-sub" id="modalSub"></div>
+                    <div id="modalShowcaseContainer" class="modal-showcase" style="display: none;">
+        <img id="modalShowcaseGif" src="sugar.gif" alt="Creator Showcase">
+    </div>
 
                     <div class="description" id="modalDescription"></div>
 
@@ -1126,57 +1149,59 @@
 
         function openModal(name, sub, image, description, known, rep, note) {
 
-            document.getElementById("modal").classList.add("active");
+    document.getElementById("modal").classList.add("active");
 
-            document.getElementById("modalTitle").innerText = name;
-            document.getElementById("modalSub").innerText = sub;
-            document.getElementById("modalImage").src = image;
-            document.getElementById("modalDescription").innerText = description;
-            document.getElementById("modalNote").innerText = note;
-           const profileButton = document.getElementById("modalProfileButton");
-const challengeButton = document.getElementById("modalChallengeButton");
+    document.getElementById("modalTitle").innerText = name;
+    document.getElementById("modalSub").innerText = sub;
+    document.getElementById("modalImage").src = image;
+    document.getElementById("modalDescription").innerText = description;
+    document.getElementById("modalNote").innerText = note;
+    
+    const profileButton = document.getElementById("modalProfileButton");
+    const challengeButton = document.getElementById("modalChallengeButton");
+    
+    // NEW: Grab the GIF elements
+    const showcaseContainer = document.getElementById("modalShowcaseContainer");
+    const showcaseGif = document.getElementById("modalShowcaseGif");
 
-profileButton.style.display = "none";
-challengeButton.style.display = "none";
+    // Hide buttons and GIF by default for all creators
+    profileButton.style.display = "none";
+    challengeButton.style.display = "none";
+    showcaseContainer.style.display = "none";
+    showcaseGif.src = "";
 
-            let knownContainer = document.getElementById("modalKnown");
-            knownContainer.innerHTML = "";
+    let knownContainer = document.getElementById("modalKnown");
+    knownContainer.innerHTML = "";
 
-            known.split(",").forEach(item => {
-                knownContainer.innerHTML += `<div class="badge">${item.trim()}</div>`;
-            });
+    known.split(",").forEach(item => {
+        knownContainer.innerHTML += `<div class="badge">${item.trim()}</div>`;
+    });
 
-            let repContainer = document.getElementById("modalRep");
-            repContainer.innerHTML = "";
+    let repContainer = document.getElementById("modalRep");
+    repContainer.innerHTML = "";
 
-            rep.split(",").forEach(item => {
-                repContainer.innerHTML += `<div class="badge">${item.trim()}</div>`;
-            });
-            if(name === "YatoTheMad"){
+    rep.split(",").forEach(item => {
+        repContainer.innerHTML += `<div class="badge">${item.trim()}</div>`;
+    });
 
-    profileButton.style.display = "inline-flex";
-    profileButton.href = "request.html";
-    profileButton.textContent = "Build Requests";
+    // Check for YatoTheMad's buttons
+    if(name === "YatoTheMad"){
+        profileButton.style.display = "inline-flex";
+        profileButton.href = "request.html";
+        profileButton.textContent = "Build Requests";
 
-    challengeButton.style.display = "inline-flex";
-    challengeButton.href = "progress.html";
-    challengeButton.textContent = "Challenge Progress";
+        challengeButton.style.display = "inline-flex";
+        challengeButton.href = "progress.html";
+        challengeButton.textContent = "Challenge Progress";
+    }
 
+    // NEW: Check for itswhitesugar's GIF
+    if(name === "itswhitesugar"){
+        showcaseContainer.style.display = "block";
+        // REPLACE this path with the actual path to your GIF
+        showcaseGif.src = "images/whitesugar_showcase.gif"; 
+    }
 }
-
-        }
-
-        function closeModal() {
-            document.getElementById("modal").classList.remove("active");
-        }
-
-        window.onclick = function (e) {
-            let modal = document.getElementById("modal");
-
-            if (e.target === modal) {
-                closeModal();
-            }
-        }
 
     </script>
 
