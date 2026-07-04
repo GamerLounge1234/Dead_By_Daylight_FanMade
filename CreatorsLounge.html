@@ -1142,6 +1142,13 @@
        style="display:none;">
         Challenge Progress
     </a>
+    <a id="modalChallengeButton"
+       class="modal-profile-btn"
+       href="whitesugar.html"
+       target="_self"
+       style="display:none;">
+        Challenge Progress
+    </a>
 
 </div>
                 </div>
@@ -1205,8 +1212,14 @@
 
             // Check for itswhitesugar's GIF
             if(name === "itswhitesugar"){
+                
                 showcaseContainer.style.display = "block";
-                showcaseGif.src = "sugar.gif"; 
+                showcaseGif.src = "sugar.gif";
+
+                challengeButton.style.display = "inline-flex";
+                challengeButton.href = "whitesugar.html";
+                challengeButton.textContent = "Challenge Progress";
+                
             }
 
             if(name === "Kala-aKaar Gaming"){
