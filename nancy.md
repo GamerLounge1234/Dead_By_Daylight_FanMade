@@ -1,4 +1,4 @@
-# NANCY AI — Dead by Daylight Intelligence Nexus
+# NANCY AI : Dead by Daylight Intelligence
 
 > **An advanced, real-time AI companion, strategist, and analytics system for Dead by Daylight (DBD).**
 > Built with Next.js, Pinecone Vector RAG, an O(1) Local Game Database, and an automated Multi-API Fallback Engine.
